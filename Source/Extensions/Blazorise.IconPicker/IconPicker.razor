@@ -1,0 +1,72 @@
+﻿@inherits BaseIconPicker
+@using System.Reflection
+
+<Tooltip Placement="@ButtonTooltipPlacement" Text=@ButtonTooltipText>
+    <Button Size="@ButtonSize" Color="@ButtonColor" Clicked="@ShowModal" style="min-width:initial">
+        <Icon Name="@Icon" />
+        <Icon Name="Blazorise.IconName.ExpandMore" Margin="@IconMargin" />
+    </Button>
+</Tooltip>
+
+<Modal @ref="Modal">
+    <ModalBackdrop />
+    <ModalContent IsCentered="true" Size="ModalSize.ExtraLarge">
+        <ModalHeader>
+            <ModalTitle Margin="Margin.IsAuto">@ModalTitle</ModalTitle>
+            <CloseButton Clicked="@ModalCancel" />
+        </ModalHeader>
+        <ModalBody>
+            <Row>
+                @if ( AllowFlip | AllowRotation | AllowAnimation )
+                {
+                    <Column ColumnSize="ColumnSize.IsAuto" Padding="Padding.Is2.OnX">
+                        <DropdownList Data="@RotationOptions"
+                                      ValueField="@((x)=>x.Id)"
+                                      TextField="@((x)=>x.Text)"
+                                      SelectedValue="@RotationOption"
+                                      SelectedValueChanged="@RotationOptionChanged"
+                                      Color="Color.Primary">
+                            @RotationOption.Text
+                        </DropdownList>
+                    </Column>
+                }
+                @if ( AllowSize )
+                {
+                    <Column ColumnSize="ColumnSize.IsAuto" Padding="Padding.Is2.OnX">
+                        <DropdownList Data="@SizeOptions"
+                                      ValueField="@((x)=>x.Id)"
+                                      TextField="@((x)=>x.Text)"
+                                      SelectedValue="@SizeOption"
+                                      SelectedValueChanged="@SizeOptionChanged"
+                                      Color="Color.Primary">
+                            @SizeOption.Text
+                        </DropdownList>
+                    </Column>
+                }
+            </Row>
+        </ModalBody>
+        <ModalBody MaxHeight="70">
+            @foreach ( FieldInfo field in typeof( FontAwesomeIcons ).GetFields( BindingFlags.Public | BindingFlags.Static ) )
+            {
+                <Tooltip Placement="@ModalTooltipPlacement" Text=@field.Name>
+                    @if ( field.GetValue( null ).ToString() == IconName )
+                    {
+                        <Button Size="@ModalButtonSize" Color="Color.Primary" Clicked="@(() => IconClicked(field.GetValue(null).ToString()))" style="min-width:initial">
+                            <Icon Name="@Format(field.GetValue(null).ToString(), RotationOption.Id, SizeOption.Id)" />
+                        </Button>
+                    }
+                    else
+                    {
+                        <Button Size="@ModalButtonSize" Color="Color.Secondary" IsOutline="true" Clicked="@(() => IconClicked(field.GetValue(null).ToString()))" style="min-width:initial">
+                            <Icon Name="@Format(field.GetValue(null).ToString(), RotationOption.Id, SizeOption.Id)" />
+                        </Button>
+                    }
+                </Tooltip>
+            }
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@ModalCancel">Cancel</Button>
+            <Button Color="Color.Primary" Clicked="@ModalSubmit">OK</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
