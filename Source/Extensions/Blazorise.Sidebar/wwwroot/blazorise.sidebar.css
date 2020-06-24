@@ -1,11 +1,12 @@
 ﻿:root {
     --b-sidebar-width: 220px;
-}
-
-.sidebar {
     --bsb-dark: var(--b-sidebar-background, #343a40);
     --bsb-dark-dark: var(--b-sidebar-background, #343a40);
     --bsb-dark-light: var(--b-sidebar-color, #ced4da);
+}
+
+.sidebar {
+
     min-width: var(--b-sidebar-width, 220px);
     max-width: var(--b-sidebar-width, 220px);
     min-height: 100vh;
