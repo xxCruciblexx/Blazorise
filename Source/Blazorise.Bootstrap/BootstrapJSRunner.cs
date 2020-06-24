@@ -31,9 +31,9 @@ namespace Blazorise.Bootstrap
             return runtime.InvokeAsync<bool>( $"{BOOTSTRAP_NAMESPACE}.modal.close", elementRef, elementId );
         }
 
-        //public override Task<bool> ActivateDatePicker( string elementId )
-        //{
-        //    return JSRuntime.Current.InvokeAsync<bool>( $"{BOOTSTRAP_NAMESPACE}.activateDatePicker", elementId );
-        //}
+        public override ValueTask<bool> ActivateDatePicker( string elementId, string format )
+        {
+            return runtime.InvokeAsync<bool>( $"{BOOTSTRAP_NAMESPACE}.activateDatePicker", elementId );
+        }
     }
 }
