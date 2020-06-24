@@ -48,6 +48,8 @@ namespace Blazorise
                 await Clicked.InvokeAsync( EventArgsMapper.ToMouseEventArgs( e ) );
             else if ( e.Detail == 2 )
                 await DoubleClicked.InvokeAsync( EventArgsMapper.ToMouseEventArgs( e ) );
+            else
+                await Clicked.InvokeAsync( EventArgsMapper.ToMouseEventArgs( e ) );
         }
 
         #endregion
