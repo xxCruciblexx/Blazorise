@@ -307,6 +307,8 @@ namespace Blazorise
 
         string DropdownToggleSplit();
 
+        string DropdownToggleIcon( bool visible );
+
         string DropdownDirection( Direction direction );
 
         #endregion
@@ -443,9 +445,15 @@ namespace Blazorise
 
         string LayoutFooter();
 
+        string LayoutFooterFixed();
+
         string LayoutSider();
 
         string LayoutSiderContent();
+
+        string LayoutLoading();
+
+        string LayoutRoot();
 
         #endregion
 
