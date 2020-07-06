@@ -29,6 +29,13 @@ namespace Blazorise
 
             base.OnInitialized();
         }
+        protected override async Task OnAfterRenderAsync( bool firstRender )
+        {
+            if ( firstRender )
+            {
+                await JSRunner.ActivateDatePicker( ElementId, Parsers.InternalDateFormat );
+            }
+        }
 
         protected override void BuildClasses( ClassBuilder builder )
         {
@@ -46,7 +53,8 @@ namespace Blazorise
 
         protected async Task OnClickHandler( MouseEventArgs e )
         {
-            await JSRunner.ActivateDatePicker( ElementId, Parsers.InternalDateFormat );
+            //    await JSRunner.ActivateDatePicker( ElementId, Parsers.InternalDateFormat );
+          // await CurrentValueHandler( e?.Value?.ToString() );
         }
 
         protected override Task OnInternalValueChanged( TValue value )

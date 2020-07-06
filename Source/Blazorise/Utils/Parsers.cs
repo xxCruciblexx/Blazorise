@@ -13,7 +13,7 @@ namespace Blazorise.Utils
         /// <summary>
         /// Internal date format. Compatible with HTML date inputs.
         /// </summary>
-        public const string InternalDateFormat = "yyyy-MM-dd";
+        public const string InternalDateFormat = "MM-dd-yyyy";
 
         /// <summary>
         /// Default date format.
