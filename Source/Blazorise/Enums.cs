@@ -1,8 +1,4 @@
 ﻿#region Using directives
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 #endregion
 
 namespace Blazorise
@@ -1178,48 +1174,6 @@ namespace Blazorise
     }
 
     /// <summary>
-    /// Defines a button size.
-    /// </summary>
-    public enum ButtonSize
-    {
-        /// <summary>
-        /// No sizing will be applied to the button.
-        /// </summary>
-        None,
-
-        /// <summary>
-        /// Makes a button to appear smaller.
-        /// </summary>
-        Small,
-
-        /// <summary>
-        /// Makes a button to appear larger.
-        /// </summary>
-        Large,
-    }
-
-    /// <summary>
-    /// Defines sizes for button group.
-    /// </summary>
-    public enum ButtonsSize
-    {
-        /// <summary>
-        /// No sizing will be applied to the buttons.
-        /// </summary>
-        None,
-
-        /// <summary>
-        /// Makes a buttons to appear smaller.
-        /// </summary>
-        Small,
-
-        /// <summary>
-        /// Makes a buttons to appear larger.
-        /// </summary>
-        Large,
-    }
-
-    /// <summary>
     /// Defines the mouse cursor.
     /// </summary>
     public enum Cursor
@@ -1497,9 +1451,11 @@ namespace Blazorise
         Stream,
         StreetView,
         Strikethrough,
+        Subscript,
         Subway,
         Suitcase,
         Sun,
+        Superscript,
         SwimmingPool,
         Sync,
         SyncAlt,
@@ -1867,5 +1823,21 @@ namespace Blazorise
         /// Bar will be collapsed into smaller version with icons.
         /// </summary>
         Small
+    }
+
+    /// <summary>
+    /// Defines the <see cref="ListGroup"/> behaviour.
+    /// </summary>
+    public enum ListGroupMode
+    {
+        /// <summary>
+        /// List group will act as a static list.
+        /// </summary>
+        Static,
+
+        /// <summary>
+        /// List group will act on clicking the items.
+        /// </summary>
+        Selectable,
     }
 }

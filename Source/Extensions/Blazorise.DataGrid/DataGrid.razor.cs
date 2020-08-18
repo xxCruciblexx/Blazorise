@@ -424,6 +424,8 @@ namespace Blazorise.DataGrid
             if ( query == null )
             {
                 filteredData.Clear();
+                FilteredDataChanged?.Invoke( filteredData );
+
                 return;
             }
 
@@ -479,6 +481,8 @@ namespace Blazorise.DataGrid
             filteredData = query.ToList();
 
             dirtyFilter = false;
+
+            FilteredDataChanged?.Invoke( filteredData );
         }
 
         private bool CompareFilterValues( string searchValue, string compareTo )
@@ -704,6 +708,11 @@ namespace Blazorise.DataGrid
                 return filteredData;
             }
         }
+
+        /// <summary>
+        /// Raises an event every time that filtered data is refreshed.
+        /// </summary>
+        [Parameter] public Action<IEnumerable<TItem>> FilteredDataChanged { get; set; }
 
         /// <summary>
         /// Gets the data to show on grid based on the filter and current page.
@@ -1033,6 +1042,21 @@ namespace Blazorise.DataGrid
         /// Template for holding the datagrid aggregate columns.
         /// </summary>
         [Parameter] public RenderFragment DataGridAggregates { get; set; }
+
+        /// <summary>
+        /// If true, shows feedbacks for all validations.
+        /// </summary>
+        [Parameter] public bool ShowValidationFeedback { get; set; } = false;
+
+        /// <summary>
+        /// If true, shows summary for all validations.
+        /// </summary>
+        [Parameter] public bool ShowValidationsSummary { get; set; } = true;
+
+        /// <summary>
+        /// Label for validaitons summary.
+        /// </summary>
+        [Parameter] public string ValidationsSummaryLabel { get; set; }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
 
