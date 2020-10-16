@@ -40,6 +40,13 @@
                     </Field>
                     <Field>
                         <FieldLabel>
+                        </FieldLabel>
+                        <FieldBody>
+                            <Check @bind-Checked="@showPageSizes">Show Page sizes</Check>
+                        </FieldBody>
+                    </Field>
+                    <Field>
+                        <FieldLabel>
                             Edit Mode
                         </FieldLabel>
                         <FieldBody>
@@ -47,6 +54,17 @@
                                 <SelectItem Value="DataGridEditMode.Form">Form</SelectItem>
                                 <SelectItem Value="DataGridEditMode.Inline">Inline</SelectItem>
                                 <SelectItem Value="DataGridEditMode.Popup">Popup</SelectItem>
+                            </Select>
+                        </FieldBody>
+                    </Field>
+                    <Field>
+                        <FieldLabel>
+                            Sort mode
+                        </FieldLabel>
+                        <FieldBody>
+                            <Select @bind-SelectedValue="@sortMode">
+                                <SelectItem Value="@DataGridSortMode.Single">Single</SelectItem>
+                                <SelectItem Value="@DataGridSortMode.Multiple">Multiple</SelectItem>
                             </Select>
                         </FieldBody>
                     </Field>
@@ -66,8 +84,11 @@
                           EditMode="@editMode"
                           Editable="@editable"
                           Sortable="@sortable"
+                          SortMode="@sortMode"
                           Filterable="@filterable"
                           ShowPager="@showPager"
+                          PagerPosition="DataGridPagerPosition.TopAndBottom"
+                          ShowPageSizes="@showPageSizes"
                           RowInserted="@OnRowInserted"
                           RowUpdated="@OnRowUpdated"
                           RowRemoved="@OnRowRemoved"
@@ -111,7 +132,7 @@
                                 <Button Color="Color.Warning" Clicked="@context.Clicked">Clear Filter</Button>
                             </ClearFilterCommandTemplate>
                         </DataGridCommandColumn>
-                        <DataGridColumn TItem="Employee" Field="@nameof( Employee.Id )" Caption="#" Sortable="false" Width="60px" />
+                        <DataGridColumn TextAlignment="TextAlignment.Center" TItem="Employee" Field="@nameof( Employee.Id )" Caption="#" Sortable="false" Width="60px" />
                         <DataGridColumn TItem="Employee" Field="@nameof( Employee.FirstName )" Caption="First Name" Validator="@CheckFirstName" Editable="true">
                             <FilterTemplate>
                                 <TextEdit Placeholder="Search name" TextChanged="@(v=>context.TriggerFilterChange(v))" />
@@ -243,8 +264,10 @@
     DataGridEditMode editMode = DataGridEditMode.Form;
     bool editable = true;
     bool sortable = true;
+    DataGridSortMode sortMode = DataGridSortMode.Multiple;
     bool filterable = true;
     bool showPager = true;
+    bool showPageSizes = true;
 
     // TODO: add options to control the commands
     //bool newCommandAllowed = true;

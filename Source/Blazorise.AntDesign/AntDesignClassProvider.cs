@@ -517,9 +517,10 @@ namespace Blazorise.AntDesign
 
         public override string BarBrand( BarMode mode ) => mode == Blazorise.BarMode.Horizontal ? "ant-menu-item" : "ant-menu-item ant-bar-brand";
 
-        public override string BarToggler( BarMode mode ) => null;
+        public override string BarToggler( BarMode mode, BarTogglerMode togglerMode ) => mode == Blazorise.BarMode.Horizontal ? null :
+            togglerMode == BarTogglerMode.Popout ? "ant-menu-toggler-popout" : "ant-menu-toggler-inline";
 
-        public override string BarTogglerCollapsed( BarMode mode, bool isShow ) => null;
+        public override string BarTogglerCollapsed( BarMode mode, BarTogglerMode togglerMode, bool isShow ) => null;
 
         public override string BarMenu( BarMode mode ) => null;
 
@@ -544,6 +545,8 @@ namespace Blazorise.AntDesign
         public override string BarDropdownMenuVisible( BarMode mode, bool visible ) => visible ? null : "ant-menu-hidden";
 
         public override string BarDropdownMenuRight( BarMode mode ) => null;
+
+        public override string BarDropdownMenuContainer( BarMode mode ) => mode == Blazorise.BarMode.Horizontal ? null : "b-bar-dropdown-menu-container";
 
         public override string BarCollapsed( BarMode mode ) => $"ant-menu-{ToBarMode( mode )}-collapsed";
 
@@ -753,6 +756,8 @@ namespace Blazorise.AntDesign
         public override string TableHeaderThemeContrast( ThemeContrast themeContrast ) => $"ant-table-thead-{ToThemeContrast( themeContrast )}";
 
         public override string TableHeaderCell() => null;
+
+        public override string TableHeaderCellTextAlignment( TextAlignment textAlignment ) => $"ant-text-{ToTextAlignment( textAlignment )}";
 
         public override string TableFooter() => null;
 

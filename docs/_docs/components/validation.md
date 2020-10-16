@@ -253,19 +253,21 @@ Here is a list of the validators currently available.
 
 ### Validations
 
-| Name                      | Type                                                                              | Default  | Description                                                                                            |
-|---------------------------|-----------------------------------------------------------------------------------|----------|--------------------------------------------------------------------------------------------------------|
-| Mode                      | [ValidationMode]({{ "/docs/helpers/enums/#validationmode" | relative_url }})      | `Auto`   | Defines the validation mode for validations inside of this container.                                  |
-| Model                     | object                                                                            | null     | Specifies the top-level model object for the form. An edit context will be constructed for this model. |
-| MissingFieldsErrorMessage | string                                                                            |          | Message that will be displayed if any of the validations does not have defined error message.          |
-| ValidatedAll              | EventCallback                                                                     |          | Event is fired only after all of the validation are successful.                                        |
-| StatusChanged             | EventCallback                                                                     |          | Event is fired whenever there is a change in validation status.                                        |
-| ValidateOnLoad            | bool                                                                              |          | Run validation only when user starts entering values.                                                  |
+| Name                      | Type                                                                              | Default  | Description                                                                                                                                            |
+|---------------------------|-----------------------------------------------------------------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Mode                      | [ValidationMode]({{ "/docs/helpers/enums/#validationmode" | relative_url }})      | `Auto`   | Defines the validation mode for validations inside of this container.                                                                                  |
+| EditContext               | `EditContext`                                                                     | null     | Supplies the edit context explicitly. If using this parameter, do not also supply Model, since the model value will be taken from the Model property.  |
+| Model                     | object                                                                            | null     | Specifies the top-level model object for the form. An edit context will be constructed for this model.                                                 |
+| MissingFieldsErrorMessage | string                                                                            |          | Message that will be displayed if any of the validations does not have defined error message.                                                          |
+| ValidatedAll              | EventCallback                                                                     |          | Event is fired only after all of the validation are successful.                                                                                        |
+| StatusChanged             | EventCallback                                                                     |          | Event is fired whenever there is a change in validation status.                                                                                        |
+| ValidateOnLoad            | bool                                                                              |          | Run validation only when user starts entering values.                                                                                                  |
 
 ### Validation
 
-| Name         | Type                                                                              | Default  | Description                                                                                |
-|--------------|-----------------------------------------------------------------------------------|----------|--------------------------------------------------------------------------------------------|
-| Status       | [ValidationStatus]({{ "/docs/helpers/enums/#validationstatus" | relative_url }})  | `None`   | Gets or sets the current validation status.                                                |
-| Validator    | action                                                                            |          | Validates the input value after it has being changed.                                      |
-| UsePattern   | boolean                                                                           | false    | Forces validation to use regex pattern matching instead of default validator handler.      |
+| Name          | Type                                                                              | Default  | Description                                                                                |
+|---------------|-----------------------------------------------------------------------------------|----------|--------------------------------------------------------------------------------------------|
+| Status        | [ValidationStatus]({{ "/docs/helpers/enums/#validationstatus" | relative_url }})  | `None`   | Gets or sets the current validation status.                                                |
+| StatusChanged | EventCallback                                                                     |          | Event is fired whenever there is a change in validation status.                            |
+| Validator     | action                                                                            |          | Validates the input value after it has being changed.                                      |
+| UsePattern    | boolean                                                                           | false    | Forces validation to use regex pattern matching instead of default validator handler.      |

@@ -53,8 +53,10 @@ namespace Blazorise
 
         protected async Task OnClickHandler( MouseEventArgs e )
         {
-            //    await JSRunner.ActivateDatePicker( ElementId, Parsers.InternalDateFormat );
-          // await CurrentValueHandler( e?.Value?.ToString() );
+            if ( Disabled || ReadOnly )
+                return;
+
+            await JSRunner.ActivateDatePicker( ElementId, Parsers.InternalDateFormat );
         }
 
         protected override Task OnInternalValueChanged( TValue value )

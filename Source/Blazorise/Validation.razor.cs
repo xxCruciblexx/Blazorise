@@ -18,7 +18,7 @@ namespace Blazorise
     /// <summary>
     /// Container for input component that can check for different kind of validations.
     /// </summary>
-    public partial class Validation : ComponentBase, IValidation
+    public partial class Validation : ComponentBase, IValidation, IDisposable
     {
         #region Members
 
@@ -81,6 +81,7 @@ namespace Blazorise
                 // To avoid leaking memory, it's important to detach any event handlers in Dispose()
                 ParentValidations.ValidatingAll -= OnValidatingAll;
                 ParentValidations.ClearingAll -= OnClearingAll;
+                ParentValidations.NotifyValidationRemoved( this );
             }
         }
 
@@ -116,7 +117,7 @@ namespace Blazorise
             {
                 if ( !Comparers.AreEqual( this.lastKnownValue as Array, inputComponent.ValidationValue as Array ) )
                 {
-                    this.lastKnownValue = inputComponent.ValidationValue;
+                    lastKnownValue = inputComponent.ValidationValue;
 
                     if ( EditContext != null && hasFieldIdentifier )
                     {
@@ -129,9 +130,9 @@ namespace Blazorise
             }
             else
             {
-                if ( this.lastKnownValue != inputComponent.ValidationValue )
+                if ( lastKnownValue != inputComponent.ValidationValue )
                 {
-                    this.lastKnownValue = inputComponent.ValidationValue;
+                    lastKnownValue = inputComponent.ValidationValue;
 
                     if ( EditContext != null && hasFieldIdentifier )
                     {
@@ -180,10 +181,16 @@ namespace Blazorise
 
                 EditContext.ValidateField( messages, fieldIdentifier );
 
-                Status = messages[fieldIdentifier].Any() ? ValidationStatus.Error : ValidationStatus.Success;
-                LastErrorMessage = Status == ValidationStatus.Error ? string.Join( "; ", messages[fieldIdentifier] ) : null;
+                var matchStatus = messages[fieldIdentifier].Any() ? ValidationStatus.Error : ValidationStatus.Success;
 
-                NotifyValidationStatusChanged( Status, LastErrorMessage );
+                if ( Status != matchStatus )
+                {
+                    Status = matchStatus;
+
+                    LastErrorMessage = Status == ValidationStatus.Error ? string.Join( "; ", messages[fieldIdentifier] ) : null;
+
+                    NotifyValidationStatusChanged( Status, LastErrorMessage );
+                }
             }
             else
             {
@@ -222,6 +229,7 @@ namespace Blazorise
         private void NotifyValidationStatusChanged( ValidationStatus status, string message = null )
         {
             ValidationStatusChanged?.Invoke( this, new ValidationStatusChangedEventArgs( status, message ) );
+            StatusChanged.InvokeAsync( status );
 
             ParentValidations?.NotifyValidationStatusChanged( this );
         }
@@ -246,6 +254,11 @@ namespace Blazorise
         [Parameter] public ValidationStatus Status { get; set; }
 
         /// <summary>
+        /// Occurs each time that validation status changed.
+        /// </summary>
+        [Parameter] public EventCallback<ValidationStatus> StatusChanged { get; set; }
+
+        /// <summary>
         /// Gets the last error message.
         /// </summary>
         public string LastErrorMessage { get; private set; }
@@ -265,6 +278,9 @@ namespace Blazorise
         /// </summary>
         [CascadingParameter] protected Validations ParentValidations { get; set; }
 
+        /// <summary>
+        /// Parent validation edit context.
+        /// </summary>
         [CascadingParameter] protected EditContext EditContext { get; set; }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
