@@ -116,20 +116,14 @@ namespace Blazorise
 
         protected override void BuildRenderTree( RenderTreeBuilder builder )
         {
-            if ( HasCustomRegistration )
-            {
-                builder.AddContent( 0, RenderCustomComponent() );
-            }
-            else
-            {
-                builder
-                    .OpenElement( Type.ToButtonTagName() )
-                    .Id( ElementId )
-                    .Type( Type.ToButtonTypeString() )
-                    .Class( ClassNames )
-                    .Style( StyleNames )
-                    .Disabled( Disabled )
-                    .AriaPressed( Active );
+            builder
+                .OpenElement( Type.ToButtonTagName() )
+                .Id( ElementId )
+                .Type( Type.ToButtonTypeString() )
+                .Class( ClassNames )
+                .Style( StyleNames )
+                .Disabled( Disabled )
+                .AriaPressed( Active );
 
                 if ( Type == ButtonType.Link && To != null )
                 {
@@ -140,16 +134,15 @@ namespace Blazorise
                 }
                 else
                 {
-                    builder.OnClick( this, Clicked );
+                    builder.OnClick( this, EventCallback.Factory.Create( this, ClickHandler ) );
                 }
 
-                builder.Attributes( Attributes );
-                builder.ElementReferenceCapture( capturedRef => ElementRef = capturedRef );
+            builder.Attributes( Attributes );
+            builder.ElementReferenceCapture( capturedRef => ElementRef = capturedRef );
 
-                builder.Content( ChildContent );
+            builder.Content( ChildContent );
 
-                builder.CloseElement();
-            }
+            builder.CloseElement();
 
             base.BuildRenderTree( builder );
         }
