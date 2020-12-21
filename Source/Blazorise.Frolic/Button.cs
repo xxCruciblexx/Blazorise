@@ -1,4 +1,5 @@
 ﻿#region Using directives
+using Blazorise.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 #endregion
@@ -42,7 +43,27 @@ namespace Blazorise.Frolic
             builder.Attributes( Attributes );
             builder.ElementReferenceCapture( capturedRef => ElementRef = capturedRef );
 
-            if ( Loading )
+            if ( Loading && LoadingTemplate != null )
+            {
+                builder.Content( LoadingTemplate );
+            }
+            else
+            {
+                builder.Content( ChildContent );
+            }
+
+            builder.CloseElement();
+
+            if ( IsAddons || ParentIsField )
+            {
+                builder.CloseElement();
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override RenderFragment ProvideDefaultLoadingTemplate()
+        {
+            return builder =>
             {
                 builder.OpenElement( "span" );
 
@@ -52,16 +73,8 @@ namespace Blazorise.Frolic
                     .AriaHidden( "true" );
 
                 builder.CloseElement();
-            }
-
-            builder.Content( ChildContent );
-
-            builder.CloseElement();
-
-            if ( IsAddons || ParentIsField )
-            {
-                builder.CloseElement();
-            }
+                builder.Content( ChildContent );
+            };
         }
 
         #endregion

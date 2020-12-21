@@ -2,7 +2,7 @@
 @inherits _BaseDataGridRow<TItem>
 @{
     var styling = new DataGridRowStyling();
-    var selectedStyling = new DataGridRowStyling { Background = Blazorise.Background.Primary };
+    var selectedStyling = new DataGridRowStyling { Color = Blazorise.Color.Primary };
 
     @if ( IsSelected )
     {
@@ -42,6 +42,10 @@
                     @if ( column.DisplayTemplate != null )
                     {
                         @column.DisplayTemplate( Item )
+                    }
+                    else if ( ParentDataGrid.EmptyCellTemplate != null && column.GetValue( Item ) == null )
+                    {
+                        @ParentDataGrid.EmptyCellTemplate( Item )
                     }
                     else
                     {
