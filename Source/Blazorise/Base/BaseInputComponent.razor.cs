@@ -99,10 +99,10 @@ namespace Blazorise
             base.Dispose( disposing );
         }
 
-        private void OnValidationStatusChanged( object sender, ValidationStatusChangedEventArgs e )
+        protected async void OnValidationStatusChanged( object sender, ValidationStatusChangedEventArgs e )
         {
             DirtyClasses();
-            StateHasChanged();
+            await InvokeAsync( StateHasChanged );
         }
 
         /// <summary>
@@ -163,6 +163,9 @@ namespace Blazorise
         #endregion
 
         #region Properties
+
+        /// <inheritdoc/>
+        protected override bool ShouldAutoGenerateId => true;
 
         [Inject] protected BlazoriseOptions Options { get; set; }
 
@@ -282,6 +285,11 @@ namespace Blazorise
         /// Occurs when the input box loses focus.
         /// </summary>
         [Parameter] public EventCallback<FocusEventArgs> FocusOut { get; set; }
+
+        /// <summary>
+        /// If defined, indicates that its element can be focused and can participates in sequential keyboard navigation.
+        /// </summary>
+        [Parameter] public int? TabIndex { get; set; }
 
         /// <summary>
         /// Parent validation container.

@@ -42,11 +42,25 @@ namespace Blazorise.Bulma
 
         #endregion
 
+        #region NumericEdit
+
+        public override string NumericEdit( bool plaintext ) => plaintext ? "input is-static" : "input";
+
+        public override string NumericEditSize( Size size ) => $"is-{ToSize( size )}";
+
+        public override string NumericEditColor( Color color ) => $"is-{ToColor( color )}";
+
+        public override string NumericEditValidation( ValidationStatus validationStatus ) => ToValidationStatus( validationStatus );
+
+        #endregion
+
         #region DateEdit
 
-        public override string DateEdit() => "input";
+        public override string DateEdit( bool plaintext ) => plaintext ? "input is-static" : "input";
 
         public override string DateEditSize( Size size ) => $"is-{ToSize( size )}";
+
+        public override string DateEditColor( Color color ) => $"is-{ToColor( color )}";
 
         public override string DateEditValidation( ValidationStatus validationStatus ) => ToValidationStatus( validationStatus );
 
@@ -54,9 +68,11 @@ namespace Blazorise.Bulma
 
         #region TimeEdit
 
-        public override string TimeEdit() => "input";
+        public override string TimeEdit( bool plaintext ) => plaintext ? "input is-static" : "input";
 
         public override string TimeEditSize( Size size ) => $"is-{ToSize( size )}";
+
+        public override string TimeEditColor( Color color ) => $"is-{ToColor( color )}";
 
         public override string TimeEditValidation( ValidationStatus validationStatus ) => ToValidationStatus( validationStatus );
 
@@ -99,6 +115,10 @@ namespace Blazorise.Bulma
         public override string RadioSize( bool button, Size size ) => $"is-{ToSize( size )}";
 
         public override string RadioInline() => "is-inline";
+
+        public override string RadioCursor( Cursor cursor ) => $"is-checkradio-{ToCursor( cursor )}";
+
+        public override string RadioValidation( ValidationStatus validationStatus ) => ToValidationStatus( validationStatus );
 
         #endregion
 
@@ -183,7 +203,7 @@ namespace Blazorise.Bulma
 
         #region Fields
 
-        public override string Fields() => "field";
+        public override string Fields() => "columns is-multiline";
 
         public override string FieldsBody() => "field-body";
 
@@ -363,6 +383,8 @@ namespace Blazorise.Bulma
                     return null;
             }
         }
+
+        public override string DropdownTableResponsive() => null;
 
         #endregion
 
@@ -627,7 +649,7 @@ namespace Blazorise.Bulma
                 if ( columnWidth == Blazorise.ColumnWidth.None )
                     return $"column is-{baseClass}{ToBreakpoint( breakpoint )}";
 
-                return $"column is-{baseClass}{ToBreakpoint( breakpoint )}-{ToColumnWidth( columnWidth )}";
+                return $"column is-{ToColumnWidth( columnWidth )}-{baseClass}{ToBreakpoint( breakpoint )}";
             }
 
             return $"column is-{baseClass}{ToColumnWidth( columnWidth )}";
@@ -647,7 +669,7 @@ namespace Blazorise.Bulma
                 : $"is-{ToDisplayType( displayType )}";
 
             if ( direction != DisplayDirection.None )
-                return $"{baseClass} is-flex-{ToDisplayDirection( direction )}";
+                return $"{baseClass} is-flex-direction-{ToDisplayDirection( direction )}";
 
             return baseClass;
         }

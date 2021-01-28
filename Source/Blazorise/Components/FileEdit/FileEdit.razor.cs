@@ -1,10 +1,11 @@
-﻿#region Using directives
+#region Using directives
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Blazorise.Localization;
 using Blazorise.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -48,6 +49,22 @@ namespace Blazorise
             }
         }
 
+        protected override void OnInitialized()
+        {
+            LocalizerService.LocalizationChanged += OnLocalizationChanged;
+
+            base.OnInitialized();
+        }
+
+        private async void OnLocalizationChanged( object sender, EventArgs e )
+        {
+            // no need to refresh if we're using custom localization
+            if ( BrowseButtonLocalizer != null )
+                return;
+
+            await InvokeAsync( StateHasChanged );
+        }
+
         /// <inheritdoc/>
         protected override void BuildClasses( ClassBuilder builder )
         {
@@ -60,7 +77,7 @@ namespace Blazorise
         /// <inheritdoc/>
         protected override async Task OnFirstAfterRenderAsync()
         {
-            dotNetObjectRef ??= JSRunner.CreateDotNetObjectRef( new FileEditAdapter( this ) );
+            dotNetObjectRef ??= CreateDotNetObjectRef( new FileEditAdapter( this ) );
 
             await JSRunner.InitializeFileEdit( dotNetObjectRef, ElementRef, ElementId );
 
@@ -73,7 +90,9 @@ namespace Blazorise
             if ( disposing && Rendered )
             {
                 JSRunner.DestroyFileEdit( ElementRef, ElementId );
-                JSRunner.DisposeDotNetObjectRef( dotNetObjectRef );
+                DisposeDotNetObjectRef( dotNetObjectRef );
+
+                LocalizerService.LocalizationChanged -= OnLocalizationChanged;
             }
 
             base.Dispose( disposing );
@@ -196,6 +215,17 @@ namespace Blazorise
         }
 
         /// <summary>
+        /// Opens the stream for reading the uploaded file.
+        /// </summary>
+        /// <param name="fileEntry">Currently processed file entry.</param>
+        /// <param name="cancellationToken">A cancellation token to signal the cancellation of streaming file data.</param>
+        /// <returns>Returns the stream for the uploaded file entry.</returns>
+        public Stream OpenReadStream( FileEntry fileEntry, CancellationToken cancellationToken )
+        {
+            return new RemoteFileEntryStream( JSRunner, ElementRef, fileEntry, this, MaxMessageSize, SegmentFetchTimeout, cancellationToken );
+        }
+
+        /// <summary>
         /// Manaully resets the input file value.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation.</returns>
@@ -209,6 +239,9 @@ namespace Blazorise
         #region Properties
 
         /// <inheritdoc/>
+        protected override bool ShouldAutoGenerateId => true;
+
+        /// <inheritdoc/>
         protected override IFileEntry[] InternalValue { get => files; set => files = value; }
 
         protected long ProgressProgress;
@@ -216,6 +249,28 @@ namespace Blazorise
         protected long ProgressTotal;
 
         protected double Progress;
+
+        [Inject] protected ITextLocalizerService LocalizerService { get; set; }
+
+        [Inject] protected ITextLocalizer<FileEdit> Localizer { get; set; }
+
+        /// <summary>
+        /// Gets the localized browse button text.
+        /// </summary>
+        protected string BrowseButtonString
+        {
+            get
+            {
+                var localizationString = Multiple
+                    ? "Choose files"
+                    : "Choose file";
+
+                if ( BrowseButtonLocalizer != null )
+                    return BrowseButtonLocalizer.Invoke( localizationString );
+
+                return Localizer[localizationString];
+            }
+        }
 
         /// <summary>
         /// Gets the list is selected filename
@@ -249,6 +304,11 @@ namespace Blazorise
         [Parameter] public int MaxMessageSize { get; set; } = 20 * 1024;
 
         /// <summary>
+        /// Gets or sets the Segment Fetch Timeout when uploading the file.
+        /// </summary>
+        [Parameter] public TimeSpan SegmentFetchTimeout { get; set; } = TimeSpan.FromMinutes( 1 );
+
+        /// <summary>
         /// Occurs every time the selected file(s) has changed.
         /// </summary>
         [Parameter] public EventCallback<FileChangedEventArgs> Changed { get; set; }
@@ -277,6 +337,11 @@ namespace Blazorise
         /// If true file input will be automatically reset after it has being uploaded.
         /// </summary>
         [Parameter] public bool AutoReset { get; set; } = true;
+
+        /// <summary>
+        /// Function used to handle custom localization that will override a default <see cref="ITextLocalizer"/>.
+        /// </summary>
+        [Parameter] public TextLocalizerHandler BrowseButtonLocalizer { get; set; }
 
         #endregion
     }

@@ -42,8 +42,9 @@ namespace Blazorise
 
         protected override void BuildClasses( ClassBuilder builder )
         {
-            builder.Append( ClassProvider.TimeEdit() );
+            builder.Append( ClassProvider.TimeEdit( Plaintext ) );
             builder.Append( ClassProvider.TimeEditSize( Size ), Size != Size.None );
+            builder.Append( ClassProvider.TimeEditColor( Color ), Color != Color.None );
             builder.Append( ClassProvider.TimeEditValidation( ParentValidation?.Status ?? ValidationStatus.None ), ParentValidation?.Status != ValidationStatus.None );
 
             base.BuildClasses( builder );
@@ -95,6 +96,10 @@ namespace Blazorise
 
         #region Properties
 
+        /// <inheritdoc/>
+        protected override bool ShouldAutoGenerateId => true;
+
+        /// <inheritdoc/>
         protected override TValue InternalValue { get => Time; set => Time = value; }
 
         /// <summary>

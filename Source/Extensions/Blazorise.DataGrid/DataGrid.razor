@@ -8,7 +8,7 @@
     {
         <_DataGridPagination PaginationContext="@PaginationContext" PaginationTemplates="@PaginationTemplates" OnPaginationItemClick="OnPaginationItemClick" />
     }
-    <Table Class="@Class" Style="@Style" Margin="@Margin" Padding="@Padding" Striped="@Striped" Bordered="@Bordered" Borderless="@Borderless" Hoverable="@Hoverable" Narrow="@Narrow" Responsive="@Responsive">
+    <Table ElementId="@ElementId" Class="@Class" Style="@Style" Margin="@Margin" Padding="@Padding" Striped="@Striped" Bordered="@Bordered" Borderless="@Borderless" Hoverable="@Hoverable" Narrow="@Narrow" Responsive="@Responsive">
         <TableHeader>
             @if ( ShowCaptions )
             {
@@ -92,7 +92,7 @@
                             <TableHeaderCell Class="@column.FilterCellClass" Style="@column.FilterCellStyle" width="@column.Width">
                                 @if ( column.FilterTemplate != null )
                                 {
-                                    @(column.FilterTemplate(column.FilterContext))
+                                    @(column.FilterTemplate( column.Filter ))
                                 }
                                 else
                                 {

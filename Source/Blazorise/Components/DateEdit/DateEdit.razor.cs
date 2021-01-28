@@ -42,8 +42,9 @@ namespace Blazorise
 
         protected override void BuildClasses( ClassBuilder builder )
         {
-            builder.Append( ClassProvider.DateEdit() );
+            builder.Append( ClassProvider.DateEdit( Plaintext ) );
             builder.Append( ClassProvider.DateEditSize( Size ), Size != Size.None );
+            builder.Append( ClassProvider.DateEditColor( Color ), Color != Color.None );
             builder.Append( ClassProvider.DateEditValidation( ParentValidation?.Status ?? ValidationStatus.None ), ParentValidation?.Status != ValidationStatus.None );
 
             base.BuildClasses( builder );
@@ -98,6 +99,9 @@ namespace Blazorise
 
         #region Properties
 
+        /// <inheritdoc/>
+        protected override bool ShouldAutoGenerateId => true;
+
         protected override TValue InternalValue { get => Date; set => Date = value; }
 
         /// <summary>
@@ -119,12 +123,12 @@ namespace Blazorise
         /// <summary>
         /// The earliest date to accept.
         /// </summary>
-        [Parameter] public DateTime? Min { get; set; }
+        [Parameter] public DateTimeOffset? Min { get; set; }
 
         /// <summary>
         /// The latest date to accept.
         /// </summary>
-        [Parameter] public DateTime? Max { get; set; }
+        [Parameter] public DateTimeOffset? Max { get; set; }
 
         #endregion
     }

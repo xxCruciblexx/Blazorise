@@ -54,7 +54,7 @@ namespace Blazorise
 
         protected override async Task OnFirstAfterRenderAsync()
         {
-            dotNetObjectRef ??= JSRunner.CreateDotNetObjectRef( new NumericEditAdapter( this ) );
+            dotNetObjectRef ??= CreateDotNetObjectRef( new NumericEditAdapter( this ) );
 
             await JSRunner.InitializeNumericEdit( dotNetObjectRef, ElementRef, ElementId, Decimals, DecimalsSeparator, Step, Min, Max );
 
@@ -66,10 +66,20 @@ namespace Blazorise
             if ( disposing && Rendered )
             {
                 JSRunner.DestroyNumericEdit( ElementRef, ElementId );
-                JSRunner.DisposeDotNetObjectRef( dotNetObjectRef );
+                DisposeDotNetObjectRef( dotNetObjectRef );
             }
 
             base.Dispose( disposing );
+        }
+
+        protected override void BuildClasses( ClassBuilder builder )
+        {
+            builder.Append( ClassProvider.NumericEdit( Plaintext ) );
+            builder.Append( ClassProvider.NumericEditSize( Size ), Size != Size.None );
+            builder.Append( ClassProvider.NumericEditColor( Color ), Color != Color.None );
+            builder.Append( ClassProvider.NumericEditValidation( ParentValidation?.Status ?? ValidationStatus.None ), ParentValidation?.Status != ValidationStatus.None );
+
+            base.BuildClasses( builder );
         }
 
         public Task SetValue( string value )
@@ -130,6 +140,9 @@ namespace Blazorise
         #endregion
 
         #region Properties
+
+        /// <inheritdoc/>
+        protected override bool ShouldAutoGenerateId => true;
 
         protected override TValue InternalValue { get => Value; set => Value = value; }
 
