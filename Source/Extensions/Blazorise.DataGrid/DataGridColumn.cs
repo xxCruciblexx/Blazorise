@@ -1,10 +1,7 @@
 ﻿#region Using directives
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+using System.Text;
 using Blazorise.DataGrid.Utils;
 using Microsoft.AspNetCore.Components;
 #endregion
@@ -117,8 +114,62 @@ namespace Blazorise.DataGrid
         public bool CellValuesAreEditable()
         {
             return Editable &&
-                ( ( CellsEditableOnNewCommand && ParentDataGrid?.EditState == DataGridEditState.New )
-                || ( CellsEditableOnEditCommand && ParentDataGrid?.EditState == DataGridEditState.Edit ) );
+                ( ( CellsEditableOnNewCommand && ParentDataGrid.EditState == DataGridEditState.New )
+                || ( CellsEditableOnEditCommand && ParentDataGrid.EditState == DataGridEditState.Edit ) );
+        }
+
+        internal string BuildHeaderCellStyle()
+        {
+            var sb = new StringBuilder();
+
+            if ( !string.IsNullOrEmpty( HeaderCellStyle ) )
+                sb.Append( HeaderCellStyle );
+
+            if ( Width != null )
+                sb.Append( $"; width: {Width};" );
+
+            return sb.ToString().TrimStart( ' ', ';' );
+        }
+
+        internal string BuildFilterCellStyle()
+        {
+            var sb = new StringBuilder();
+
+            if ( !string.IsNullOrEmpty( FilterCellStyle ) )
+                sb.Append( FilterCellStyle );
+
+            if ( Width != null )
+                sb.Append( $"; width: {Width};" );
+
+            return sb.ToString().TrimStart( ' ', ';' );
+        }
+
+        internal string BuildGroupCellStyle()
+        {
+            var sb = new StringBuilder();
+
+            if ( !string.IsNullOrEmpty( GroupCellStyle ) )
+                sb.Append( GroupCellStyle );
+
+            if ( Width != null )
+                sb.Append( $"; width: {Width};" );
+
+            return sb.ToString().TrimStart( ' ', ';' );
+        }
+
+        internal string BuildCellStyle( TItem item )
+        {
+            var sb = new StringBuilder();
+
+            var result = CellStyle?.Invoke( item );
+
+            if ( !string.IsNullOrEmpty( result ) )
+                sb.Append( result );
+
+            if ( Width != null )
+                sb.Append( $"; width: {Width}" );
+
+            return sb.ToString().TrimStart( ' ', ';' );
         }
 
         #endregion
@@ -138,8 +189,8 @@ namespace Blazorise.DataGrid
         /// </summary>
         public bool CellValueIsEditable
             => Editable &&
-            ( ( CellsEditableOnNewCommand && ParentDataGrid?.EditState == DataGridEditState.New )
-            || ( CellsEditableOnEditCommand && ParentDataGrid?.EditState == DataGridEditState.Edit ) );
+            ( ( CellsEditableOnNewCommand && ParentDataGrid.EditState == DataGridEditState.New )
+            || ( CellsEditableOnEditCommand && ParentDataGrid.EditState == DataGridEditState.Edit ) );
 
         /// <summary>
         /// Gets or sets the current sort direction.
@@ -199,6 +250,11 @@ namespace Blazorise.DataGrid
         /// Gets or sets whether column can be displayed on a grid.
         /// </summary>
         [Parameter] public bool Displayable { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets where column will be displayed on a grid.
+        /// </summary>
+        [Parameter] public int DisplayOrder { get; set; }
 
         /// <summary>
         /// Allows the cell values to be entered while the grid is in the new-item state.

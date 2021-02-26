@@ -41,7 +41,7 @@ namespace Blazorise.RichTextEdit
         /// Initializes given editor
         /// </summary>
         /// <returns>the cleanup routine</returns>
-        public async ValueTask<IDisposable> InitializeEditor( RichTextEdit richTextEdit )
+        public async ValueTask<IAsyncDisposable> InitializeEditor( RichTextEdit richTextEdit )
         {
             await InitializeJsInterop();
 
@@ -50,8 +50,7 @@ namespace Blazorise.RichTextEdit
 
             await jsRuntime.InvokeVoidAsync( "blazoriseRichTextEdit.initialize",
                 dotNetRef,
-                richTextEdit.EditorRef,
-                richTextEdit.Toolbar != null ? richTextEdit.ToolbarRef : default,
+                richTextEdit.ElementRef,
                 richTextEdit.ReadOnly,
                 richTextEdit.PlaceHolder,
                 richTextEdit.Theme == RichTextEditTheme.Snow ? "snow" : "bubble",
@@ -62,14 +61,15 @@ namespace Blazorise.RichTextEdit
                 nameof( RichTextEdit.OnEditorBlur ),
                 richTextEdit.ConfigureQuillJsMethod );
 
-            return Disposable.Create( () =>
+            return AsyncDisposable.Create( async () =>
             {
-                DestroyEditor( richTextEdit.EditorRef );
+                await DestroyEditor( richTextEdit.EditorRef );
+
                 dotNetRef.Dispose();
             } );
         }
 
-        private async void DestroyEditor( ElementReference editorRef )
+        private async ValueTask DestroyEditor( ElementReference editorRef )
         {
             await jsRuntime.InvokeVoidAsync( "blazoriseRichTextEdit.destroy", editorRef );
         }
@@ -162,6 +162,7 @@ namespace Blazorise.RichTextEdit
 
                 await LoadElementAsync( $@"https://cdn.quilljs.com/{qjsVersion}/quill.js", true );
                 await LoadElementAsync( @"_content/Blazorise.RichTextEdit/blazorise.richtextedit.js", true );
+                await LoadElementAsync( @"_content/Blazorise.RichTextEdit/Blazorise.RichTextEdit.bundle.scp.css", false );
 
                 if ( options.UseBubbleTheme )
                 {
