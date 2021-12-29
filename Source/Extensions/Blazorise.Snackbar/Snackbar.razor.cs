@@ -12,7 +12,7 @@ namespace Blazorise.Snackbar
     /// <summary>
     /// Snackbars provide brief messages about app processes. The component is also known as a toast.
     /// </summary>
-    public partial class Snackbar : BaseComponent
+    public partial class Snackbar : BaseComponent, IDisposable
     {
         #region Members
 
@@ -85,6 +85,7 @@ namespace Blazorise.Snackbar
             base.OnInitialized();
         }
 
+        /// <inheritdoc/>
         protected override void Dispose( bool disposing )
         {
             if ( disposing )
@@ -119,28 +120,28 @@ namespace Blazorise.Snackbar
         /// <summary>
         /// Shows the snackbar.
         /// </summary>
-        public void Show()
+        public Task Show()
         {
             if ( Visible )
-                return;
+                return Task.CompletedTask;
 
             Visible = true;
 
-            InvokeAsync( StateHasChanged );
+            return InvokeAsync( StateHasChanged );
         }
 
         /// <summary>
         /// Hides the snackbar.
         /// </summary>
-        public void Hide()
+        public Task Hide()
         {
-            Hide( SnackbarCloseReason.UserClosed );
+            return Hide( SnackbarCloseReason.UserClosed );
         }
 
-        private void Hide( SnackbarCloseReason closeReason )
+        protected Task Hide( SnackbarCloseReason closeReason )
         {
             if ( !Visible )
-                return;
+                return Task.CompletedTask;
 
             this.closeReason = closeReason;
 
@@ -151,7 +152,7 @@ namespace Blazorise.Snackbar
             // finally reset close reason so it doesn't interfere with internal closing by Visible property
             this.closeReason = SnackbarCloseReason.None;
 
-            InvokeAsync( StateHasChanged );
+            return InvokeAsync( StateHasChanged );
         }
 
         private void OnCountdownTimerElapsed( object sender, EventArgs e )

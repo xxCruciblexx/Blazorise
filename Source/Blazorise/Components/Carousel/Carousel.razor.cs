@@ -8,6 +8,7 @@ using Blazorise.Localization;
 using Blazorise.States;
 using Blazorise.Utilities;
 using Microsoft.AspNetCore.Components;
+using static System.TimeZoneInfo;
 #endregion
 
 namespace Blazorise
@@ -15,7 +16,7 @@ namespace Blazorise
     /// <summary>
     /// A slideshow component for cycling through elements - images or slides of text.
     /// </summary>
-    public partial class Carousel : BaseContainerComponent
+    public partial class Carousel : BaseContainerComponent, IDisposable
     {
         #region Members
 
@@ -64,14 +65,7 @@ namespace Blazorise
         /// <inheritdoc/>
         protected override void OnParametersSet()
         {
-            if ( Interval != 0 )
-                TimerEnabled = true;
-
-            if ( Autoplay /*&& SelectedSlideIndex == 0*/ )
-            {
-                if ( TimerEnabled )
-                    Timer.Start();
-            }
+            SetTimer();
 
             base.OnParametersSet();
         }
@@ -79,15 +73,7 @@ namespace Blazorise
         /// <inheritdoc/>
         protected override void OnInitialized()
         {
-            if ( Interval == 0 )
-                TimerEnabled = false;
-
-            if ( Timer == null && TimerEnabled )
-            {
-                InitializeTimer();
-
-                Timer.Start();
-            }
+            SetTimer();
 
             if ( TransitionTimer == null )
             {
@@ -115,15 +101,17 @@ namespace Blazorise
         {
             if ( disposing )
             {
-                if ( Timer != null )
+                if ( Timer is not null )
                 {
                     Timer.Stop();
+                    Timer.Elapsed -= OnTimerEvent;
                     Timer.Dispose();
                 }
 
-                if ( TransitionTimer != null )
+                if ( TransitionTimer is not null )
                 {
                     TransitionTimer.Stop();
+                    TransitionTimer.Elapsed -= OnTransitionTimerEvent;
                     TransitionTimer.Dispose();
                 }
 
@@ -295,15 +283,32 @@ namespace Blazorise
             TransitionTimer.AutoReset = false;
         }
 
+        private void SetTimer()
+        {
+            TimerEnabled = ( Interval > 0 );
+
+            if ( Timer == null && TimerEnabled )
+            {
+                InitializeTimer();
+            }
+
+            if ( AutoPlayEnabled )
+            {
+                Timer.Start();
+            }
+        }
+
         private void ResetTimer()
         {
             if ( Timer != null )
             {
                 Timer.Stop();
 
-                if ( TimerEnabled )
+                if ( AutoPlayEnabled )
                 {
                     Timer.Interval = GetSelectedCarouselSlide()?.Interval ?? Interval;
+                    // Avoid an System.ObjectDisposedException due to the timer being disposed. This occurs when the Enabled property of the timer is set to false by the call to Stop() above.
+                    InitializeTimer();
                     Timer.Start();
                 }
             }
@@ -314,7 +319,8 @@ namespace Blazorise
             if ( TransitionTimer != null )
             {
                 TransitionTimer.Stop();
-                InitializeTransitionTimer(); // Avoid an System.ObjectDisposedException due to the timer being disposed. This occurs when the Enabled property of the timer is set to false by the call to Stop() above.
+                // Avoid an System.ObjectDisposedException due to the timer being disposed. This occurs when the Enabled property of the timer is set to false by the call to Stop() above.
+                InitializeTransitionTimer();
                 TransitionTimer.Start();
             }
         }
@@ -376,8 +382,7 @@ namespace Blazorise
 
                 if ( TimerEnabled )
                 {
-                    InitializeTimer();
-                    Timer.Start();
+                    ResetTimer();
                 }
 
                 await SelectedSlideChanged.InvokeAsync( SelectedSlide );
@@ -490,6 +495,12 @@ namespace Blazorise
         /// Gets or sets the flag that indicates if the timer is running.
         /// </summary>
         private bool TimerEnabled { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the flag that indicates if the timer is running and AutoPlay is enabled.
+        /// </summary>
+        private bool AutoPlayEnabled
+            => ( Autoplay && TimerEnabled );
 
         /// <summary>
         /// Gets the carousel state.

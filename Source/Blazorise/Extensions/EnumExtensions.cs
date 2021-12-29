@@ -31,6 +31,7 @@
                 TextRole.Password => "password",
                 TextRole.Url => "url",
                 TextRole.Search => "search",
+                TextRole.Telephone => "tel",
                 _ => "text",
             };
         }
@@ -82,6 +83,15 @@
             Target.Top => "_top",
             Target.Self => "_self",
             _ => null,
+        };
+
+        public static string ToInputMaskCaretPosition( this InputMaskCaretPosition inputMaskCaretPosition ) => inputMaskCaretPosition switch
+        {
+            InputMaskCaretPosition.LastValidPosition => "lvp",
+            InputMaskCaretPosition.RadixFocus => "radixFocus",
+            InputMaskCaretPosition.Select => "select",
+            InputMaskCaretPosition.Ignore => "ignore",
+            _ => "none",
         };
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿#region Using directives
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blazorise.Utilities;
@@ -142,6 +143,30 @@ namespace Blazorise
         protected virtual Task OnFirstAfterRenderAsync()
             => Task.CompletedTask;
 
+        /// <inheritdoc/>
+        protected override void Dispose( bool disposing )
+        {
+            if ( disposing )
+            { 
+                ClassBuilder = null;
+                StyleBuilder = null;
+            }
+
+            base.Dispose( disposing );
+        }
+
+        /// <inheritdoc/>
+        protected override ValueTask DisposeAsync( bool disposing )
+        {
+            if ( disposing )
+            {
+                ClassBuilder = null;
+                StyleBuilder = null;
+            }
+
+            return base.DisposeAsync( disposing );
+        }
+
         /// <summary>
         /// Builds a list of classnames for this component.
         /// </summary>
@@ -230,7 +255,7 @@ namespace Blazorise
         /// </summary>
         internal protected virtual void DirtyClasses()
         {
-            ClassBuilder.Dirty();
+            ClassBuilder?.Dirty();
         }
 
         /// <summary>
@@ -238,7 +263,7 @@ namespace Blazorise
         /// </summary>
         protected virtual void DirtyStyles()
         {
-            StyleBuilder.Dirty();
+            StyleBuilder?.Dirty();
         }
 
         /// <summary>
@@ -312,11 +337,6 @@ namespace Blazorise
         /// Gets or set the javascript runner.
         /// </summary>
         [Inject] protected IIdGenerator IdGenerator { get; set; }
-
-        /// <summary>
-        /// Gets or set the javascript runner.
-        /// </summary>
-        [Inject] protected IJSRunner JSRunner { get; set; }
 
         /// <summary>
         /// Gets or sets the classname provider.

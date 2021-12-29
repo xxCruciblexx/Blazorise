@@ -1,38 +1,40 @@
-﻿@page "/docs/extensions/datagrid/getting-started"
+﻿@page "/docs/extensions/datagrid"
+@page "/docs/extensions/datagrid/getting-started"
+
+<Seo Canonical="/docs/extensions/datagrid/getting-started" Title="Blazorise DataGrid" Description="Learn how to use Blazorise DataGrid extension components." />
 
 <DocsPageTitle>
-    DataGrid : Getting Started
+    DataGrid: Getting Started
 </DocsPageTitle>
 
 <DocsPageParagraph>
     To create a basic grid in Blazorise you need to set the Column that will define the grid structure and behavior.
 </DocsPageParagraph>
 
-<ul>
-    <li>
+<UnorderedList>
+    <UnorderedListItem>
         <Code>DataGrid</Code> the main <Strong>container</Strong>
-        <ul>
-            <li>
+        <UnorderedList>
+            <UnorderedListItem>
                 <Code>DataGridColumns</Code> container for datagrid columns
-                <ul>
-                    <li><Code>DataGridColumn</Code> column template for text editor</li>
-                    <li><Code>DataGridNumericColumn</Code> column template for numeric values</li>
-                    <li><Code>DataGridDateColumn</Code> column template for datetime values</li>
-                    <li><Code>DataGridCheckColumn</Code> column template for boolean values</li>
-                    <li><Code>DataGridSelectColumn</Code> column template for selectable values</li>
-                    <li><Code>DataGridCommandColumn</Code> column template for editing commands like Edit, Save, Cancel, etc.</li>
-                </ul>
-            </li>
-            <li>
+                <UnorderedList>
+                    <UnorderedListItem><Code>DataGridColumn</Code> column template for text editor</UnorderedListItem>
+                    <UnorderedListItem><Code>DataGridNumericColumn</Code> column template for numeric values</UnorderedListItem>
+                    <UnorderedListItem><Code>DataGridDateColumn</Code> column template for datetime values</UnorderedListItem>
+                    <UnorderedListItem><Code>DataGridCheckColumn</Code> column template for boolean values</UnorderedListItem>
+                    <UnorderedListItem><Code>DataGridSelectColumn</Code> column template for selectable values</UnorderedListItem>
+                    <UnorderedListItem><Code>DataGridCommandColumn</Code> column template for editing commands like Edit, Save, Cancel, etc.</UnorderedListItem>
+                </UnorderedList>
+            </UnorderedListItem>
+            <UnorderedListItem>
                 <Code>DataGridAggregates</Code> container for datagrid aggregates
-                <ul>
-                    <li><Code>DataGridAggregate</Code> defines the column and aggregation function type</li>
-                </ul>
-            </li>
-
-        </ul>
-    </li>
-</ul>
+                <UnorderedList>
+                    <UnorderedListItem><Code>DataGridAggregate</Code> defines the column and aggregation function type</UnorderedListItem>
+                </UnorderedList>
+            </UnorderedListItem>
+        </UnorderedList>
+    </UnorderedListItem>
+</UnorderedList>
 
 <DocsPageSubtitle>
     Installation
@@ -50,13 +52,6 @@
         In your main Imports.razor add:
     </DocsPageSectionHeader>
     <DocsPageSectionSource Code="DataGridImportsExample"></DocsPageSectionSource>
-</DocsPageSection>
-
-<DocsPageSection>
-    <DocsPageSectionHeader Title="Static files">
-        Include the necessary file into your <Code>index.html</Code> or <Code>_Host.cshtml</Code> file, depending if you’re using a Blazor WebAssembly or Blazor Server side project.
-    </DocsPageSectionHeader>
-    <DocsPageSectionSource Code="DataGridResourcesExample" />
 </DocsPageSection>
 
 <DocsPageSubtitle>
@@ -154,7 +149,7 @@
         Occurs after the selected row has changed.
     </DocsAttributesItem>
     <DocsAttributesItem Name="RowSelectable" Type="Func<TItem,bool>">
-        Handles the selection of the clicked row. If not set it will default to always true.
+        Handles the selection of the DataGrid row. If not set it will default to always true.
     </DocsAttributesItem>
     <DocsAttributesItem Name="RowHoverCursor" Type="Func<TItem,Blazorise.Cursor>">
         Handles the selection of the cursor for a hovered row. If not set, Blazorise.Cursor.Pointer` will be used.
@@ -198,13 +193,16 @@
     <DocsAttributesItem Name="PopupSize" Type="ModalSize" Default="Default">
         Defines the size of popup modal.
     </DocsAttributesItem>
-    <DocsAttributesItem Name="PopupTitleTemplate" Type="	RenderFragment<PopupTitleContext<TItem>>">
+    <DocsAttributesItem Name="PopupClosing" Type="Func<ModalClosingEventArgs, Task>">
+        Occurs before the popup dialog is closed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="PopupTitleTemplate" Type="RenderFragment<PopupTitleContext<TItem>>">
         Template for custom title of edit popup dialog
     </DocsAttributesItem>
-    <DocsAttributesItem Name="NewItemDefaultSetter" Type="	Action<TItem>">
+    <DocsAttributesItem Name="NewItemDefaultSetter" Type="Action<TItem>">
         Action will be called for setting default values of property, when create new entry
     </DocsAttributesItem>
-    <DocsAttributesItem Name="PageButtonTemplate" Type="	RenderTemplate<PageButtonContext>">
+    <DocsAttributesItem Name="PageButtonTemplate" Type="RenderTemplate<PageButtonContext>">
         Define the format a pagination button
     </DocsAttributesItem>
     <DocsAttributesItem Name="UseValidation" Type="bool" Default="false">
@@ -234,7 +232,7 @@
     <DocsAttributesItem Name="CommandMode" Type="DataGridCommandMode" Default="Default">
         Defines whether the datagrid renders both commands and button row or just either one of them.
     </DocsAttributesItem>
-    <DocsAttributesItem Name="PagerPosition" Type="DataGridPagerPosition" Default="Bottom	">
+    <DocsAttributesItem Name="PagerPosition" Type="DataGridPagerPosition" Default="Bottom">
         Defines the position of the pager.
     </DocsAttributesItem>
     <DocsAttributesItem Name="ShowPageSizes" Type="bool" Default="false">
@@ -252,8 +250,29 @@
     <DocsAttributesItem Name="HeaderThemeContrast" Type="ThemeContrast">
         Sets the Datagrid's table header ThemeContrast.
     </DocsAttributesItem>
-    <DocsAttributesItem Name="DataGridMaxHeigh" Type="string" Default="500px">
-        Sets the DataGrid height when <Code>Virtualize</Code> feature is enabled.
+    <DocsAttributesItem Name="FixedHeader" Type="bool">
+        Makes Datagrid have a fixed header and enabling a scrollbar in the Datagrid body.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="FixedHeaderDataGridHeight" Type="string" Default="500px">
+        Sets the Datagrid height when FixedHeader feature is enabled (defaults to 500px).
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="FixedHeaderDataGridMaxHeight" Type="string" Default="500px">
+        Sets the Datagrid max height when FixedHeader feature is enabled (defaults to 500px).
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="DetailRowStartsVisible" Type="bool" Default="true">
+        Controls whether DetailRow will start visible if DetailRowTemplate is set
+    </DocsAttributesItem>
+</DocsAttributes>
+
+<DocsAttributes Title="VirtualizeOptions">
+    <DocsAttributesItem Name="DataGridHeight" Type="string" Default="500px">
+        Sets the DataGrid height when Virtualize feature is enabled (defaults to 500px).
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="DataGridMaxHeight" Type="string" Default="500px">
+        Sets the DataGrid height when Virtualize feature is enabled (defaults to 500px).
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="OverscanCount" Type="int">
+        Gets or sets a value that determines how many additional items will be rendered before and after the visible region. This help to reduce the frequency of rendering during scrolling. However, higher values mean that more elements will be present in the page.
     </DocsAttributesItem>
 </DocsAttributes>
 
@@ -279,7 +298,7 @@
     <DocsAttributesItem Name="Editable" Type="bool" Default="false">
         Whether users can edit cell values under this column.
     </DocsAttributesItem>
-    <DocsAttributesItem Name="Displayable" Type="bool" Default="false	">
+    <DocsAttributesItem Name="Displayable" Type="bool" Default="true">
         Whether column can be displayed on a grid.
     </DocsAttributesItem>
     <DocsAttributesItem Name="DisplayOrder" Type="int" Default="0">
@@ -336,7 +355,7 @@
     <DocsAttributesItem Name="EditTemplate" Type="RenderFragment<CellEditContext>">
         Template for custom cell editing.
     </DocsAttributesItem>
-    <DocsAttributesItem Name="FilterTemplate" Type="RenderFragment<FilterContext>	">
+    <DocsAttributesItem Name="FilterTemplate" Type="RenderFragment<FilterContext>">
         Template for custom column filter rendering.
     </DocsAttributesItem>
     <DocsAttributesItem Name="PopupFieldColumnSize" Type="IFluentColumn" Default="IsHalf.OnDesktop">

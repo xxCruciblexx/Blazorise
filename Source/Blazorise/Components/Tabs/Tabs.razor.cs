@@ -1,5 +1,6 @@
 ﻿#region Using directives
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Blazorise.States;
 using Blazorise.Utilities;
 using Microsoft.AspNetCore.Components;
@@ -55,7 +56,7 @@ namespace Blazorise
             builder.Append( ClassProvider.TabsCards(), IsCards );
             builder.Append( ClassProvider.TabsFullWidth(), FullWidth );
             builder.Append( ClassProvider.TabsJustified(), Justified );
-            builder.Append( ClassProvider.TabsVertical(), TabPosition == TabPosition.Left || TabPosition == TabPosition.Right );
+            builder.Append( ClassProvider.TabsVertical(), TabPosition == TabPosition.Left || TabPosition == TabPosition.Right || TabPosition == TabPosition.Start || TabPosition == TabPosition.End );
 
             base.BuildClasses( builder );
         }
@@ -113,11 +114,12 @@ namespace Blazorise
         /// Sets the active tab by the name.
         /// </summary>
         /// <param name="tabName">The name of the tab.</param>
-        public void SelectTab( string tabName )
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public Task SelectTab( string tabName )
         {
             SelectedTab = tabName;
 
-            InvokeAsync( StateHasChanged );
+            return InvokeAsync( StateHasChanged );
         }
 
         #endregion
@@ -214,6 +216,21 @@ namespace Blazorise
             set
             {
                 state = state with { TabPosition = value };
+
+                DirtyClasses();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the TabsMode.
+        /// </summary>
+        [Parameter]
+        public TabsMode Mode
+        {
+            get => state.Mode;
+            set
+            {
+                state = state with { Mode = value };
 
                 DirtyClasses();
             }

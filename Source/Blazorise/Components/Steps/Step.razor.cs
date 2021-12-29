@@ -11,7 +11,7 @@ namespace Blazorise
     /// <summary>
     /// Clickable item in a <see cref="Steps"/> component.
     /// </summary>
-    public partial class Step : BaseComponent
+    public partial class Step : BaseComponent, IDisposable
     {
         #region Members
 
@@ -51,10 +51,7 @@ namespace Blazorise
         {
             if ( disposing )
             {
-                if ( ParentStepsState != null )
-                {
-                    ParentSteps.NotifyStepRemoved( Name );
-                }
+                ParentSteps?.NotifyStepRemoved( Name );
             }
 
             base.Dispose( disposing );
@@ -102,12 +99,12 @@ namespace Blazorise
         /// Handles the step onclick event.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        protected Task ClickHandler()
+        protected async Task ClickHandler()
         {
-            Clicked?.Invoke();
-            ParentSteps?.SelectStep( Name );
+            await Clicked.InvokeAsync();
 
-            return Task.CompletedTask;
+            if ( ParentSteps != null )
+                await ParentSteps.SelectStep( Name );
         }
 
         #endregion
@@ -189,7 +186,7 @@ namespace Blazorise
         /// <summary>
         /// Occurs when the item is clicked.
         /// </summary>
-        [Parameter] public Action Clicked { get; set; }
+        [Parameter] public EventCallback Clicked { get; set; }
 
         /// <summary>
         /// Custom render template for the marker(circle) part of the step item.

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blazorise.Utilities;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 #endregion
 
 namespace Blazorise.Charts
@@ -35,6 +36,8 @@ namespace Blazorise.Charts
             {
                 await Update();
             }
+
+            await base.OnAfterRenderAsync( firstRender );
         }
 
         /// <summary>
@@ -49,7 +52,7 @@ namespace Blazorise.Charts
             Datasets.Clear();
 
             if ( initialized )
-                await JS.Clear( JSRuntime, ElementId );
+                await JSModule.Clear( ElementId );
         }
 
         /// <summary>
@@ -74,7 +77,7 @@ namespace Blazorise.Charts
             Labels.AddRange( labels );
 
             if ( initialized )
-                await JS.AddLabel( JSRuntime, ElementId, labels );
+                await JSModule.AddLabel( ElementId, labels );
         }
 
         /// <summary>
@@ -88,7 +91,7 @@ namespace Blazorise.Charts
             Datasets.AddRange( datasets );
 
             if ( initialized )
-                await JS.AddDataSet( JSRuntime, ElementId, datasets );
+                await JSModule.AddDataSet( ElementId, datasets );
         }
 
         /// <summary>
@@ -103,7 +106,7 @@ namespace Blazorise.Charts
             Datasets.RemoveAt( dataSetIndex );
 
             if ( initialized )
-                await JS.RemoveDataSet( JSRuntime, ElementId, dataSetIndex );
+                await JSModule.RemoveDataSet( ElementId, dataSetIndex );
         }
 
         /// <summary>
@@ -119,7 +122,7 @@ namespace Blazorise.Charts
             Datasets[dataSetIndex].Data = data;
 
             if ( initialized )
-                await JS.SetData( JSRuntime, ElementId, dataSetIndex, data );
+                await JSModule.SetData( ElementId, dataSetIndex, data );
         }
 
         /// <summary>
@@ -135,7 +138,7 @@ namespace Blazorise.Charts
             Datasets[dataSetIndex].Data.AddRange( data );
 
             if ( initialized )
-                await JS.AddData( JSRuntime, ElementId, dataSetIndex, data );
+                await JSModule.AddData( ElementId, dataSetIndex, data );
         }
 
         /// <summary>
@@ -150,7 +153,7 @@ namespace Blazorise.Charts
             Datasets.AddRange( datasets );
 
             if ( initialized )
-                await JS.AddDatasetsAndUpdate( JSRuntime, ElementId, datasets );
+                await JSModule.AddDatasetsAndUpdate( ElementId, datasets );
         }
 
         /// <summary>
@@ -167,7 +170,7 @@ namespace Blazorise.Charts
             Datasets.AddRange( datasets );
 
             if ( initialized )
-                await JS.AddLabelsDatasetsAndUpdate( JSRuntime, ElementId, labels, datasets );
+                await JSModule.AddLabelsDatasetsAndUpdate( ElementId, labels, datasets );
         }
 
         /// <summary>
@@ -178,7 +181,7 @@ namespace Blazorise.Charts
             dirty = true;
 
             if ( initialized )
-                await JS.ShiftLabel( JSRuntime, ElementId );
+                await JSModule.ShiftLabel( ElementId );
         }
 
         /// <summary>
@@ -191,7 +194,7 @@ namespace Blazorise.Charts
             dirty = true;
 
             if ( initialized )
-                await JS.ShiftData( JSRuntime, ElementId, dataSetIndex );
+                await JSModule.ShiftData( ElementId, dataSetIndex );
         }
         /// <summary>
         /// Removes the newest label.
@@ -201,7 +204,7 @@ namespace Blazorise.Charts
             dirty = true;
 
             if ( initialized )
-                await JS.PopLabel( JSRuntime, ElementId );
+                await JSModule.PopLabel( ElementId );
         }
 
         /// <summary>
@@ -214,7 +217,7 @@ namespace Blazorise.Charts
             dirty = true;
 
             if ( initialized )
-                await JS.PopData( JSRuntime, ElementId, dataSetIndex );
+                await JSModule.PopData( ElementId, dataSetIndex );
         }
 
         /// <summary>
@@ -229,7 +232,7 @@ namespace Blazorise.Charts
             Options = options;
 
             if ( initialized )
-                await JS.SetOptions( JSRuntime, ElementId, Converters.ToDictionary( Options ), OptionsJsonString, OptionsObject );
+                await JSModule.SetOptions( ElementId, Converters.ToDictionary( Options ), OptionsJsonString, OptionsObject );
         }
 
         /// <summary>
@@ -245,7 +248,7 @@ namespace Blazorise.Charts
             OptionsObject = optionsObject;
 
             if ( initialized )
-                await JS.SetOptions( JSRuntime, ElementId, default( TOptions ), OptionsJsonString, optionsObject );
+                await JSModule.SetOptions( ElementId, default( TOptions ), OptionsJsonString, optionsObject );
         }
 
         /// <summary>
@@ -257,12 +260,33 @@ namespace Blazorise.Charts
         public async Task Resize()
         {
             if ( initialized )
-                await JS.Resize( JSRuntime, ElementId );
+                await JSModule.Resize( ElementId );
+        }
+
+        /// <summary>
+        /// Destroy the current chart instance and recreates it by using the same data and options.
+        /// </summary>
+        /// <param name="type">New chart type.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public async Task ChangeType( ChartType type )
+        {
+            if ( initialized )
+                await JSModule.ChangeType( ElementRef, ElementId, type );
+        }
+
+        /// <summary>
+        /// Destroys the chart instance. Calling this method should generally dispose of any chart resources.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public async Task Destroy()
+        {
+            if ( initialized )
+                await JSModule.Destroy( ElementRef, ElementId );
         }
 
         private ValueTask Initialize()
         {
-            DotNetObjectRef ??= JS.CreateDotNetObjectRef( new( this ) );
+            DotNetObjectRef ??= DotNetObjectReference.Create<ChartAdapter>( new( this ) );
 
             var eventOptions = new
             {
@@ -270,9 +294,9 @@ namespace Blazorise.Charts
                 HasHoverEvent = Hovered.HasDelegate,
             };
 
-            return JS.Initialize( JSRuntime, DotNetObjectRef, eventOptions, ElementId, Type,
+            return JSModule.Initialize( DotNetObjectRef, eventOptions, ElementRef, ElementId, Type,
                 Data,
-                Converters.ToDictionary( Options ),
+                Options,
                 DataJsonString,
                 OptionsJsonString,
                 OptionsObject );
@@ -288,7 +312,7 @@ namespace Blazorise.Charts
             {
                 dirty = false;
 
-                await JS.Update( JSRuntime, ElementId );
+                await JSModule.Update( ElementId );
             }
         }
 
@@ -316,7 +340,6 @@ namespace Blazorise.Charts
                 case ChartType.Line:
                     return System.Text.Json.JsonSerializer.Deserialize<LineChartModel>( data );
                 case ChartType.Bar:
-                case ChartType.HorizontalBar:
                     return System.Text.Json.JsonSerializer.Deserialize<BarChartModel>( data );
                 case ChartType.Pie:
                     return System.Text.Json.JsonSerializer.Deserialize<PieChartModel>( data );
@@ -326,6 +349,10 @@ namespace Blazorise.Charts
                     return System.Text.Json.JsonSerializer.Deserialize<PolarChartModel>( data );
                 case ChartType.Radar:
                     return System.Text.Json.JsonSerializer.Deserialize<RadarChartModel>( data );
+                case ChartType.Scatter:
+                    return System.Text.Json.JsonSerializer.Deserialize<ScatterChartModel>( data );
+                case ChartType.Bubble:
+                    return System.Text.Json.JsonSerializer.Deserialize<BubbleChartModel>( data );
                 default:
                     return null;
             }

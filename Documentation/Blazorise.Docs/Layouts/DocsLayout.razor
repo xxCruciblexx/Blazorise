@@ -49,6 +49,9 @@
                                     <BarDropdownItem To="docs/components/color">
                                         Color
                                     </BarDropdownItem>
+                                    <BarDropdownItem To="docs/components/color-picker">
+                                        ColorPicker
+                                    </BarDropdownItem>
                                     <BarDropdownItem To="docs/components/date">
                                         Date
                                     </BarDropdownItem>
@@ -63,6 +66,9 @@
                                     </BarDropdownItem>
                                     <BarDropdownItem To="docs/components/file">
                                         File
+                                    </BarDropdownItem>
+                                    <BarDropdownItem To="docs/components/input-mask">
+                                        Mask
                                     </BarDropdownItem>
                                     <BarDropdownItem To="docs/components/link">
                                         Link
@@ -232,9 +238,19 @@
                                     <BarDropdownItem To="docs/extensions/dropdownlist">
                                         DropdownList
                                     </BarDropdownItem>
-                                    <BarDropdownItem To="docs/extensions/icons">
-                                        Icons
-                                    </BarDropdownItem>
+                                    <BarDropdown>
+                                        <BarDropdownToggle>
+                                            Icons
+                                        </BarDropdownToggle>
+                                        <BarDropdownMenu>
+                                            <BarDropdownItem To="docs/extensions/icons">
+                                                Usage
+                                            </BarDropdownItem>
+                                            <BarDropdownItem To="docs/extensions/icons-available">
+                                                Available Icons
+                                            </BarDropdownItem>
+                                        </BarDropdownMenu>
+                                    </BarDropdown>
                                     <BarDropdownItem To="docs/extensions/markdown">
                                         Markdown
                                     </BarDropdownItem>
@@ -255,6 +271,9 @@
                                     </BarDropdownItem>
                                     <BarDropdownItem To="docs/extensions/treeview">
                                         TreeView
+                                    </BarDropdownItem>
+                                    <BarDropdownItem To="docs/extensions/list-view">
+                                        ListView
                                     </BarDropdownItem>
                                 </BarDropdownMenu>
                             </BarDropdown>
@@ -368,7 +387,7 @@
                                     Meta
                                 </BarDropdownToggle>
                                 <BarDropdownMenu>
-                                    <BarDropdownItem To="docs/meta/faq">
+                                    <BarDropdownItem To="docs/faq">
                                         FAQ
                                     </BarDropdownItem>
                                     <BarDropdownItem To="https://commercial.blazorise.com/license" Target="Target.Blank">
@@ -384,7 +403,7 @@
     </LayoutSider>
     <Layout>
         <LayoutHeader ElementId="docs-layout-header">
-            <Bar Class="b-top-bar navbar-expand" @ref="@topBar" @bind-Visible="@topBarVisible"
+            <Bar Class="b-top-bar" @ref="@topBar" @bind-Visible="@topBarVisible"
                  Breakpoint="Breakpoint.Desktop" Background="Background.Light" ThemeContrast="ThemeContrast.Light">
                 <BarToggler Bar="@sideBar" Border="Border.Is0" />
                 <BarBrand Display="Display.None.InlineBlock.OnDesktop">

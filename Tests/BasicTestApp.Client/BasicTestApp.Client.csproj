@@ -1,19 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <OutputType>Exe</OutputType>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.*" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.*" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Blazorise.Shared\Blazorise.Shared.csproj" />
     <ProjectReference Include="..\..\Source\Blazorise.Bootstrap\Blazorise.Bootstrap.csproj" />
     <ProjectReference Include="..\..\Source\Blazorise\Blazorise.csproj" />
+    <ProjectReference Include="..\..\Source\Extensions\Blazorise.Components\Blazorise.Components.csproj" />
+    <ProjectReference Include="..\..\Source\Extensions\Blazorise.DataGrid\Blazorise.DataGrid.csproj" />
     <ProjectReference Include="..\..\Source\Extensions\Blazorise.Icons.FontAwesome\Blazorise.Icons.FontAwesome.csproj" />
   </ItemGroup>
 

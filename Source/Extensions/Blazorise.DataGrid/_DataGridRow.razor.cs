@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blazorise.DataGrid.Models;
 using Blazorise.Extensions;
 using Microsoft.AspNetCore.Components;
 #endregion
@@ -32,7 +33,12 @@ namespace Blazorise.DataGrid
         /// If click came propagated from MultiSelect Check
         /// Funnels the selection logic into HandleClick.
         /// </summary>
-        protected bool clickFromCheck;
+        protected bool clickFromMultiSelectCheck;
+
+        /// <summary>
+        /// Holds information about the current Row.
+        /// </summary>
+        protected DataGridRowInfo<TItem> RowInfo;
 
         #endregion
 
@@ -57,7 +63,21 @@ namespace Blazorise.DataGrid
                         throw new ArgumentException( $"Unknown parameter: {parameter.Name}" );
                 }
             }
+
             return base.SetParametersAsync( ParameterView.Empty );
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            Columns = ParentDataGrid.DisplayableColumns;
+            RowInfo = new DataGridRowInfo<TItem>( Item, this.Columns );
+
+            ParentDataGrid.AddRow( RowInfo );
+
+            if ( ParentDataGrid.DetailRowStartsVisible )
+                await ParentDataGrid.ToggleDetailRow( Item );
+
+            await base.OnInitializedAsync();
         }
 
         protected override Task OnAfterRenderAsync( bool firstRender )
@@ -82,19 +102,23 @@ namespace Blazorise.DataGrid
 
         protected internal async Task HandleClick( BLMouseEventArgs eventArgs )
         {
-            if ( !clickFromCheck )
+            if ( !clickFromMultiSelectCheck )
                 await ParentDataGrid.OnRowClickedCommand( new( Item, eventArgs ) );
 
-            var selectable = ParentDataGrid.RowSelectable?.Invoke( Item ) ?? true;
+            var selectable = ParentDataGrid.RowSelectable?.Invoke( new( Item, clickFromMultiSelectCheck ? DataGridSelectReason.MultiSelectClick : DataGridSelectReason.RowClick ) ) ?? true;
 
             if ( !selectable )
+            {
+                clickFromMultiSelectCheck = false;
                 return;
+            }
 
-            if ( !clickFromCheck )
+            if ( !clickFromMultiSelectCheck )
                 await HandleSingleSelectClick( eventArgs );
 
             await HandleMultiSelectClick( eventArgs );
-            clickFromCheck = false;
+
+            clickFromMultiSelectCheck = false;
         }
 
         private async Task HandleMultiSelectClick( BLMouseEventArgs eventArgs )
@@ -108,10 +132,16 @@ namespace Blazorise.DataGrid
             }
         }
 
+        private bool IsCtrlClick( BLMouseEventArgs eventArgs )
+        {
+            var isMacOsCtrl = ParentDataGrid.IsClientMacintoshOS && eventArgs.MetaKey;
+            return ( eventArgs.CtrlKey || isMacOsCtrl ) && eventArgs.Button == MouseButton.Left;
+        }
+
         private async Task HandleSingleSelectClick( BLMouseEventArgs eventArgs )
         {
             // Un-select row if the user is holding the ctrl key on already selected row.
-            if ( ParentDataGrid.SingleSelect && eventArgs.CtrlKey && eventArgs.Button == MouseButton.Left
+            if ( ParentDataGrid.SingleSelect && IsCtrlClick( eventArgs )
                 && ParentDataGrid.SelectedRow != null
                 && Item.IsEqual( ParentDataGrid.SelectedRow ) )
             {
@@ -131,6 +161,8 @@ namespace Blazorise.DataGrid
             {
                 await ParentDataGrid.Select( Item );
             }
+
+            await ParentDataGrid.ToggleDetailRow( Item );
         }
 
         protected internal Task HandleDoubleClick( BLMouseEventArgs eventArgs )
@@ -145,17 +177,23 @@ namespace Blazorise.DataGrid
 
         protected Task OnMultiSelectCheckClicked()
         {
-            clickFromCheck = true;
+            clickFromMultiSelectCheck = true;
+
             return Task.CompletedTask;
         }
 
         protected Cursor GetHoverCursor()
             => ParentDataGrid.RowHoverCursor == null ? Cursor.Pointer : ParentDataGrid.RowHoverCursor( Item );
 
-        protected override Task OnInitializedAsync()
+        /// <inheritdoc/>
+        protected override ValueTask DisposeAsync( bool disposing )
         {
-            this.Columns = ParentDataGrid.DisplayableColumns;
-            return base.OnInitializedAsync();
+            if ( disposing )
+            {
+                ParentDataGrid.RemoveRow( RowInfo );
+            }
+
+            return base.DisposeAsync( disposing );
         }
 
         #endregion

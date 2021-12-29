@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Blazorise.Extensions;
 using Blazorise.Localization;
+using Blazorise.Modules;
 using Blazorise.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -14,22 +16,12 @@ using Microsoft.JSInterop;
 namespace Blazorise
 {
     /// <summary>
-    /// This is needed to set the value from javascript because calling generic component directly is not supported by Blazor.
-    /// </summary>
-    public interface IFileEdit
-    {
-        /// <summary>
-        /// Notify us that one or more files has changed.
-        /// </summary>
-        /// <param name="files">List of changed files.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
-        Task NotifyChange( FileEntry[] files );
-    }
-
-    /// <summary>
     /// Input component with support for single of multi file upload.
     /// </summary>
-    public partial class FileEdit : BaseInputComponent<IFileEntry[]>, IFileEdit
+    public partial class FileEdit : BaseInputComponent<IFileEntry[]>, IFileEdit,
+        IFileEntryOwner,
+        IFileEntryNotifier,
+        IAsyncDisposable
     {
         #region Members
 
@@ -91,7 +83,7 @@ namespace Blazorise
         {
             dotNetObjectRef ??= CreateDotNetObjectRef( new FileEditAdapter( this ) );
 
-            await JSRunner.InitializeFileEdit( dotNetObjectRef, ElementRef, ElementId );
+            await JSFileEditModule.Initialize( dotNetObjectRef, ElementRef, ElementId );
 
             await base.OnFirstAfterRenderAsync();
         }
@@ -101,15 +93,7 @@ namespace Blazorise
         {
             if ( disposing && Rendered )
             {
-                var task = JSRunner.DestroyFileEdit( ElementRef, ElementId );
-
-                try
-                {
-                    await task;
-                }
-                catch when ( task.IsCanceled )
-                {
-                }
+                await JSFileEditModule.SafeDestroy( ElementRef, ElementId );
 
                 DisposeDotNetObjectRef( dotNetObjectRef );
                 dotNetObjectRef = null;
@@ -136,7 +120,7 @@ namespace Blazorise
             foreach ( var file in files )
             {
                 // So that method invocations on the file can be dispatched back here
-                file.Owner = (FileEdit)(object)this;
+                file.Owner = (IFileEntryOwner)(object)this;
             }
 
             InternalValue = files;
@@ -162,12 +146,8 @@ namespace Blazorise
             throw new NotImplementedException( $"{nameof( ParseValueFromStringAsync )} in {nameof( FileEdit )} should never be called." );
         }
 
-        /// <summary>
-        /// Notifies the component that file upload is about to start.
-        /// </summary>
-        /// <param name="fileEntry">File entry to be uploaded.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
-        internal Task UpdateFileStartedAsync( IFileEntry fileEntry )
+        /// <inheritdoc/>
+        public Task UpdateFileStartedAsync( IFileEntry fileEntry )
         {
             // reset all
             ProgressProgress = 0;
@@ -177,41 +157,25 @@ namespace Blazorise
             return Started.InvokeAsync( new( fileEntry ) );
         }
 
-        /// <summary>
-        /// Notifies the component that file upload has ended.
-        /// </summary>
-        /// <param name="fileEntry">Uploaded file entry.</param>
-        /// <param name="success">True if the file upload was successful.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
-        internal async Task UpdateFileEndedAsync( IFileEntry fileEntry, bool success )
+        /// <inheritdoc/>
+        public async Task UpdateFileEndedAsync( IFileEntry fileEntry, bool success, FileInvalidReason fileInvalidReason )
         {
             if ( AutoReset )
             {
                 await Reset();
             }
 
-            await Ended.InvokeAsync( new( fileEntry, success ) );
+            await Ended.InvokeAsync( new( fileEntry, success, fileInvalidReason ) );
         }
 
-        /// <summary>
-        /// Updates component with the latest file data.
-        /// </summary>
-        /// <param name="fileEntry">Currently processed file entry.</param>
-        /// <param name="position">The current position of this stream.</param>
-        /// <param name="data">Currerntly read data.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
-        internal Task UpdateFileWrittenAsync( IFileEntry fileEntry, long position, byte[] data )
+        /// <inheritdoc/>
+        public Task UpdateFileWrittenAsync( IFileEntry fileEntry, long position, byte[] data )
         {
             return Written.InvokeAsync( new( fileEntry, position, data ) );
         }
 
-        /// <summary>
-        /// Updated the component with the latest upload progress.
-        /// </summary>
-        /// <param name="fileEntry">Currently processed file entry.</param>
-        /// <param name="progressProgress">Progress value.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
-        internal Task UpdateFileProgressAsync( IFileEntry fileEntry, long progressProgress )
+        /// <inheritdoc/>
+        public Task UpdateFileProgressAsync( IFileEntry fileEntry, long progressProgress )
         {
             ProgressProgress += progressProgress;
 
@@ -227,27 +191,17 @@ namespace Blazorise
             return Task.CompletedTask;
         }
 
-        /// <summary>
-        /// Writes the file data to the target stream.
-        /// </summary>
-        /// <param name="fileEntry">Currently processed file entry.</param>
-        /// <param name="stream">Target stream.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
-        internal Task WriteToStreamAsync( FileEntry fileEntry, Stream stream )
+        /// <inheritdoc/>
+        public Task WriteToStreamAsync( FileEntry fileEntry, Stream stream )
         {
-            return new RemoteFileEntryStreamReader( JSRunner, ElementRef, fileEntry, this, MaxMessageSize )
+            return new RemoteFileEntryStreamReader( JSFileModule, ElementRef, fileEntry, this, MaxChunkSize, MaxFileSize )
                 .WriteToStreamAsync( stream, CancellationToken.None );
         }
 
-        /// <summary>
-        /// Opens the stream for reading the uploaded file.
-        /// </summary>
-        /// <param name="fileEntry">Currently processed file entry.</param>
-        /// <param name="cancellationToken">A cancellation token to signal the cancellation of streaming file data.</param>
-        /// <returns>Returns the stream for the uploaded file entry.</returns>
+        /// <inheritdoc/>
         public Stream OpenReadStream( FileEntry fileEntry, CancellationToken cancellationToken = default )
         {
-            return new RemoteFileEntryStream( JSRunner, ElementRef, fileEntry, this, MaxMessageSize, SegmentFetchTimeout, cancellationToken );
+            return new RemoteFileEntryStream( JSFileModule, ElementRef, fileEntry, this, MaxChunkSize, SegmentFetchTimeout, MaxFileSize, cancellationToken );
         }
 
         /// <summary>
@@ -256,7 +210,7 @@ namespace Blazorise
         /// <returns>A task that represents the asynchronous operation.</returns>
         public ValueTask Reset()
         {
-            return JSRunner.ResetFileEdit( ElementRef, ElementId );
+            return JSFileEditModule.Reset( ElementRef, ElementId );
         }
 
         #endregion
@@ -283,6 +237,16 @@ namespace Blazorise
         /// Percentage of the current file-read status.
         /// </summary>
         protected double Progress;
+
+        /// <summary>
+        /// Gets or sets the <see cref="IJSFileEditModule"/> instance.
+        /// </summary>
+        [Inject] public IJSFileEditModule JSFileEditModule { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IJSFileModule"/> instance.
+        /// </summary>
+        [Inject] public IJSFileModule JSFileModule { get; set; }
 
         /// <summary>
         /// Gets or sets the DI registered <see cref="ITextLocalizerService"/>.
@@ -343,9 +307,15 @@ namespace Blazorise
         [Parameter] public string Filter { get; set; }
 
         /// <summary>
-        /// Gets or sets the max message size when uploading the file.
+        /// Gets or sets the max chunk size when uploading the file.
         /// </summary>
-        [Parameter] public int MaxMessageSize { get; set; } = 20 * 1024;
+        [Parameter] public int MaxChunkSize { get; set; } = 20 * 1024;
+
+        /// <summary>
+        /// Maximum file size in bytes, checked before starting upload (note: never trust client, always check file
+        /// size at server-side). Defaults to <see cref="long.MaxValue"/>.
+        /// </summary>
+        [Parameter] public long MaxFileSize { get; set; } = long.MaxValue;
 
         /// <summary>
         /// Gets or sets the Segment Fetch Timeout when uploading the file.

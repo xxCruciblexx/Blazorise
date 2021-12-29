@@ -1,4 +1,7 @@
 ﻿#region Using directives
+using System;
+using System.Threading.Tasks;
+using Blazorise.Extensions;
 using Blazorise.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -10,26 +13,43 @@ namespace Blazorise.Charts
     /// Base class for all chart types.
     /// </summary>
     /// <typeparam name="TItem">Generic dataset value type.</typeparam>
-    public class BaseChart<TItem> : BaseComponent
+    public class BaseChart<TItem> : BaseComponent, IAsyncDisposable
     {
         #region Methods
+
+        protected override Task OnInitializedAsync()
+        {
+            if ( JSModule == null )
+            {
+                JSModule = new JSChartModule( JSRuntime, VersionProvider );
+            }
+
+            return base.OnInitializedAsync();
+        }
+
+        protected override async ValueTask DisposeAsync( bool disposing )
+        {
+            if ( disposing && Rendered )
+            {
+                await JSModule.SafeDestroy( ElementRef, ElementId );
+
+                await JSModule.SafeDisposeAsync();
+
+                if ( DotNetObjectRef != null )
+                {
+                    DotNetObjectRef.Dispose();
+                    DotNetObjectRef = null;
+                }
+            }
+
+            await base.DisposeAsync( disposing );
+        }
 
         protected override void BuildClasses( ClassBuilder builder )
         {
             builder.Append( ClassProvider.Chart() );
 
             base.BuildClasses( builder );
-        }
-
-        protected override void Dispose( bool disposing )
-        {
-            if ( disposing )
-            {
-                _ = JS.Destroy( JSRuntime, ElementId );
-                JS.DisposeDotNetObjectRef( DotNetObjectRef );
-            }
-
-            base.Dispose( disposing );
         }
 
         #endregion
@@ -41,7 +61,11 @@ namespace Blazorise.Charts
 
         protected DotNetObjectReference<ChartAdapter> DotNetObjectRef { get; set; }
 
+        protected JSChartModule JSModule { get; private set; }
+
         [Inject] protected IJSRuntime JSRuntime { get; set; }
+
+        [Inject] protected IVersionProvider VersionProvider { get; set; }
 
         /// <summary>
         /// Defines the chart data.

@@ -3,6 +3,8 @@ using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Blazorise.Extensions;
+using Blazorise.Localization;
+using Blazorise.Modules;
 using Blazorise.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -14,7 +16,7 @@ namespace Blazorise
     /// An editor that displays a time value and allows a user to edit the value.
     /// </summary>
     /// <typeparam name="TValue">Data-type to be binded by the <see cref="TimePicker{TValue}"/> property.</typeparam>
-    public partial class TimePicker<TValue> : BaseTextInput<TValue>
+    public partial class TimePicker<TValue> : BaseTextInput<TValue>, IAsyncDisposable
     {
         #region Methods
 
@@ -37,7 +39,7 @@ namespace Blazorise
 
                 if ( Rendered )
                 {
-                    ExecuteAfterRender( async () => await JSRunner.UpdateTimePickerValue( ElementRef, ElementId, timeString ) );
+                    ExecuteAfterRender( async () => await JSModule.UpdateValue( ElementRef, ElementId, timeString ) );
                 }
             }
 
@@ -48,7 +50,7 @@ namespace Blazorise
                 || disabledChanged
                 || readOnlyChanged ) )
             {
-                ExecuteAfterRender( async () => await JSRunner.UpdateTimePickerOptions( ElementRef, ElementId, new
+                ExecuteAfterRender( async () => await JSModule.UpdateOptions( ElementRef, ElementId, new
                 {
                     DisplayFormat = new { Changed = displayFormatChanged, Value = DateTimeFormatConverter.Convert( displayFormat ) },
                     TimeAs24hr = new { Changed = timeAs24hrChanged, Value = timeAs24hr },
@@ -82,9 +84,17 @@ namespace Blazorise
         }
 
         /// <inheritdoc/>
+        protected override void OnInitialized()
+        {
+            LocalizerService.LocalizationChanged += OnLocalizationChanged;
+
+            base.OnInitialized();
+        }
+
+        /// <inheritdoc/>
         protected override async Task OnFirstAfterRenderAsync()
         {
-            await JSRunner.InitializeTimePicker( ElementRef, ElementId, new
+            await JSModule.Initialize( ElementRef, ElementId, new
             {
                 DisplayFormat = DateTimeFormatConverter.Convert( DisplayFormat ),
                 TimeAs24hr,
@@ -93,6 +103,7 @@ namespace Blazorise
                 Max = Max?.ToString( Parsers.InternalTimeFormat ),
                 Disabled,
                 ReadOnly,
+                Localization = GetLocalizationObject()
             } );
 
             await base.OnFirstAfterRenderAsync();
@@ -101,20 +112,11 @@ namespace Blazorise
         /// <inheritdoc/>
         protected override async ValueTask DisposeAsync( bool disposing )
         {
-            if ( disposing )
+            if ( disposing && Rendered )
             {
-                if ( Rendered )
-                {
-                    var task = JSRunner.DestroyTimePicker( ElementRef, ElementId );
+                await JSModule.SafeDestroy( ElementRef, ElementId );
 
-                    try
-                    {
-                        await task;
-                    }
-                    catch when ( task.IsCanceled )
-                    {
-                    }
-                }
+                LocalizerService.LocalizationChanged -= OnLocalizationChanged;
             }
 
             await base.DisposeAsync( disposing );
@@ -146,7 +148,7 @@ namespace Blazorise
             if ( Disabled || ReadOnly )
                 return;
 
-            await JSRunner.ActivateTimePicker( ElementRef, ElementId, Parsers.InternalTimeFormat );
+            await JSModule.Activate( ElementRef, ElementId, Parsers.InternalTimeFormat );
         }
 
         /// <inheritdoc/>
@@ -200,7 +202,7 @@ namespace Blazorise
         /// <returns>A task that represents the asynchronous operation.</returns>
         public ValueTask OpenAsync()
         {
-            return JSRunner.OpenTimePicker( ElementRef, ElementId );
+            return JSModule.Open( ElementRef, ElementId );
         }
 
         /// <summary>
@@ -209,7 +211,7 @@ namespace Blazorise
         /// <returns>A task that represents the asynchronous operation.</returns>
         public ValueTask CloseAsync()
         {
-            return JSRunner.CloseTimePicker( ElementRef, ElementId );
+            return JSModule.Close( ElementRef, ElementId );
         }
 
         /// <summary>
@@ -218,19 +220,41 @@ namespace Blazorise
         /// <returns>A task that represents the asynchronous operation.</returns>
         public ValueTask ToggleAsync()
         {
-            return JSRunner.ToggleTimePicker( ElementRef, ElementId );
+            return JSModule.Toggle( ElementRef, ElementId );
         }
 
         /// <inheritdoc/>
-        public override async Task FocusAsync( bool scrollToElement = true )
+        public override async Task Focus( bool scrollToElement = true )
         {
-            await JSRunner.FocusTimePicker( ElementRef, ElementId, scrollToElement );
+            await JSModule.Focus( ElementRef, ElementId, scrollToElement );
         }
 
         /// <inheritdoc/>
-        public override async Task SelectAsync( bool focus = true )
+        public override async Task Select( bool focus = true )
         {
-            await JSRunner.SelectTimePicker( ElementRef, ElementId, focus );
+            await JSModule.Select( ElementRef, ElementId, focus );
+        }
+
+        /// <summary>
+        /// Handles the localization changed event.
+        /// </summary>
+        /// <param name="sender">Object that raised the event.</param>
+        /// <param name="eventArgs">Data about the localization event.</param>
+        private async void OnLocalizationChanged( object sender, EventArgs eventArgs )
+        {
+            ExecuteAfterRender( async () => await JSModule.UpdateLocalization( ElementRef, ElementId, GetLocalizationObject() ) );
+
+            await InvokeAsync( StateHasChanged );
+        }
+
+        private object GetLocalizationObject()
+        {
+            var strings = Localizer.GetStrings();
+
+            return new
+            {
+                amPM = new[] { Localizer["AM"], Localizer["PM"] }
+            };
         }
 
         #endregion
@@ -242,6 +266,21 @@ namespace Blazorise
 
         /// <inheritdoc/>
         protected override TValue InternalValue { get => Time; set => Time = value; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IJSTimePickerModule"/> instance.
+        /// </summary>
+        [Inject] public IJSTimePickerModule JSModule { get; set; }
+
+        /// <summary>
+        /// Gets or sets the DI registered <see cref="ITextLocalizerService"/>.
+        /// </summary>
+        [Inject] protected ITextLocalizerService LocalizerService { get; set; }
+
+        /// <summary>
+        /// Gets or sets the DI registered <see cref="ITextLocalizer{T}"/>.
+        /// </summary>
+        [Inject] protected ITextLocalizer<TimePicker<TValue>> Localizer { get; set; }
 
         /// <summary>
         /// Converts the supplied time format into the internal time format.

@@ -1,4 +1,5 @@
-using Blazorise.Bootstrap;
+using Blazorise.Bootstrap5;
+using Blazorise.Docs.Server.Infrastructure;
 using Blazorise.Icons.FontAwesome;
 using Blazorise.RichTextEdit;
 using Microsoft.AspNetCore.Builder;
@@ -30,9 +31,13 @@ namespace Blazorise.Docs.Server
               {
                   options.ChangeTextOnKeyPress = true; // optional
               } )
-              .AddBootstrapProviders()
+              .AddBootstrap5Providers()
               .AddFontAwesomeIcons()
               .AddBlazoriseRichTextEdit();
+
+            services.AddMemoryCache();
+            services.AddScoped<Shared.Data.EmployeeData>();
+            services.AddScoped<Shared.Data.CountryData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,10 +60,20 @@ namespace Blazorise.Docs.Server
             app.UseRouting();
 
             app.UseEndpoints( endpoints =>
-             {
-                 endpoints.MapBlazorHub();
-                 endpoints.MapFallbackToPage( "/_Host" );
-             } );
+            {
+                endpoints.MapGet( "/robots.txt", async context =>
+                {
+                    await Seo.GenerateRobots( context );
+                } );
+
+                endpoints.MapGet( "/sitemap.txt", async context =>
+                {
+                    await Seo.GenerateSitemap( context );
+                } );
+
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage( "/_Host" );
+            } );
         }
     }
 }

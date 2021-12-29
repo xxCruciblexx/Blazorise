@@ -1,4 +1,5 @@
 ﻿#region Using directives
+using System;
 using System.Threading.Tasks;
 using Blazorise.Utilities;
 using Microsoft.AspNetCore.Components;
@@ -10,7 +11,7 @@ namespace Blazorise
     /// <summary>
     /// Wrapper for a breadcrumb link.
     /// </summary>
-    public partial class BreadcrumbItem : BaseComponent
+    public partial class BreadcrumbItem : BaseComponent, IDisposable
     {
         #region Members
 
@@ -60,7 +61,6 @@ namespace Blazorise
         {
             if ( disposing )
             {
-                // To avoid leaking memory, it's important to detach any event handlers in Dispose()
                 NavigationManager.LocationChanged -= OnLocationChanged;
             }
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Blazorise.Localization;
+using Blazorise.Modules;
 using Microsoft.AspNetCore.Components;
 using Moq;
 
@@ -10,13 +12,19 @@ namespace Blazorise.Tests.Mocks
     {
         public MockDatePicker( Validation validation = null, Expression<Func<T>> dateExpression = null )
         {
-            var mockRunner = new Mock<IJSRunner>();
+            var mockModuleRunner = new Mock<IJSDatePickerModule>();
 
-            mockRunner
-                .Setup( r => r.ActivateDatePicker( It.IsAny<ElementReference>(), It.IsAny<string>(), It.IsAny<object>() ) )
+            mockModuleRunner
+                .Setup( r => r.Activate( It.IsAny<ElementReference>(), It.IsAny<string>(), It.IsAny<object>() ) )
                 .Callback( ( ElementReference reference, string id, object o ) => this.OnActivateDatePicker( reference, id, o ) );
 
-            base.JSRunner = mockRunner.Object;
+            JSModule = mockModuleRunner.Object;
+
+            var mockLocalizerService = new Mock<ITextLocalizerService>();
+            LocalizerService = mockLocalizerService.Object;
+
+            var mockLocalizer = new Mock<ITextLocalizer<DatePicker<T>>>();
+            Localizer = mockLocalizer.Object;
 
             var mockIdGenerator = new Mock<IIdGenerator>();
 

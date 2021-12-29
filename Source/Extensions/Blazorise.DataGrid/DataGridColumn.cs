@@ -1,10 +1,12 @@
 ﻿#region Using directives
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Blazorise.DataGrid.Utils;
+using Blazorise.Extensions;
 using Microsoft.AspNetCore.Components;
 #endregion
 
@@ -18,6 +20,7 @@ namespace Blazorise.DataGrid
         private readonly Lazy<Func<object>> defaultValueByType;
         private readonly Lazy<Func<TItem, object>> valueGetter;
         private readonly Lazy<Action<TItem, object>> valueSetter;
+        private readonly Lazy<Func<TItem, object>> sortFieldGetter;
 
         private Dictionary<DataGridSortMode, SortDirection> currentSortDirection { get; set; } = new();
 
@@ -32,6 +35,7 @@ namespace Blazorise.DataGrid
             defaultValueByType = new( () => FunctionCompiler.CreateDefaultValueByType<TItem>( Field ) );
             valueGetter = new( () => FunctionCompiler.CreateValueGetter<TItem>( Field ) );
             valueSetter = new( () => FunctionCompiler.CreateValueSetter<TItem>( Field ) );
+            sortFieldGetter = new( () => FunctionCompiler.CreateValueGetter<TItem>( SortField ) );
         }
 
         #endregion
@@ -42,31 +46,24 @@ namespace Blazorise.DataGrid
         {
             base.OnInitialized();
 
-            // initialize temporary variables
             currentSortDirection[DataGridSortMode.Single] = SortDirection;
             currentSortDirection[DataGridSortMode.Multiple] = SortDirection;
 
             if ( ParentDataGrid != null )
             {
-                // connect column to the parent datagrid
                 ParentDataGrid.AddColumn( this );
 
                 Filter?.Subscribe( OnSearchValueChanged );
             }
         }
 
-        protected override void Dispose( bool disposing )
-        {
-            if ( disposing )
-                DisposeSubscriptions();
-
-            base.Dispose( disposing );
-        }
-
+        /// <inheritdoc/>
         protected override ValueTask DisposeAsync( bool disposing )
         {
             if ( disposing )
+            {
                 DisposeSubscriptions();
+            }
 
             return base.DisposeAsync( disposing );
         }
@@ -75,7 +72,7 @@ namespace Blazorise.DataGrid
         {
             ParentDataGrid.RemoveColumn( this );
 
-            if ( Filter != null )
+            if ( Filter is not null )
             {
                 Filter.Unsubscribe( OnSearchValueChanged );
 
@@ -93,7 +90,9 @@ namespace Blazorise.DataGrid
         /// </summary>
         /// <returns></returns>
         internal Type GetValueType()
-            => valueTypeGetter.Value();
+            => !string.IsNullOrEmpty( Field )
+                ? valueTypeGetter.Value()
+                : default;
 
         /// <summary>
         /// Gets default value based on the typeof() of the value associated with this column field.
@@ -105,18 +104,55 @@ namespace Blazorise.DataGrid
         /// <summary>
         /// Gets the current value for the field in the supplied model.
         /// </summary>
-        /// <param name="item">Item for which ro set the value.</param>
+        /// <param name="item">Item for which to get the value.</param>
         /// <returns></returns>
         internal object GetValue( TItem item )
-            => valueGetter.Value( item );
+            => !string.IsNullOrEmpty( Field )
+                ? valueGetter.Value( item )
+                : default;
 
         /// <summary>
         /// Sets the value for the field in the supplied model.
         /// </summary>
-        /// <param name="item">Item for which ro set the value.</param>
+        /// <param name="item">Item for which to set the value.</param>
         /// <param name="value">Value to set.</param>
         internal void SetValue( TItem item, object value )
-            => valueSetter.Value( item, value );
+        {
+            if ( !string.IsNullOrEmpty( Field ) )
+                valueSetter.Value( item, value );
+        }
+
+        /// <summary>
+        /// Gets the current value for the sort field in the supplied model.
+        /// </summary>
+        /// <param name="item">Item for which to get the value.</param>
+        /// <returns></returns>
+        internal object GetSortValue( TItem item )
+            => sortFieldGetter.Value( item );
+
+        /// <summary>
+        /// Gets the current value to be used for sorting.
+        /// </summary>
+        /// <param name="item">Item for which to get the value.</param>
+        /// <returns></returns>
+        internal object GetValueForSort( TItem item )
+            => string.IsNullOrWhiteSpace( SortField )
+                ? GetValue( item )
+                : GetSortValue( item );
+
+        /// <summary>
+        /// Gets wether the column is able to sort.
+        /// </summary>
+        /// <returns></returns>
+        internal bool CanSort()
+            => Sortable && ( !string.IsNullOrEmpty( GetFieldToSort() ) );
+
+        /// <summary>
+        /// Gets the field to be used for Sorting.
+        /// </summary>
+        /// <returns></returns>
+        internal string GetFieldToSort()
+            => string.IsNullOrEmpty( SortField ) ? Field : SortField;
 
         public string FormatDisplayValue( TItem item )
         {
@@ -421,6 +457,11 @@ namespace Blazorise.DataGrid
         /// Forces validation to use regex pattern matching instead of default validator handler.
         /// </summary>
         [Parameter] public string ValidationPattern { get; set; }
+
+        /// <summary>
+        /// Provides a Sort Field to be used instead by the Sorting mechanism
+        /// </summary>
+        [Parameter] public string SortField { get; set; }
 
         #endregion
     }

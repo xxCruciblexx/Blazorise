@@ -1,9 +1,8 @@
 ﻿@namespace Blazorise.Docs.Docs.Examples
-@using Blazorise.Docs.Models
 
 <DataGrid TItem="Employee"
           Data="@employeeList"
-          RowSelectable=@((item)=>item.FirstName != "John")
+          RowSelectable=@((x)=> x.Item.FirstName != "John")
           Responsive>
     <DataGridColumn TItem="Employee" Field="@nameof( Employee.FirstName )" Caption="Name" Editable="false"></DataGridColumn>
 </DataGrid>

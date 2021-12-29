@@ -6,11 +6,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Blazorise.DataGrid.Configuration;
+using Blazorise.DataGrid.Models;
 using Blazorise.DataGrid.Utils;
 using Blazorise.Extensions;
+using Blazorise.Modules;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
-using Microsoft.JSInterop;
 #endregion
 
 namespace Blazorise.DataGrid
@@ -77,11 +78,6 @@ namespace Blazorise.DataGrid
         /// Keeps track whether the user has changed the filter for Virtualize purposes.
         /// </summary>
         private bool virtualizeFilterChanged;
-
-        /// <summary>
-        /// Keeps track of whether the object has already been disposed.
-        /// </summary>
-        private bool disposed;
 
         /// <summary>
         /// Holds the state of sorted columns grouped by the sort-mode.
@@ -153,6 +149,13 @@ namespace Blazorise.DataGrid
         #region Setup
 
         /// <summary>
+        /// Inspects User Agent for a client using a Macintosh Operating System.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<bool> IsUserAgentMacintoshOS()
+            => ( await JSUtilitiesModule.GetUserAgent() ).Contains( "Mac", StringComparison.InvariantCultureIgnoreCase );
+
+        /// <summary>
         /// Sets the height for the FixedHeader table feature.
         /// </summary>
         /// <returns></returns>
@@ -200,14 +203,30 @@ namespace Blazorise.DataGrid
         }
 
         /// <summary>
+        /// Links the child row with this datagrid.
+        /// </summary>
+        /// <param name="row">Row to add.</param>
+        public void AddRow( DataGridRowInfo<TItem> row )
+        {
+            Rows.Add( row );
+        }
+
+        /// <summary>
         /// Removes an existing link of a child column with this datagrid.
         /// <para>Returns:
         ///     true if item is successfully removed; otherwise, false. 
         /// </para>
         /// </summary>
         /// <param name="column">Column to link with this datagrid.</param>
-        internal bool RemoveColumn( DataGridColumn<TItem> column )
-            => Columns.Remove( column ); // TODO: mark as public in v0.9.5
+        public bool RemoveColumn( DataGridColumn<TItem> column )
+            => Columns.Remove( column );
+
+        /// <summary>
+        /// Links the child row with this datagrid.
+        /// </summary>
+        /// <param name="row">Row to remove.</param>
+        public bool RemoveRow( DataGridRowInfo<TItem> row )
+            => Rows.Remove( row );
 
         /// <summary>
         /// Links the child column with this datagrid.
@@ -218,10 +237,19 @@ namespace Blazorise.DataGrid
             Aggregates.Add( aggregate );
         }
 
+        public override async Task SetParametersAsync( ParameterView parameters )
+        {
+            await CheckMultipleSelectionSetEmpty( parameters );
+
+            await base.SetParametersAsync( parameters );
+        }
+
         protected override async Task OnAfterRenderAsync( bool firstRender )
         {
             if ( firstRender )
             {
+                IsClientMacintoshOS = await IsUserAgentMacintoshOS();
+                await JSModule.Initialize( tableRef.ElementRef, ElementId );
                 paginationContext.SubscribeOnPageSizeChanged( OnPageSizeChanged );
                 paginationContext.SubscribeOnPageChanged( OnPageChanged );
 
@@ -234,16 +262,41 @@ namespace Blazorise.DataGrid
             await base.OnAfterRenderAsync( firstRender );
         }
 
-        protected override void Dispose( bool disposing )
+        /// <inheritdoc/>
+        protected override ValueTask DisposeAsync( bool disposing )
         {
-            if ( !disposed )
+            if ( disposing )
             {
-                disposed = true;
+                if ( paginationContext != null )
+                {
+                    paginationContext.UnsubscribeOnPageSizeChanged( OnPageSizeChanged );
+                    paginationContext.UnsubscribeOnPageChanged( OnPageChanged );
+                    paginationContext.CancellationTokenSource?.Dispose();
+                    paginationContext.CancellationTokenSource = null;
+                }
+            }
 
-                paginationContext.UnsubscribeOnPageSizeChanged( OnPageSizeChanged );
-                paginationContext.UnsubscribeOnPageChanged( OnPageChanged );
+            return base.DisposeAsync( disposing );
+        }
 
-                base.Dispose( disposing );
+        /// <summary>
+        /// Tracks whether the user explicitly set SelectedRows to null or empty and makes sure SelectedRow is synced.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        private async Task CheckMultipleSelectionSetEmpty( ParameterView parameters )
+        {
+            if ( SelectionMode == DataGridSelectionMode.Multiple )
+            {
+                if ( parameters.TryGetValue<List<TItem>>( nameof( SelectedRows ), out var changedSelectedRows ) )
+                {
+                    //If we note SelectedRows is empty. Let's make sure SelectedRow is syncronized.
+                    if ( changedSelectedRows.IsNullOrEmpty() && !( SelectedRow?.Equals( default ) ?? true ) )
+                    {
+                        SelectedRow = default;
+                        await SelectedRowChanged.InvokeAsync( default );
+                    }
+                }
             }
         }
 
@@ -281,7 +334,7 @@ namespace Blazorise.DataGrid
                 VirtualizeOptions ??= new();
 
                 if ( editState == DataGridEditState.Edit && EditMode != DataGridEditMode.Popup )
-                    virtualizeState.EditLastKnownScroll = await JSRuntime.InvokeAsync<int>( JSInteropFunction.Virtualize.ON_EDIT_SET_SCROLL, tableRef.ElementRef, ClassProvider.TableRowHoverCursor() );
+                    virtualizeState.EditLastKnownScroll = await JSModule.ScrollTo( tableRef.ElementRef, ClassProvider.TableRowHoverCursor() );
             }
             else
             {
@@ -415,8 +468,8 @@ namespace Blazorise.DataGrid
             if ( Data == null )
                 return;
 
-            // get the list of edited values
             var editedCellValues = EditableColumns
+                .Where( x => !string.IsNullOrEmpty( x.Field ) )
                 .Select( c => new { c.Field, editItemCellValues[c.ElementId].CellValue } ).ToDictionary( x => x.Field, x => x.CellValue );
 
             var rowSavingHandler = editState == DataGridEditState.New ? RowInserting : RowUpdating;
@@ -637,6 +690,46 @@ namespace Blazorise.DataGrid
             return null;
         }
 
+        /// <summary>
+        /// Toggles DetailRow while evaluating the <see cref="DetailRowTrigger"/> if provided.
+        /// Use <paramref name="forceDetailRow"/> to ignore <see cref="DetailRowTrigger"/> and toggle the DetailRow.
+        /// </summary>
+        /// <param name="item">Row item.</param>
+        /// <param name="forceDetailRow">Ignores DetailRowTrigger and toggles the DetailRow.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public Task ToggleDetailRow( TItem item, bool forceDetailRow = false )
+        {
+            var rowInfo = GetRowInfo( item );
+            if ( rowInfo is not null )
+            {
+                if ( forceDetailRow )
+                    rowInfo.ToggleDetailRow();
+                else if ( DetailRowTrigger is not null )
+                    rowInfo.SetRowDetail( DetailRowTrigger( item ) );
+                else
+                    rowInfo.ToggleDetailRow();
+                return InvokeAsync( StateHasChanged );
+            }
+
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// If <see cref="FixedHeader"/> or <see cref="Virtualize"/> is enabled, it will scroll position to the provided pixels.
+        /// </summary>
+        /// <param name="pixels">Offset in pixels from the top of the DataGrid.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public ValueTask ScrollToPixels( int pixels )
+            => tableRef.ScrollToPixels( pixels );
+
+        /// <summary>
+        /// If <see cref="FixedHeader"/> or <see cref="Virtualize"/> is enabled, it will scroll position to the provided row.
+        /// </summary>
+        /// <param name="row">Zero-based index of DataGrid row to scroll to.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public ValueTask ScrollToRow( int row )
+            => tableRef.ScrollToRow( row );
+
         #endregion
 
         #region Editing
@@ -663,13 +756,14 @@ namespace Blazorise.DataGrid
 
             foreach ( var column in EditableColumns )
             {
+                var cellValue = column.GetValue( editItem );
                 editItemCellValues.Add( column.ElementId, new CellEditContext<TItem>( item, UpdateCellEditValue, ReadCellEditValue )
                 {
-                    CellValue = column.GetValue( editItem ),
+                    CellValue = cellValue,
                 } );
 
-                if ( validationItem != null )
-                    column.SetValue( validationItem, editItemCellValues[column.ElementId].CellValue );
+                if ( validationItem is not null )
+                    column.SetValue( validationItem, cellValue );
             }
         }
 
@@ -766,11 +860,11 @@ namespace Blazorise.DataGrid
             {
                 SelectedRows.Clear();
 
-                if ( RowSelectable != null )
+                if ( RowSelectable is not null )
                 {
                     foreach ( var item in viewData )
                     {
-                        if ( RowSelectable.Invoke( item ) )
+                        if ( RowSelectable.Invoke( new( item, DataGridSelectReason.MultiSelectAll ) ) )
                         {
                             SelectedRows.Add( item );
                         }
@@ -876,7 +970,7 @@ namespace Blazorise.DataGrid
         /// Notifies the <see cref="DataGrid{TItem}"/> to refresh.
         /// </summary>
         /// <returns></returns>
-        protected internal async virtual Task Refresh()
+        public async virtual Task Refresh()
             => await InvokeAsync( StateHasChanged );
 
         protected async Task HandleReadData( CancellationToken cancellationToken )
@@ -922,29 +1016,29 @@ namespace Blazorise.DataGrid
             if ( request.CancellationToken.IsCancellationRequested )
                 return new();
             else
-                return new( Data, TotalItems.Value );
+                return new( Data.ToList(), TotalItems.Value );
         }
 
         protected void HandleSortColumn( DataGridColumn<TItem> column, bool changeSortDirection, SortDirection? sortDirection = null )
         {
-            if ( Sortable && column.Sortable && !string.IsNullOrEmpty( column.Field ) )
+            if ( Sortable && column.CanSort() )
             {
                 if ( SortMode == DataGridSortMode.Single )
                 {
                     // in single-mode we need to reset all other columns to default state
-                    foreach ( var c in Columns.Where( x => x.Field != column.Field ) )
+                    foreach ( var c in Columns.Where( x => x.GetFieldToSort() != column.GetFieldToSort() ) )
                     {
                         c.CurrentSortDirection = SortDirection.None;
                     }
 
                     // and also remove any column sort info except for current one
-                    SortByColumns.RemoveAll( x => x.Field != column.Field );
+                    SortByColumns.RemoveAll( x => x.GetFieldToSort() != column.GetFieldToSort() );
                 }
 
                 if ( changeSortDirection )
                     column.CurrentSortDirection = sortDirection ?? column.CurrentSortDirection.NextDirection();
 
-                if ( !SortByColumns.Any( c => c.Field == column.Field ) )
+                if ( !SortByColumns.Any( c => c.GetFieldToSort() == column.GetFieldToSort() ) )
                 {
                     SortByColumns.Add( column );
                 }
@@ -952,7 +1046,7 @@ namespace Blazorise.DataGrid
                     SortByColumns.Remove( column );
 
                 if ( changeSortDirection )
-                    InvokeAsync( () => SortChanged.InvokeAsync( new DataGridSortChangedEventArgs( column.Field, column.CurrentSortDirection ) ) );
+                    InvokeAsync( () => SortChanged.InvokeAsync( new DataGridSortChangedEventArgs( column.GetFieldToSort(), column.CurrentSortDirection ) ) );
             }
         }
 
@@ -1019,21 +1113,23 @@ namespace Blazorise.DataGrid
 
                 foreach ( var sortByColumn in SortByColumns )
                 {
+                    Func<TItem, object> sortFunction = sortByColumn.GetValueForSort;
+
                     if ( firstSort )
                     {
                         if ( sortByColumn.CurrentSortDirection == SortDirection.Ascending )
-                            query = query.OrderBy( x => sortByColumn.GetValue( x ) );
+                            query = query.OrderBy( x => sortFunction( x ) );
                         else
-                            query = query.OrderByDescending( x => sortByColumn.GetValue( x ) );
+                            query = query.OrderByDescending( x => sortFunction( x ) );
 
                         firstSort = false;
                     }
                     else
                     {
                         if ( sortByColumn.CurrentSortDirection == SortDirection.Ascending )
-                            query = ( query as IOrderedQueryable<TItem> ).ThenBy( x => sortByColumn.GetValue( x ) );
+                            query = ( query as IOrderedQueryable<TItem> ).ThenBy( x => sortFunction( x ) );
                         else
-                            query = ( query as IOrderedQueryable<TItem> ).ThenByDescending( x => sortByColumn.GetValue( x ) );
+                            query = ( query as IOrderedQueryable<TItem> ).ThenByDescending( x => sortFunction( x ) );
                     }
                 }
 
@@ -1136,13 +1232,19 @@ namespace Blazorise.DataGrid
             return SelectedRowChanged.InvokeAsync( SelectedRow );
         }
 
+        private DataGridRowInfo<TItem> GetRowInfo( TItem item )
+            => Rows.FirstOrDefault( x => x.Item.IsEqual( item ) );
+
         #endregion
 
         #endregion
 
         #region Properties
 
-        [Inject] private IJSRuntime JSRuntime { get; set; }
+        /// <summary>
+        /// Gets or sets the <see cref="IJSUtilitiesModule"/> instance.
+        /// </summary>
+        [Inject] public IJSUtilitiesModule JSUtilitiesModule { get; set; }
 
         /// <summary>
         /// Gets the DataGrid standard class and other existing Class
@@ -1161,6 +1263,12 @@ namespace Blazorise.DataGrid
                 return sb.ToString();
             }
         }
+
+
+        /// <summary>
+        /// Gets the data to show on grid based on the filter and current page.
+        /// </summary>
+        protected List<DataGridRowInfo<TItem>> Rows { get; } = new();
 
         /// <summary>
         /// List of all the columns associated with this datagrid.
@@ -1295,6 +1403,11 @@ namespace Blazorise.DataGrid
             => ( SelectionMode == DataGridSelectionMode.Multiple );
 
         /// <summary>
+        /// Tracks whether the current client is a Macintosh Operating System.
+        /// </summary>
+        internal bool IsClientMacintoshOS { get; private set; }
+
+        /// <summary>
         /// Gets template for title of popup modal.
         /// </summary>
         [Parameter]
@@ -1315,6 +1428,11 @@ namespace Blazorise.DataGrid
         /// Defines the size of popup dialog.
         /// </summary>
         [Parameter] public ModalSize PopupSize { get; set; } = ModalSize.Default;
+
+        /// <summary>
+        /// Occurs before the popup dialog is closed.
+        /// </summary>
+        [Parameter] public Func<ModalClosingEventArgs, Task> PopupClosing { get; set; }
 
         /// <summary>
         /// Gets the reference to the associated command column.
@@ -1397,7 +1515,7 @@ namespace Blazorise.DataGrid
         /// <summary>
         /// Gets the data after all of the filters have being applied.
         /// </summary>
-        protected internal IEnumerable<TItem> FilteredData
+        public IEnumerable<TItem> FilteredData
         {
             get
             {
@@ -1416,7 +1534,7 @@ namespace Blazorise.DataGrid
         /// <summary>
         /// Gets the data to show on grid based on the filter and current page.
         /// </summary>
-        internal IEnumerable<TItem> DisplayData
+        public IEnumerable<TItem> DisplayData
         {
             get
             {
@@ -1692,10 +1810,10 @@ namespace Blazorise.DataGrid
         [Parameter] public Func<TItem, bool> DetailRowTrigger { get; set; }
 
         /// <summary>
-        /// Handles the selection of the clicked row.
+        /// Handles the selection of the DataGrid row.
         /// If not set it will default to always true.
         /// </summary>
-        [Parameter] public Func<TItem, bool> RowSelectable { get; set; }
+        [Parameter] public Func<RowSelectableEventArgs<TItem>, bool> RowSelectable { get; set; }
 
         /// <summary>
         /// Handles the selection of the cursor for a hovered row.
@@ -1877,6 +1995,11 @@ namespace Blazorise.DataGrid
         /// If true, the edit form will have the Save button as <c>type="submit"</c>, and it will react to Enter keys being pressed.
         /// </summary>
         [Parameter] public bool SubmitFormOnEnter { get; set; } = true;
+
+        /// <summary>
+        /// Controls whether DetailRow will start visible if <see cref="DetailRowTemplate"/> is set
+        /// </summary>
+        [Parameter] public bool DetailRowStartsVisible { get; set; } = true;
 
         #endregion
     }

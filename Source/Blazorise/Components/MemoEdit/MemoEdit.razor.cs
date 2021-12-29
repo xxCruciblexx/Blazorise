@@ -2,6 +2,8 @@
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Blazorise.Extensions;
+using Blazorise.Modules;
 using Blazorise.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -12,7 +14,7 @@ namespace Blazorise
     /// <summary>
     /// Component that allows you to display and edit multi-line text.
     /// </summary>
-    public partial class MemoEdit : BaseInputComponent<string>, ISelectableComponent
+    public partial class MemoEdit : BaseInputComponent<string>, ISelectableComponent, IAsyncDisposable
     {
         #region Members
 
@@ -25,6 +27,25 @@ namespace Blazorise
         /// <inheritdoc/>
         public override async Task SetParametersAsync( ParameterView parameters )
         {
+            var replaceTabChanged = parameters.TryGetValue( nameof( ReplaceTab ), out bool paramReplaceTab ) && ReplaceTab != paramReplaceTab;
+            var tabSizeChanged = parameters.TryGetValue( nameof( TabSize ), out int paramTabSize ) && TabSize != paramTabSize;
+            var softTabsChanged = parameters.TryGetValue( nameof( SoftTabs ), out bool paramSoftTabs ) && SoftTabs != paramSoftTabs;
+            var autoSizeChanged = parameters.TryGetValue( nameof( AutoSize ), out bool paramAutoSize ) && AutoSize != paramAutoSize;
+
+            if ( Rendered && ( replaceTabChanged
+                || tabSizeChanged
+                || softTabsChanged
+                || autoSizeChanged ) )
+            {
+                ExecuteAfterRender( async () => await JSModule.UpdateOptions( ElementRef, ElementId, new
+                {
+                    ReplaceTab = new { Changed = replaceTabChanged, Value = paramReplaceTab },
+                    TabSize = new { Changed = tabSizeChanged, Value = paramTabSize },
+                    SoftTabs = new { Changed = softTabsChanged, Value = paramSoftTabs },
+                    AutoSize = new { Changed = autoSizeChanged, Value = paramAutoSize },
+                } ) );
+            }
+
             await base.SetParametersAsync( parameters );
 
             if ( ParentValidation != null )
@@ -46,6 +67,36 @@ namespace Blazorise
             }
 
             base.OnInitialized();
+        }
+
+        /// <inheritdoc/>
+        protected async override Task OnFirstAfterRenderAsync()
+        {
+            await JSModule.Initialize( ElementRef, ElementId, new
+            {
+                ReplaceTab,
+                TabSize,
+                SoftTabs,
+                AutoSize,
+            } );
+
+            await base.OnFirstAfterRenderAsync();
+        }
+
+        /// <inheritdoc/>
+        protected override async ValueTask DisposeAsync( bool disposing )
+        {
+            if ( disposing && Rendered )
+            {
+                await JSModule.SafeDestroy( ElementRef, ElementId );
+
+                if ( inputValueDebouncer is not null )
+                {
+                    inputValueDebouncer.Debounced -= OnInputValueDebounced;
+                }
+            }
+
+            await base.DisposeAsync( disposing );
         }
 
         /// <inheritdoc/>
@@ -92,11 +143,11 @@ namespace Blazorise
                 }
                 else
                 {
-                    var caret = await JSRunner.GetCaret( ElementRef );
+                    var caret = await JSUtilitiesModule.GetCaret( ElementRef );
 
                     await CurrentValueHandler( e?.Value?.ToString() );
 
-                    await JSRunner.SetCaret( ElementRef, caret );
+                    await JSUtilitiesModule.SetCaret( ElementRef, caret );
                 }
             }
         }
@@ -137,15 +188,9 @@ namespace Blazorise
         }
 
         /// <inheritdoc/>
-        public virtual void Select( bool focus = true )
+        public virtual async Task Select( bool focus = true )
         {
-            InvokeAsync( () => SelectAsync( focus ) );
-        }
-
-        /// <inheritdoc/>
-        public virtual async Task SelectAsync( bool focus = true )
-        {
-            await JSRunner.Select( ElementRef, ElementId, focus );
+            await JSUtilitiesModule.Select( ElementRef, ElementId, focus );
         }
 
         #endregion
@@ -181,6 +226,11 @@ namespace Blazorise
         /// </summary>
         protected string BindValueEventName
             => IsChangeTextOnKeyPress ? "oninput" : "onchange";
+
+        /// <summary>
+        /// Gets or sets the <see cref="IJSMemoEditModule"/> instance.
+        /// </summary>
+        [Inject] public IJSMemoEditModule JSModule { get; set; }
 
         /// <summary>
         /// Sets the placeholder for the empty text.
@@ -229,6 +279,26 @@ namespace Blazorise
         /// Interval in milliseconds that entered text will be delayed from submitting to the internal value.
         /// </summary>
         [Parameter] public int? DelayTextOnKeyPressInterval { get; set; }
+
+        /// <summary>
+        /// If set to true, <see cref="ReplaceTab"/> will insert a tab instead of cycle input focus.
+        /// </summary>
+        [Parameter] public bool ReplaceTab { get; set; } = false;
+
+        /// <summary>
+        /// Defines the number of characters that tab key will override.
+        /// </summary>
+        [Parameter] public int TabSize { get; set; } = 4;
+
+        /// <summary>
+        /// If set to true, spaces will be used instead of a tab character
+        /// </summary>
+        [Parameter] public bool SoftTabs { get; set; } = true;
+
+        /// <summary>
+        /// If true, the textarea will automatically grow in height according to its content.
+        /// </summary>
+        [Parameter] public bool AutoSize { get; set; }
 
         #endregion
     }

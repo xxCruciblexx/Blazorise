@@ -7,6 +7,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Blazorise.Shared\Blazorise.Shared.csproj" />
     <ProjectReference Include="..\..\Source\Blazorise\Blazorise.csproj" />
     <ProjectReference Include="..\..\Source\Extensions\Blazorise.Charts.Streaming\Blazorise.Charts.Streaming.csproj" />
     <ProjectReference Include="..\..\Source\Extensions\Blazorise.Charts\Blazorise.Charts.csproj" />
@@ -23,7 +24,7 @@
 
   <!--Binary path for the code generator-->
   <PropertyGroup>
-    <BinDocsCompiler>..\..\Documentation/Blazorise.Docs.Compiler/bin/Debug/net5.0/Blazorise.Docs.Compiler.dll</BinDocsCompiler>
+    <BinDocsCompiler>..\..\Documentation/Blazorise.Docs.Compiler/bin/Debug/net6.0/Blazorise.Docs.Compiler.dll</BinDocsCompiler>
   </PropertyGroup>
 
   <!--Project path for code generator-->
@@ -57,22 +58,10 @@
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Pages\Docs\Extensions\DataGrid\Code\DataGridSelectingExample.html" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="compilerconfig.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Markdig" Version="0.25.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Pages\Docs\Extensions\Chart\Code\" />
-    <Folder Include="Pages\Docs\Extensions\RichTextEdit\Code\" />
-    <Folder Include="Pages\Docs\Extensions\SelectList\Code\" />
-    <Folder Include="Pages\Docs\Extensions\Sidebar\Code\" />
-    <Folder Include="Pages\Docs\Extensions\Snackbar\Code\" />
-    <Folder Include="Pages\Docs\Extensions\SpinKit\Code\" />
-    <Folder Include="Pages\Docs\Extensions\TreeView\Code\" />
   </ItemGroup>
 
   <!--Is this a rebuild - Dont clean generated files as this breaks rebuild behaviour-->

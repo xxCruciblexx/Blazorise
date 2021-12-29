@@ -73,7 +73,7 @@
                 </BarDropdown>
             </BarItem>
             <BarItem>
-                <BarDropdown>
+                <BarDropdown @bind-Visible="@formsVisible">
                     <BarDropdownToggle>
                         <BarIcon IconName="IconName.Edit" />
                         Forms
@@ -81,6 +81,9 @@
                     <BarDropdownMenu>
                         <BarDropdownItem To="tests/forms">
                             Forms
+                        </BarDropdownItem>
+                        <BarDropdownItem To="tests/pickers">
+                            Pickers
                         </BarDropdownItem>
                         <BarDropdownItem To="tests/validations">
                             Validations
@@ -105,7 +108,7 @@
                 </BarDropdown>
             </BarItem>
             <BarItem>
-                <BarDropdown>
+                <BarDropdown @bind-Visible="@datagridVisible">
                     <BarDropdownToggle>
                         <BarIcon IconName="IconName.CompactDisc" />
                         Datagrid
@@ -207,6 +210,9 @@
                                 <BarDropdownItem To="tests/datagrid/sort/multiple">
                                     Multiple
                                 </BarDropdownItem>
+                                <BarDropdownItem To="tests/datagrid/sort/field">
+                                    Custom Field
+                                </BarDropdownItem>
                             </BarDropdownMenu>
                         </BarDropdown>
 
@@ -234,7 +240,7 @@
                 </BarDropdown>
             </BarItem>
             <BarItem>
-                <BarDropdown Visible="true">
+                <BarDropdown @bind-Visible="@extensionsVisible">
                     <BarDropdownToggle>
                         <BarIcon IconName="IconName.PuzzlePiece" />
                         Extensions
@@ -267,7 +273,7 @@
         </BarStart>
         <BarEnd>
             <BarItem>
-                <BarDropdown>
+                <BarDropdown @bind-Visible="@utilitiesVisible">
                     <BarDropdownToggle>
                         <BarIcon IconName="IconName.Flask" />
                         Utilities
@@ -321,6 +327,10 @@
 </Bar>
 @code {
     private bool uiElementsVisible = true;
+    private bool utilitiesVisible = false;
+    private bool extensionsVisible = false;
+    private bool formsVisible = false;
+    private bool datagridVisible = false;
 
     RenderFragment customIcon =@<img src="/brand-logo.png" style="width:32px; height: 32px" />;
 }

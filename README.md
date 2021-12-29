@@ -1,17 +1,20 @@
-![Blazorise](docs/assets/images/blazorise.png)
+![Blazorise](https://user-images.githubusercontent.com/900302/147649481-11ca2931-34cd-4e24-8035-fe757cf9d744.png)
 
 # Components for Blazor
 
-[![NuGet](https://img.shields.io/nuget/vpre/Blazorise.svg)](https://www.nuget.org/profiles/stsrki)
+[![NuGet](https://img.shields.io/nuget/vpre/Blazorise.svg)](https://www.nuget.org/profiles/Megabit)
 [![MyGet](https://img.shields.io/myget/blazorise/vpre/blazorise.svg?label=myget)](https://www.myget.org/gallery/blazorise)
 ![Nuget](https://img.shields.io/nuget/dt/Blazorise.svg)
 [![Join the chat at https://gitter.im/stsrki/Blazorise](https://badges.gitter.im/stsrki/Blazorise.svg)](https://gitter.im/stsrki/Blazorise?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Discord](https://img.shields.io/discord/761589226965696552?color=%237289da&label=Discord&logo=discord&logoColor=%237289da&style=flat-square)](https://discord.io/blazorise)
 [![Apache 2.0](https://img.shields.io/github/license/stsrki/Blazorise.svg)](LICENSE)
 [![Tip Me via PayPal](https://img.shields.io/badge/PayPal-tip%20me-green.svg?logo=paypal)](https://www.paypal.me/mladenmacanovic)
 [![Buy me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-donate-yellow.svg)](https://www.buymeacoffee.com/mladenmacanovic)
 [![Patreon](https://img.shields.io/badge/Patreon-donate-yellow.svg)](https://www.patreon.com/mladenmacanovic)
 
 Blazorise is a component library built on top of [Blazor](https://blazor.net/) and CSS frameworks like Bootstrap, Bulma and Material.
+
+> Note: Old documentation can be found at http://v094.blazorise.com/
 
 ## Commercial support
 
@@ -49,7 +52,8 @@ Blazorise is an Apache 2.0-licensed open source project with its ongoing develop
 
 ### Blazor WebAssembly
 
-- [Bootstrap Demo](https://bootstrapdemo.blazorise.com)
+- [Bootstrap 4 Demo](https://bootstrapdemo.blazorise.com)
+- [Bootstrap 5 Demo](https://bootstrap5demo.blazorise.com)
 - [Material Demo](https://materialdemo.blazorise.com/)
 - [Bulma Demo](https://bulmademo.blazorise.com/)
 - [AntDesign Demo](https://antdesigndemo.blazorise.com/)
@@ -57,10 +61,6 @@ Blazorise is an Apache 2.0-licensed open source project with its ongoing develop
 ### Blazor Server
 
 - [Bootstrap Demo](https://rcbootstrapdemo.blazorise.com/)
-
-```
-Note: This project is still experimental so it's possible that some components will be removed or refactored.
-```
 
 [Releases](https://blazorise.com/docs/releases/) and [Roadmap](https://github.com/stsrki/Blazorise/issues/304)
 
@@ -80,6 +80,7 @@ There are currently 5 different NuGet packages for each of the supported CSS fra
 
 ```
 - Blazorise.Bootstrap
+- Blazorise.Bootstrap5
 - Blazorise.Bulma
 - Blazorise.Material
 - Blazorise.AntDesign
@@ -124,9 +125,6 @@ In this step we're also going to define the links for Blazorise content files th
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
-
-  <script src="_content/Blazorise/blazorise.js"></script>
-  <script src="_content/Blazorise.Bootstrap/blazorise.bootstrap.js"></script>
 </body>
 </html>
 ```

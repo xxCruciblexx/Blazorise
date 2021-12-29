@@ -1,5 +1,7 @@
 ﻿@page "/docs/helpers/localization"
 
+<Seo Canonical="/docs/helpers/localization" Title="Blazorise Localization" Description="Learn about the Blazorise Localization system." />
+
 <DocsPageTitle>
     Localization
 </DocsPageTitle>
@@ -8,20 +10,29 @@
     <DocsPageSectionHeader Title="Overview">
         <Paragraph>Localization within Blazorise can be done in multiple ways:</Paragraph>
 
-        <ul>
-            <li>By using <Code>ITextLocalizer</Code> and <Code>ITextLocalizerService</Code>.</li>
-            <li>By using custom localizer handler(s) <Code>TextLocalizerHandler</Code></li>
-        </ul>
+        <UnorderedList>
+            <UnorderedListItem>By using <Code>ITextLocalizer</Code> and <Code>ITextLocalizerService</Code>.</UnorderedListItem>
+            <UnorderedListItem>By using custom localizer handler(s) <Code>TextLocalizerHandler</Code></UnorderedListItem>
+        </UnorderedList>
+
         <Paragraph>List of predefined language that comes with Blazorise is:</Paragraph>
-        <ul>
-            <li><Code>de-DE</Code> German</li>
-            <li><Code>en-US</Code> English</li>
-            <li><Code>es-ES</Code> Spanish</li>
-            <li><Code>fr-FR</Code> French</li>
-            <li><Code>hr-HR</Code> Croatian</li>
-            <li><Code>nl-NL</Code> Dutch</li>
-            <li><Code>pt-PT</Code> Portuguese</li>
-        </ul>
+
+        <UnorderedList>
+            <UnorderedListItem><Code>de</Code> German</UnorderedListItem>
+            <UnorderedListItem><Code>en</Code> English</UnorderedListItem>
+            <UnorderedListItem><Code>es</Code> Spanish</UnorderedListItem>
+            <UnorderedListItem><Code>fr</Code> French</UnorderedListItem>
+            <UnorderedListItem><Code>hr</Code> Croatian</UnorderedListItem>
+            <UnorderedListItem><Code>is</Code> Icelandic</UnorderedListItem>
+            <UnorderedListItem><Code>it</Code> Italian</UnorderedListItem>
+            <UnorderedListItem><Code>nl</Code> Dutch</UnorderedListItem>
+            <UnorderedListItem><Code>pl</Code> Polish</UnorderedListItem>
+            <UnorderedListItem><Code>pt</Code> Portuguese</UnorderedListItem>
+            <UnorderedListItem><Code>ru</Code> Russian</UnorderedListItem>
+            <UnorderedListItem><Code>sk</Code> Slovakian</UnorderedListItem>
+            <UnorderedListItem><Code>tr</Code> Turkish</UnorderedListItem>
+        </UnorderedList>
+
         <Paragraph>
             In this guide we will explain both ways.
         </Paragraph>
@@ -59,4 +70,3 @@
     <DocsPageSectionContent><CustomLanguageExample /></DocsPageSectionContent>
     <DocsPageSectionSource Code="CustomLanguageExample"></DocsPageSectionSource>
 </DocsPageSection>
-

@@ -1,6 +1,6 @@
 <div class="blazorise-codeblock">
 <div class="html"><pre>
-<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">Button</span> <span class="htmlAttributeName">Clicked</span><span class="htmlOperator">=</span><span class="quot">&quot;</span><span class="sharpVariable"><span class="atSign">&#64;</span>ShowModal</span><span class="quot">&quot;</span><span class="htmlTagDelimiter">&gt;</span>Show Modal<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">Button</span><span class="htmlTagDelimiter">&gt;</span>
+<span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">Button</span> <span class="htmlAttributeName">Color</span><span class="htmlOperator">=</span><span class="quot">&quot;</span><span class="enum">Color</span><span class="enumValue">.Primary</span><span class="quot">&quot;</span> <span class="htmlAttributeName">Clicked</span><span class="htmlOperator">=</span><span class="quot">&quot;</span><span class="sharpVariable"><span class="atSign">&#64;</span>ShowModal</span><span class="quot">&quot;</span><span class="htmlTagDelimiter">&gt;</span>Show Modal<span class="htmlTagDelimiter">&lt;/</span><span class="htmlElementName">Button</span><span class="htmlTagDelimiter">&gt;</span>
 
 <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">Modal</span> <span class="htmlAttributeName"><span class="atSign">&#64;</span>ref</span><span class="htmlOperator">=</span><span class="quot">&quot;</span><span class="htmlAttributeValue">modalRef</span><span class="quot">&quot;</span><span class="htmlTagDelimiter">&gt;</span>
     <span class="htmlTagDelimiter">&lt;</span><span class="htmlElementName">ModalContent</span> <span class="htmlAttributeName">Centered</span><span class="htmlOperator">=</span><span class="quot">&quot;</span><span class="keyword">true</span><span class="quot">&quot;</span><span class="htmlTagDelimiter">&gt;</span>
@@ -32,16 +32,12 @@
 
     <span class="keyword">private</span> Task ShowModal()
     {
-        modalRef.Show();
-
-        <span class="keyword">return</span> Task.CompletedTask;
+        <span class="keyword">return</span> modalRef.Show();
     }
 
     <span class="keyword">private</span> Task HideModal()
     {
-        modalRef.Hide();
-
-        <span class="keyword">return</span> Task.CompletedTask;
+        <span class="keyword">return</span> modalRef.Hide();
     }
 }
 </pre></div>

@@ -87,6 +87,50 @@ namespace Blazorise.Providers
 
         #endregion
 
+        #region DatePicker
+
+        public string DatePicker( bool plaintext ) => null;
+
+        public string DatePickerSize( Size size ) => null;
+
+        public string DatePickerColor( Color color ) => null;
+
+        public string DatePickerValidation( ValidationStatus validationStatus ) => null;
+
+        #endregion
+
+        #region TimePicker
+
+        public string TimePicker( bool plaintext ) => null;
+
+        public string TimePickerSize( Size size ) => null;
+
+        public string TimePickerColor( Color color ) => null;
+
+        public string TimePickerValidation( ValidationStatus validationStatus ) => null;
+
+        #endregion
+
+        #region ColorPicker
+
+        public string ColorPicker() => null;
+
+        public string ColorPickerSize( Size size ) => null;
+
+        #endregion
+
+        #region InputMask
+
+        public string InputMask( bool plaintext ) => null;
+
+        public string InputMaskSize( Size size ) => null;
+
+        public string InputMaskColor( Color color ) => null;
+
+        public string InputMaskValidation( ValidationStatus validationStatus ) => null;
+
+        #endregion
+
         #region Check
 
         public string Check() => null;
@@ -239,9 +283,7 @@ namespace Blazorise.Providers
 
         #region FieldLabel
 
-        public string FieldLabel() => null;
-
-        public string FieldLabelHorizontal() => null;
+        public string FieldLabel( bool horizontal ) => null;
 
         #endregion
 
@@ -329,7 +371,7 @@ namespace Blazorise.Providers
 
         #region Dropdown
 
-        public string Dropdown() => null;
+        public string Dropdown( bool isDropdownSubmenu ) => null;
 
         public string DropdownGroup() => null;
 
@@ -349,13 +391,15 @@ namespace Blazorise.Providers
 
         public string DropdownMenu() => null;
 
+        public string DropdownMenuScrollable() => null;
+
         //public string DropdownMenuBody() => null;
 
         public string DropdownMenuVisible( bool visible ) => null;
 
         public string DropdownMenuRight() => null;
 
-        public string DropdownToggle() => null;
+        public string DropdownToggle( bool isDropdownSubmenu ) => null;
 
         public string DropdownToggleColor( Color color ) => null;
 
@@ -573,7 +617,7 @@ namespace Blazorise.Providers
 
         public string BarMode( BarMode mode ) => null;
 
-        public string BarItem( BarMode mode ) => null;
+        public string BarItem( BarMode mode, bool hasDropdown ) => null;
 
         public string BarItemActive( BarMode mode ) => null;
 
@@ -605,11 +649,11 @@ namespace Blazorise.Providers
 
         //public  string BarHasDropdown() => null;
 
-        public string BarDropdown( BarMode mode ) => null;
+        public string BarDropdown( BarMode mode, bool isBarDropDownSubmenu ) => null;
 
         public string BarDropdownShow( BarMode mode ) => null;
 
-        public string BarDropdownToggle( BarMode mode ) => null;
+        public string BarDropdownToggle( BarMode mode, bool isBarDropDownSubmenu ) => null;
 
         public string BarDropdownItem( BarMode mode ) => null;
 
@@ -639,17 +683,17 @@ namespace Blazorise.Providers
 
         #region Collapse
 
-        public string Collapse() => null;
+        public string Collapse( bool accordion ) => null;
 
-        public string CollapseActive( bool active ) => null;
+        public string CollapseActive( bool accordion, bool active ) => null;
 
-        public string CollapseHeader() => null;
+        public string CollapseHeader( bool accordion ) => null;
 
-        public string CollapseBody() => null;
+        public string CollapseBody( bool accordion ) => null;
 
-        public string CollapseBodyActive( bool active ) => null;
+        public string CollapseBodyActive( bool accordion, bool active ) => null;
 
-        public string CollapseBodyContent() => null;
+        public string CollapseBodyContent( bool accordion ) => null;
 
         #endregion
 
@@ -709,6 +753,8 @@ namespace Blazorise.Providers
 
         public string ModalFade() => null;
 
+        public string ModalFade( bool animation ) => null;
+
         public string ModalVisible( bool visible ) => null;
 
         public string ModalBackdrop() => null;
@@ -720,6 +766,8 @@ namespace Blazorise.Providers
         public string ModalContent( bool dialog ) => null;
 
         public string ModalContentSize( ModalSize modalSize ) => null;
+
+        public string ModalContentFullscreen( bool fullscreen ) => null;
 
         public string ModalContentCentered( bool centered ) => null;
 
@@ -792,14 +840,6 @@ namespace Blazorise.Providers
         #region Colors
 
         public string BackgroundColor( Background background ) => null;
-
-        #endregion
-
-        #region Title
-
-        public string Title() => null;
-
-        public string TitleSize( int size ) => null;
 
         #endregion
 
@@ -886,6 +926,12 @@ namespace Blazorise.Providers
         public string TextOverflow( TextOverflow textOverflow ) => null;
 
         public string TextItalic() => null;
+
+        #endregion
+
+        #region Code
+
+        public string Code() => null;
 
         #endregion
 

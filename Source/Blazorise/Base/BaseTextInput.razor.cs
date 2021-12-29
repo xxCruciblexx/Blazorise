@@ -12,7 +12,7 @@ namespace Blazorise
     /// Base component for inputs that are text-based.
     /// </summary>
     /// <typeparam name="TValue">Editable value type.</typeparam>
-    public abstract class BaseTextInput<TValue> : BaseInputComponent<TValue>, ISelectableComponent
+    public abstract class BaseTextInput<TValue> : BaseInputComponent<TValue>, ISelectableComponent, IDisposable
     {
         #region Members
 
@@ -39,13 +39,37 @@ namespace Blazorise
         /// <inheritdoc/>
         protected override void Dispose( bool disposing )
         {
+            if ( disposing )
+            {
+                ReleaseResources();
+            }
+
+            base.Dispose( disposing );
+        }
+
+        /// <inheritdoc/>
+        protected override ValueTask DisposeAsync( bool disposing )
+        {
+            if ( disposing )
+            {
+                ReleaseResources();
+            }
+
+            return base.DisposeAsync( disposing );
+        }
+
+        /// <summary>
+        /// Shared code to dispose of any internal resources.
+        /// </summary>
+        protected override void ReleaseResources()
+        {
             if ( inputValueDebouncer != null )
             {
                 inputValueDebouncer.Debounced -= OnInputValueDebounced;
                 inputValueDebouncer = null;
             }
 
-            base.Dispose( disposing );
+            base.ReleaseResources();
         }
 
         /// <summary>
@@ -122,15 +146,9 @@ namespace Blazorise
         }
 
         /// <inheritdoc/>
-        public virtual void Select( bool focus = true )
+        public virtual Task Select( bool focus = true )
         {
-            InvokeAsync( () => SelectAsync( focus ) );
-        }
-
-        /// <inheritdoc/>
-        public virtual async Task SelectAsync( bool focus = true )
-        {
-            await JSRunner.Select( ElementRef, ElementId, focus );
+            return JSUtilitiesModule.Select( ElementRef, ElementId, focus ).AsTask();
         }
 
         #endregion

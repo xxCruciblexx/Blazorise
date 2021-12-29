@@ -1,6 +1,6 @@
 ﻿@namespace Blazorise.Docs.Docs.Examples
 
-<Button Clicked="@ShowModal">Show Modal</Button>
+<Button Color="Color.Primary" Clicked="@ShowModal">Show Modal</Button>
 
 <Modal @ref="modalRef">
     <ModalContent Centered="true">
@@ -31,15 +31,11 @@
 
     private Task ShowModal()
     {
-        modalRef.Show();
-
-        return Task.CompletedTask;
+        return modalRef.Show();
     }
 
     private Task HideModal()
     {
-        modalRef.Hide();
-
-        return Task.CompletedTask;
+        return modalRef.Hide();
     }
 }

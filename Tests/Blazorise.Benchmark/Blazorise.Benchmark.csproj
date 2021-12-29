@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Source\Blazorise.Bootstrap5\Blazorise.Bootstrap5.csproj" />
     <ProjectReference Include="..\..\Source\Blazorise\Blazorise.csproj" />
     <ProjectReference Include="..\..\Source\Extensions\Blazorise.DataGrid\Blazorise.DataGrid.csproj" />
   </ItemGroup>

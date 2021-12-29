@@ -1,6 +1,7 @@
 ﻿#region Using directives
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Blazorise.Utilities;
 using Microsoft.AspNetCore.Components;
@@ -41,9 +42,10 @@ namespace Blazorise.Components
         /// Sets focus on the input element, if it can be focused.
         /// </summary>
         /// <param name="scrollToElement">If true the browser should scroll the document to bring the newly-focused element into view.</param>
-        public void Focus( bool scrollToElement = true )
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        public Task Focus( bool scrollToElement = true )
         {
-            dropdownToggleRef.Focus( scrollToElement );
+            return dropdownToggleRef.Focus( scrollToElement );
         }
 
         #endregion
@@ -114,6 +116,11 @@ namespace Blazorise.Components
         /// If defined, indicates that its element can be focused and can participates in sequential keyboard navigation.
         /// </summary>
         [Parameter] public int? TabIndex { get; set; }
+
+        /// <summary>
+        /// Sets the maximum height of the dropdown menu.
+        /// </summary>
+        [Parameter] public string MaxMenuHeight { get; set; }
 
         /// <summary>
         /// Captures all the custom attribute that are not part of Blazorise component.

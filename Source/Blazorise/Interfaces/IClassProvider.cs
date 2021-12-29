@@ -85,6 +85,50 @@ namespace Blazorise
 
         #endregion
 
+        #region DatePicker
+
+        string DatePicker( bool plaintext );
+
+        string DatePickerSize( Size size );
+
+        string DatePickerColor( Color color );
+
+        string DatePickerValidation( ValidationStatus validationStatus );
+
+        #endregion
+
+        #region TimePicker
+
+        string TimePicker( bool plaintext );
+
+        string TimePickerSize( Size size );
+
+        string TimePickerColor( Color color );
+
+        string TimePickerValidation( ValidationStatus validationStatus );
+
+        #endregion
+
+        #region ColorPicker
+
+        string ColorPicker();
+
+        string ColorPickerSize( Size size );
+
+        #endregion
+
+        #region InputMask
+
+        string InputMask( bool plaintext );
+
+        string InputMaskSize( Size size );
+
+        string InputMaskColor( Color color );
+
+        string InputMaskValidation( ValidationStatus validationStatus );
+
+        #endregion
+
         #region Check
 
         string Check();
@@ -237,9 +281,7 @@ namespace Blazorise
 
         #region FieldLabel
 
-        string FieldLabel();
-
-        string FieldLabelHorizontal();
+        string FieldLabel( bool horizontal );
 
         #endregion
 
@@ -327,7 +369,7 @@ namespace Blazorise
 
         #region Dropdown
 
-        string Dropdown();
+        string Dropdown( bool isDropdownSubmenu );
 
         string DropdownGroup();
 
@@ -347,13 +389,15 @@ namespace Blazorise
 
         string DropdownMenu();
 
+        string DropdownMenuScrollable();
+
         //string DropdownMenuBody();
 
         string DropdownMenuVisible( bool visible );
 
         string DropdownMenuRight();
 
-        string DropdownToggle();
+        string DropdownToggle( bool isDropdownSubmenu );
 
         string DropdownToggleColor( Color color );
 
@@ -569,7 +613,7 @@ namespace Blazorise
 
         string BarMode( BarMode mode );
 
-        string BarItem( BarMode mode );
+        string BarItem( BarMode mode, bool hasDropdown );
 
         string BarItemActive( BarMode mode );
 
@@ -599,11 +643,11 @@ namespace Blazorise
 
         //string BarHasDropdown();
 
-        string BarDropdown( BarMode mode );
+        string BarDropdown( BarMode mode, bool isBarDropDownSubmenu );
 
         string BarDropdownShow( BarMode mode );
 
-        string BarDropdownToggle( BarMode mode );
+        string BarDropdownToggle( BarMode mode, bool isBarDropDownSubmenu );
 
         string BarDropdownItem( BarMode mode );
 
@@ -633,17 +677,17 @@ namespace Blazorise
 
         #region Collapse
 
-        string Collapse();
+        string Collapse( bool accordion );
 
-        string CollapseActive( bool active );
+        string CollapseActive( bool accordion, bool active );
 
-        string CollapseHeader();
+        string CollapseHeader( bool accordion );
 
-        string CollapseBody();
+        string CollapseBody( bool accordion );
 
-        string CollapseBodyActive( bool active );
+        string CollapseBodyActive( bool accordion, bool active );
 
-        string CollapseBodyContent();
+        string CollapseBodyContent( bool accordion );
 
         #endregion
 
@@ -701,6 +745,8 @@ namespace Blazorise
 
         string ModalFade();
 
+        string ModalFade( bool animation );
+
         string ModalVisible( bool visible );
 
         string ModalBackdrop();
@@ -712,6 +758,8 @@ namespace Blazorise
         string ModalContent( bool dialog );
 
         string ModalContentSize( ModalSize modalSize );
+
+        string ModalContentFullscreen( bool fullscreen );
 
         string ModalContentCentered( bool centered );
 
@@ -784,14 +832,6 @@ namespace Blazorise
         #region Colors
 
         string BackgroundColor( Background background );
-
-        #endregion
-
-        #region Title
-
-        string Title();
-
-        string TitleSize( int size );
 
         #endregion
 
@@ -878,6 +918,12 @@ namespace Blazorise
         string TextOverflow( TextOverflow textOverflow );
 
         string TextItalic();
+
+        #endregion
+
+        #region Code
+
+        string Code();
 
         #endregion
 

@@ -1,5 +1,7 @@
 ﻿#region Using directives
+using System;
 using System.Threading.Tasks;
+using Blazorise.Modules;
 using Blazorise.States;
 using Blazorise.Utilities;
 using Microsoft.AspNetCore.Components;
@@ -11,7 +13,7 @@ namespace Blazorise
     /// <summary>
     /// Toggles the visibility or collapse of <see cref="Bar"/> component.
     /// </summary>
-    public partial class BarDropdownToggle : BaseComponent, ICloseActivator
+    public partial class BarDropdownToggle : BaseComponent, ICloseActivator, IAsyncDisposable
     {
         #region Members
 
@@ -36,7 +38,7 @@ namespace Blazorise
         /// <inheritdoc/>
         protected override void BuildClasses( ClassBuilder builder )
         {
-            builder.Append( ClassProvider.BarDropdownToggle( ParentDropdownState.Mode ) );
+            builder.Append( ClassProvider.BarDropdownToggle( ParentDropdownState.Mode, ParentBarDropdown?.IsBarDropdownSubmenu == true ) );
 
             base.BuildClasses( builder );
         }
@@ -59,7 +61,7 @@ namespace Blazorise
                 {
                     jsRegistered = false;
 
-                    var task = JSRunner.UnregisterClosableComponent( this );
+                    var task = JSClosableModule.Unregister( this );
 
                     try
                     {
@@ -68,6 +70,11 @@ namespace Blazorise
                     catch when ( task.IsCanceled )
                     {
                     }
+#if NET6_0_OR_GREATER
+                    catch ( Microsoft.JSInterop.JSDisconnectedException )
+                    {
+                    }
+#endif
                 }
 
                 DisposeDotNetObjectRef( dotNetObjectRef );
@@ -83,21 +90,24 @@ namespace Blazorise
         /// <returns>Returns the awaitable task.</returns>
         protected Task ClickHandler()
         {
-            ParentBarDropdown?.Toggle();
 
-            return Clicked.InvokeAsync( null );
+            if ( ParentBarDropdown != null )
+                return ParentBarDropdown.Toggle( ElementId );
+
+            return Clicked.InvokeAsync();
         }
 
         /// <inheritdoc/>
         public Task<bool> IsSafeToClose( string elementId, CloseReason closeReason, bool isChildClicked )
         {
-            return Task.FromResult( closeReason == CloseReason.EscapeClosing || ( elementId != ElementId && !isChildClicked ) );
+            return Task.FromResult( closeReason == CloseReason.EscapeClosing || ( ParentBarDropdown?.ShouldClose ?? true && ( elementId != ElementId && ParentBarDropdown?.SelectedBarDropdownElementId != ElementId && !isChildClicked ) ) );
         }
 
         /// <inheritdoc/>
         public Task Close( CloseReason closeReason )
         {
-            ParentBarDropdown?.Hide();
+            if ( ParentBarDropdown != null )
+                return ParentBarDropdown.Hide();
 
             return Task.CompletedTask;
         }
@@ -114,7 +124,7 @@ namespace Blazorise
 
                 ExecuteAfterRender( async () =>
                 {
-                    await JSRunner.RegisterClosableComponent( dotNetObjectRef, ElementRef );
+                    await JSClosableModule.Register( dotNetObjectRef, ElementRef );
                 } );
             }
             else
@@ -123,7 +133,7 @@ namespace Blazorise
 
                 ExecuteAfterRender( async () =>
                 {
-                    await JSRunner.UnregisterClosableComponent( this );
+                    await JSClosableModule.Unregister( this );
                 } );
             }
 
@@ -137,6 +147,11 @@ namespace Blazorise
 
         /// <inheritdoc/>
         protected override bool ShouldAutoGenerateId => true;
+
+        /// <summary>
+        /// Gets or sets the <see cref="IJSClosableModule"/> instance.
+        /// </summary>
+        [Inject] public IJSClosableModule JSClosableModule { get; set; }
 
         /// <summary>
         /// Determines how much left padding will be applied to the dropdown toggle. (in rem unit)

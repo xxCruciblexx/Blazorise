@@ -1,10 +1,13 @@
 ﻿@page "/docs/components/date-picker"
 
+<Seo Canonical="/docs/components/date-picker" Title="Blazorise DatePicker component" Description="DatePicker is a fully featured date selection component that lets users select a date." />
+
 <DocsPageTitle>
     DatePicker component
 </DocsPageTitle>
 
 <DocsPageParagraph>
+    <Code Tag>DatePicker</Code> is a fully featured date selection component that lets users select a date.
     <Code>DatePicker</Code> is based on a <Blazorise.Link To="https://flatpickr.js.org/">flatpickr</Blazorise.Link> datetime picker
     and as such is not a native date input element. That means that unlike <code>DateEdit</code> which will render <Code>type="date"</Code>,
     <Code>DatePicker</Code> will render <Code>type="text"</Code> in the DOM.
@@ -27,6 +30,16 @@
         <DatePickerWithIconExample />
     </DocsPageSectionContent>
     <DocsPageSectionSource Code="DatePickerWithIconExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Disable dates">
+        If you’d like to make certain dates unavailable for selection you can assign the <Code>DisabledDates</Code> parameter.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <DatePickerDisabledDatesExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="DatePickerDisabledDatesExample" />
 </DocsPageSection>
 
 <DocsPageSubtitle>
@@ -201,7 +214,10 @@
     <DocsAttributesItem Name="DisplayFormat" Type="string" Default="null">
         Defines the display format of the date input.
     </DocsAttributesItem>
-    <DocsAttributesItem Name="TimeAs24hr" Type="bool " Default="false">
+    <DocsAttributesItem Name="TimeAs24hr" Type="bool" Default="false">
         Displays time picker in 24 hour mode without AM/PM selection when enabled.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="DisabledDates" Type="IEnumerable<TValue>" Default="null">
+        List of disabled dates that the user should not be able to pick.
     </DocsAttributesItem>
 </DocsAttributes>
