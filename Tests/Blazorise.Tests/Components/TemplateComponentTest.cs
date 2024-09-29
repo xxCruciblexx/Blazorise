@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Blazorise.Tests.Helpers;
-using Bunit;
+﻿using Bunit;
 using Xunit;
 
-namespace Blazorise.Tests.Components
+namespace Blazorise.Tests.Components;
+
+public class TemplateComponentTest : TestContext
 {
-    public class TemplateComponentTest : ComponentTestFixture
+    public TemplateComponentTest()
     {
-        public TemplateComponentTest()
-        {
-            BlazoriseConfig.AddBootstrapProviders( Services );
-        }
+        Services.AddBlazoriseTests().AddBootstrapProviders().AddEmptyIconProvider().AddTestData();
+    }
 
-        [Fact]
-        public void RenderTest()
-        {
-            // setup
+    [Fact]
+    public void RenderTest()
+    {
+        // setup
 
-            // test
+        // test
 
-            // validate
+        // validate
 
-        }
     }
 }

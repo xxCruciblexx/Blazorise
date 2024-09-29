@@ -68,6 +68,7 @@ artifacts/
 *.pidb
 *.svclog
 *.scc
+*.slnf
 
 # Chutzpah Test files
 _Chutzpah*
@@ -148,6 +149,7 @@ publish/
 
 # NuGet Packages
 *.nupkg
+*.snupkg
 # The packages folder can be ignored because of Package Restore
 **/packages/*
 # except build/, which is used as an MSBuild target.
@@ -241,6 +243,33 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 
+# CodeRush personal settings
+.cr/personal
+
 # jekyll
 _site
 Gemfile.lock
+
+# Ignore only specific Rider files/directories
+/.idea/*
+!/.idea/.idea.*
+/.idea/.idea.*/*
+!/.idea/.idea.*/.idea
+/.idea/.idea.*/.idea/*
+!/.idea/.idea.*/.idea/runConfigurations
+Documentation/Blazorise.Docs.Server/wwwroot/img/blog/.DS_Store
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Ignore VS Code
+.vscode/*
+.vscode/settings.json
+
+
+# Source Generation directory
+__SOURCEGENERATED__/

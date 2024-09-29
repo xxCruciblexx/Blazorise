@@ -1,0 +1,11 @@
+﻿@namespace Blazorise.Docs.Docs.Examples
+
+<RadioGroup TValue="string" Name="colors" @bind-CheckedValue="@checkedValue">
+    <Radio Value="@("red")">Red</Radio>
+    <Radio Value="@("green")">Green</Radio>
+    <Radio Value="@("blue")">Blue</Radio>
+</RadioGroup>
+
+@code{
+    string checkedValue = "green";
+}

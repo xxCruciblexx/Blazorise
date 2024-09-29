@@ -1,3 +1,12 @@
 ﻿@inherits Blazorise.BarEnd
-<i class="@ClassNames" style="@StyleNames" @attributes="@Attributes"></i>
-@ChildContent
+@if ( ParentBarState?.Mode == BarMode.Horizontal )
+{
+    <i id="@ElementId" class="@ClassNames" style="@StyleNames" @attributes="@Attributes"></i>
+    @ChildContent
+}
+else
+{
+    <div id="@ElementId" class="@ClassNames" style="@StyleNames" @attributes="@Attributes">
+        @ChildContent
+    </div>
+}

@@ -1,0 +1,148 @@
+﻿@page "/docs/extensions/list-view"
+
+<Seo Canonical="/docs/extensions/list-view" Title="Blazorise List View component" Description="Learn to use and work with the Blazorise ListView component, a flexible and powerful component for displaying a series of content in a contained scrollable view by providing a data source." />
+
+<DocsPageTitle Path="Extensions/List View">
+    Blazorise List View component
+</DocsPageTitle>
+
+<DocsPageLead>
+    List views are a flexible and powerful component for displaying a series of content in a contained scrollable view by providing a data source.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    List views use <Code>ListGroup</Code> behind the covers, so you may make use of the <Code>ListGroup</Code> underlying APIs.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Basic">
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <BasicListViewExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="BasicListViewExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Selectable items">
+        Set the <Code>ListView</Code> <Code>Mode</Code> to <Code>ListGroupMode.Selectable</Code>.
+        Bind <Code>SelectedItem</Code> and provide <Code>TextField</Code> to setup the display text and <Code>ValueField</Code> to uniquely identify the current active selection.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <ListViewSelectableExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="ListViewSelectableExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Extending with custom item content">
+        Customize the way you display the <Code>ListView</Code> items by providing <Code>ItemTemplate</Code>.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <ListViewItemTemplateExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="ListViewItemTemplateExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Styling Individual Items">
+        Customize the look of each item by using the right callbacks.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <ListViewStylingIndividualItemsExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="ListViewStylingIndividualItemsExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes Title="ListView">
+    <DocsAttributesItem Name="Data" Type="IEnumerable<TItem>">
+        Gets or sets the items data-source.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedItem" Type="TItem">
+        Gets or sets currently selected item.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedItemChanged" Type="EventCallback<TItem>">
+        Occurs after the selected item has changed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="TextField" Type="Func<TItem, string>">
+        Method used to get the display field from the supplied data source.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ValueField" Type="Func<TItem, string>">
+        Method used to get the value field from the supplied data source.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Class" Type="string">
+        Custom css class-names.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Style" Type="string">
+        Custom styles.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Height" Type="string">
+        Sets the ListView Height.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="MaxHeight" Type="string" Default="250px">
+        Sets the ListView MaxHeight.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Flush" Type="bool" Default="false">
+        Remove some borders and rounded corners to render list group items edge-to-edge in a parent container (e.g., cards).
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Scrollable" Type="bool" Default="true">
+        Makes the list group scrollable by adding a vertical scrollbar.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Mode" Type="ListGroupMode" Default="Static">
+        Defines the list-group behavior mode.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Attributes" Type="Dictionary<string, object>">
+        Captures all the custom attribute that are not part of Blazorise component.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ChildContent" Type="RenderFragment">
+        Specifies the content to be rendered inside the ListView.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ItemTemplate" Type="RenderFragment<ItemContext<TItem>>">
+        Specifies the content to be rendered inside each item of the ListView.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Virtualize" Type="bool" Default="false">
+        Gets or sets whether the listview will use the <Code>Virtualize</Code> functionality.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectionMode" Type="ListGroupSelectionMode" Default="ListGroupSelectionMode.Single">
+        Defines the list-group selection mode.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedItems" Type="List<string>">
+        Gets or sets currently selected items names.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedItemsChanged" Type="EventCallback<List<string>>">
+        An event raised when SelectedItems are changed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="DisabledItem" Type="Func<TItem, bool>">
+        Method used to get the disabled items from the supplied data source.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ItemTextColor" Type="Func<TItem, TextColor>">
+        Method used to get the text color for the item.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ItemBackground" Type="Func<TItem, Background>">
+        Method used to get the background color for the item.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ItemPadding" Type="Func<TItem, IFluentSpacing>">
+        Method used to get the padding for the item.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ItemMargin" Type="Func<TItem, IFluentSpacing>">
+        Method used to get the margin for the item.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ItemClass" Type="Func<TItem, string>">
+        Method used to get the class for the item.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ItemStyle" Type="Func<TItem, string>">
+        Method used to get the style for the item.
+    </DocsAttributesItem>
+</DocsAttributes>

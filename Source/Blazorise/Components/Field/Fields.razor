@@ -1,0 +1,15 @@
+﻿@namespace Blazorise
+@inherits BaseColumnComponent
+<CascadingValue Value="@this" IsFixed>
+    @if ( Label is not null )
+    {
+        <Label>@Label</Label>
+    }
+    <div @ref="@ElementRef" id="@ElementId" class="@ClassNames" style="@StyleNames" @attributes="@Attributes">
+        @ChildContent
+    </div>
+    @if ( Help is not null )
+    {
+        <Help>@Help</Help>
+    }
+</CascadingValue>

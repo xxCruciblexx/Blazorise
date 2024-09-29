@@ -1,0 +1,144 @@
+﻿@page "/docs/extensions/icons"
+
+<Seo Canonical="/docs/extensions/icons" Title="Blazorise Icons" Description="Learn to use and work with the Blazorise Icon component, symbols that can be used to represent various options within an application." />
+
+<DocsPageTitle Path="Extensions/Icons">
+    Blazorise Icons
+</DocsPageTitle>
+
+<DocsPageLead>
+    Icons are symbols that can be used to represent various options within an application.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    Blazorise comes with over 300 icons. These icons are part of the default icon library. If you prefer, you can register custom icon libraries as well.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    Installation
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="NuGet">
+        Install extension from NuGet.
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="FontAwesomeNugetInstallExample"></DocsPageSectionSource>
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Font Awesome Icons CSS">
+        Include CSS link into your <Code>index.html</Code> or <Code>_Layout.cshtml</Code> / <Code>_Host.cshtml</Code> file, depending if you’re using a Blazor WebAssembly or Blazor Server side project.
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="FontAwesomeCSSExample"></DocsPageSectionSource>
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Material Icons CSS">
+        Note: If instead of FontAwesome icons you want to use Material icons you will need to define static <Code>blazorise.icons.material.css</Code> in your <Code>index.html</Code> or <Code>_Layout.cshtml</Code> / <Code>_Host.cshtml</Code> file. This file is required for some custom icon styles to work.
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="MaterialCSSExample"></DocsPageSectionSource>
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Bootstrap Icons CSS">
+        Note: If instead of FontAwesome icons you want to use Bootstrap icons you will need to define static <Code>bootstrap-icons.min.css</Code> in your <Code>index.html</Code> or <Code>_Layout.cshtml</Code> / <Code>_Host.cshtml</Code> file. This file is required for some custom icon styles to work.
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="BootstrapIconsCSSExample"></DocsPageSectionSource>
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Fluent Icons CSS">
+        Note: If instead of Fluent icons you want to use Bootstrap icons you will need to define static <Code>FluentSystemIcons-Resizable.css</Code> in your <Code>index.html</Code> or <Code>_Layout.cshtml</Code> / <Code>_Host.cshtml</Code> file. This file is required for some custom icon styles to work.
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="BootstrapIconsCSSExample"></DocsPageSectionSource>
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Registrations" />
+    <DocsPageSectionSource Code="RegistrationsExample"></DocsPageSectionSource>
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Basic Example">
+        To define an icon it’s simple as this.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <IconBasicExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="IconBasicExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Custom">
+        You can also use a real icon name instead of predefined enum.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <IconCustomExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="IconCustomExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Icon Names">
+        Preferred way to define icon is to use an enum <Code>IconName</Code>. That way every icon will be applied automatically based on the icon package that you’re using.
+
+        In case you cannot find an icon in the provided enum, you can also use prebuilt list of icon names that comes with every icon package. For example for font-awesome you would use <Code>FontAwesomeIcons</Code>, while for material that would be <Code>MaterialIcons</Code>.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <IconNamesExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="IconNamesExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Style">
+        By default all icons will have Solid style. To change it you can use one of the supported styles:
+        <UnorderedList>
+            <UnorderedListItem>Solid</UnorderedListItem>
+            <UnorderedListItem>Regular</UnorderedListItem>
+            <UnorderedListItem>Light</UnorderedListItem>
+            <UnorderedListItem>DuoTone</UnorderedListItem>
+        </UnorderedList>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <IconStyleExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="IconStyleExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Size">
+        You can set the size to one of the supported below.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <IconSizeExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="IconSizeExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Global options">
+        Defining styles on each icon can become very tedious with time. That's why we give you an option to specify them globally. This way, you will have consistent styling across the application, and you can still override them on the icon if you need to.
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="IconGlobalSettingsExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes>
+    <DocsAttributesItem Name="Name" Type="object" Default="null">
+        Icon name.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="IconStyle" Type="IconStyle" Default="Solid">
+        Suggested icon style.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="IconSize" Type="IconSize" Default="Default">
+        Defines the icon size.
+    </DocsAttributesItem>
+</DocsAttributes>

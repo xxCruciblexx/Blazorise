@@ -1,0 +1,163 @@
+﻿@page "/docs/extensions/richtextedit"
+
+<Seo Canonical="/docs/extensions/richtextedit" Title="Blazorise RichTextEdit component" Description="Learn to use and work with the Blazorise RichTextEdit component, which allows you to add and use a ‘WYSIWYG’ rich text editor." />
+
+<DocsPageTitle Path="Extensions/RichTextEdit">
+    Blazorise RichTextEdit component
+</DocsPageTitle>
+
+<DocsPageLead>
+    The <Code>RichTextEdit</Code> component allows you to add and use a ‘WYSIWYG’ rich text editor.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    The Blazorise RichTextEdit is based on the <Blazorise.Link To="https://quilljs.com/" Target="Target.Blank">QuillJS</Blazorise.Link> JavaScript library.
+</DocsPageParagraph>
+
+<UnorderedList>
+    <UnorderedListItem>
+        <Code>RichTextEdit</Code> the root editor component
+        <UnorderedList>
+            <UnorderedListItem><Code>Editor</Code> (Optional) the editor part with displayed html content</UnorderedListItem>
+            <UnorderedListItem>
+                <Code>Toolbar</Code> (Optional) the editor toolbar definition
+                <UnorderedList>
+                    <UnorderedListItem>
+                        <Code>RichTextEditToolbarGroup</Code> toolbar group
+                        <UnorderedList>
+                            <UnorderedListItem><Code>RichTextEditToolbarButton</Code> toolbar button</UnorderedListItem>
+                            <UnorderedListItem>
+                                <Code>RichTextEditToolbarSelect</Code> toolbar selection dropdown
+                                <UnorderedList>
+                                    <UnorderedListItem><Code>RichTextEditToolbarSelectItem</Code> toolbar selection item</UnorderedListItem>
+                                </UnorderedList>
+                            </UnorderedListItem>
+                            <UnorderedListItem>any custom button or component</UnorderedListItem>
+                        </UnorderedList>
+                    </UnorderedListItem>
+                </UnorderedList>
+            </UnorderedListItem>
+        </UnorderedList>
+    </UnorderedListItem>
+</UnorderedList>
+
+<DocsPageSubtitle>
+    Installation
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="NuGet">
+        Install extension from NuGet.
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="RichTextEditNugetInstallExample"></DocsPageSectionSource>
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Imports">
+        In your main <Badge Color="Color.Light">_Imports.razor</Badge> add:
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="RichTextEditImportsExample"></DocsPageSectionSource>
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Configuration">
+        In your Blazor <Code>StartUp</Code> add the following statement
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="RichTextEditStartupExample"></DocsPageSectionSource>
+</DocsPageSection>
+
+<Heading Size="HeadingSize.Is3">
+    Options
+</Heading>
+
+<DocsAttributes>
+    <DocsAttributesItem Name="UseShowTheme" Type="bool" Default="true">
+        Load the QuillJS snow theme related resources.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="UseBubbleTheme" Type="bool" Default="false">
+        Load the QuillJS bubble theme related resources.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="UseTables" Type="bool" Default="false">
+        If true enables the QuillJs table module. Please be aware that this module is not part of the core QuillJs library, and it is still experimental.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="QuillJSVersion" Type="string" Default="2.0.0" ObsoleteMessage="Dynamic loading no longer used.">
+        The QuillJS version to load.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="DynamicLoadReferences" Type="bool" Default="true" ObsoleteMessage="Dynamic loading no longer used.">
+        Load the RichTextEdit scripts and stylesheets on demand.
+    </DocsAttributesItem>
+</DocsAttributes>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Basic">
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <RichTextEditExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="RichTextEditExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="With Tables">
+        <Paragraph>
+            To enable table support within the RichTextEdit component, you need to configure it in your <Strong>Startup.cs</Strong> file as follows:
+        </Paragraph>
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="RichTextEditTableStartupExample" />
+
+    <DocsPageSectionHeader>
+        <Paragraph>
+            Once enabled, you can create tables within the RichTextEdit component using the following code:
+        </Paragraph>
+        <Paragraph>
+            <Alert Color="Color.Warning" Visible>
+                <AlertMessage>Note:</AlertMessage>
+                <AlertDescription>This feature is currently marked as experimental. While it provides basic table functionality, some advanced features may be limited or not fully supported. We recommend using it with caution until an official module is released by the Quill.js team.</AlertDescription>
+            </Alert>
+        </Paragraph>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <RichTextEditTableExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="RichTextEditTableExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    Editor customization
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Theming">
+        The <Code>RichTextEdit</Code> comes default with 2 themes <Code>Snow</Code> and <Code>Bubble</Code>. The <Code>Snow</Code> theme is a simple flat toolbar theme and the <Code>Bubble</Code> theme is a tooltip based theme where the toolbar will be displayed in the tooltip.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        See <Blazorise.Link To="https://quilljs.com/docs/themes/" Target="Target.Blank">QuillJS Themes</Blazorise.Link> for more information.
+    </DocsPageSectionContent>
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Toolbar">
+        The <Code>RichTextEdit</Code> toolbar can be completely customized. QuillJS defines a number of default actions that can be used through the <Code>RichTextEditToolbarButton</Code> and <Code>RichTextEditToolbarSelect</Code> components
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        See <Blazorise.Link To="https://quilljs.com/docs/modules/toolbar/" Target="Target.Blank">QuillJS Toolbar module</Blazorise.Link> for more information.
+    </DocsPageSectionContent>
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="QuillJS Configuration">
+        The <Code>RichTextEdit</Code> has the option to inject additional QuillJS configuration logic or load additional <Blazorise.Link To="https://github.com/quilljs/awesome-quill" Target="Target.Blank">modules</Blazorise.Link>. Use the <Code>ConfigureQuillJSMethod</Code> property to indicate which javascript method needs to be called during initialization.
+
+        If you for example want to change the way how links are sanitized you can use the following logic. Default all user typed url’s are relative to your pages base url. So when a user types <Code>google.com</Code> this will result in something like <Code>https://baseurl/google.com</Code>, but if you would probably like <Code>https://google.com</Code> then use the following configuration routine.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <RichTextEditConfigurationExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="RichTextEditConfigurationExample" />
+</DocsPageSection>
+
+<RichTextEditApi />

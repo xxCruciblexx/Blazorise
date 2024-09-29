@@ -1,48 +1,69 @@
 ﻿#region Using directives
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 #endregion
 
-namespace Blazorise.Providers
+namespace Blazorise.Providers;
+
+class EmptyStyleProvider : IStyleProvider
 {
-    class EmptyStyleProvider : IStyleProvider
-    {
-        #region Modal
+    #region Modal
 
-        public string ModalShow() => null;
+    public int DefaultModalZIndex => 0;
 
-        #endregion
+    public int DefaultModalBackdropZIndex => 0;
 
-        #region ModalBody
+    public string ModalShow( bool visible ) => null;
 
-        public string ModalBodyMaxHeight( int maxHeight ) => null;
+    public string ModalFade( bool showing, bool hiding ) => null;
 
-        #endregion
+    public string ModalAnimationDuration( bool animated, int animationDuration ) => null;
 
-        #region ProgressBar
+    public string ModalZIndex( int modalOpenIndex ) => null;
 
-        public string ProgressBarValue( int value ) => null;
+    public string ModalBackdropZIndex( int modalOpenIndex ) => null;
 
-        public string ProgressBarSize( Size size ) => null;
+    #endregion
 
-        #endregion
+    #region ModalBody
 
-        #region Layout
+    public string ModalBodyMaxHeight( int maxHeight ) => null;
 
-        #endregion
+    #endregion
 
-        #region Row
+    #region ProgressBar
 
-        public string RowGutter( (int Horizontal, int Vertical) gutter ) => null;
+    public string ProgressBarValue( int value ) => null;
 
-        #endregion
+    public string ProgressBarSize( Size size ) => null;
 
-        #region Column
+    #endregion
 
-        public string ColumnGutter( (int Horizontal, int Vertical) gutter ) => null;
+    #region Layout
 
-        #endregion
-    }
+    #endregion
+
+    #region Row
+
+    public string RowGutter( (int Horizontal, int Vertical) gutter ) => null;
+
+    #endregion
+
+    #region Column
+
+    public string ColumnGutter( (int Horizontal, int Vertical) gutter ) => null;
+
+    #endregion
+
+    #region Offcanvas
+
+    public string OffcanvasAnimationDuration( bool animated, int AnimationDuration ) => null;
+
+    public string OffcanvasBackdropAnimationDuration( bool animated, int animationDuration ) => null;
+
+    #endregion
+
+    #region Toast
+
+    public string ToastAnimationDuration( bool animated, int animationDuration ) => null;
+
+    #endregion
 }

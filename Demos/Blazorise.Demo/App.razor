@@ -11,34 +11,62 @@
             <p>Sorry, there's nothing at this address.</p>
         </NotFound>
     </Router>
+    <MessageProvider />
+    <NotificationProvider />
+    <PageProgressProvider />
+    <ModalProvider UseModalStructure Animated Size="ModalSize.ExtraLarge" />
+    <ApplicationLoadingIndicator />
 </Blazorise.ThemeProvider>
 @code{
-    private Theme theme = new Theme
+    private Theme theme = new()
     {
-        BreakpointOptions = new ThemeBreakpointOptions
+        Enabled = false,
+        BarOptions = new()
+        {
+            HorizontalHeight = "72px"
+        },
+        BreakpointOptions = new()
         {
         },
-        ColorOptions = new ThemeColorOptions
+        //SpacingOptions = new()
+        //{
+        //},
+        ColorOptions = new()
         {
-            Primary = "#0288D1",
-            //Secondary = "#A65529",
-            //Success = "#23C02E",
-            //Info = "#9BD8FE",
-            //Warning = "#F8B86C",
-            //Danger = "#F95741",
-            //Light = "#F0F0F0",
-            //Dark = "#535353",
+            Primary = "#3b82f6",
+            Secondary = "#6B7280",
+            Success = "#0E9F6E",
+            Danger = "#F05252",
+            Warning = "#C27803",
+            Info = "#03A9F4",
+            Light = "#F3F4F6",
+            Dark = "#1F2937",
         },
-        BackgroundOptions = new ThemeBackgroundOptions
+        BackgroundOptions = new()
         {
-            Primary = "#0288D1",
+            Primary = "#3b82f6",
+            Secondary = "#6B7280",
+            Success = "#0E9F6E",
+            Danger = "#F05252",
+            Warning = "#C27803",
+            Info = "#03A9F4",
+            Light = "#F3F4F6",
+            Dark = "#1F2937",
         },
-        TextColorOptions = new ThemeTextColorOptions
+        TextColorOptions = new()
         {
+            Primary = "#3b82f6",
+            Secondary = "#6B7280",
+            Success = "#0E9F6E",
+            Danger = "#F05252",
+            Warning = "#C27803",
+            Info = "#03A9F4",
+            Light = "#F3F4F6",
+            Dark = "#1F2937",
         },
         //ButtonOptions = new ThemeButtonOptions { },
         //DropdownOptions = new ThemeDropdownOptions { },
-        InputOptions = new ThemeInputOptions
+        InputOptions = new()
         {
             CheckColor = "#0288D1",
         },
@@ -57,4 +85,5 @@
         //    Color = "#ff0000",
         //},
     };
+
 }

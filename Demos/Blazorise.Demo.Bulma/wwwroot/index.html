@@ -11,41 +11,42 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="manifest.json">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" integrity="sha256-2pUeJf+y0ltRPSbKOeJh09ipQFYxUdct5nTY6GAXswA=" crossorigin="anonymous" />
-    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link href="_content/Blazorise.Icons.FontAwesome/v6/css/all.min.css" rel="stylesheet">
 
-    <link href="_content/Blazorise/blazorise.css" rel="stylesheet" />
-    <link href="_content/Blazorise.Bulma/blazorise.bulma.css" rel="stylesheet" />
-    <link href="_content/Blazorise.Sidebar/blazorise.sidebar.css" rel="stylesheet" />
-    <link href="_content/Blazorise.Snackbar/blazorise.snackbar.css" rel="stylesheet" />
-    <link href="_content/Blazorise.Demo/demo.css" rel="stylesheet" />
+    <link href="_content/Blazorise/blazorise.css?v=1.6.1.0" rel="stylesheet" />
+    <link href="_content/Blazorise.Bulma/blazorise.bulma.css?v=1.6.1.0" rel="stylesheet" />
+    <link href="_content/Blazorise.Sidebar/blazorise.sidebar.css?v=1.6.1.0" rel="stylesheet" />
+    <link href="_content/Blazorise.Snackbar/blazorise.snackbar.css?v=1.6.1.0" rel="stylesheet" />
+    <link href="_content/Blazorise.TreeView/blazorise.treeview.css?v=1.6.1.0" rel="stylesheet" />
+    <link href="_content/Blazorise.SpinKit/blazorise.spinkit.css?v=1.6.1.0" rel="stylesheet" />
+    <link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css?v=1.6.1.0" rel="stylesheet" />
+    <link href="_content/Blazorise.Demo/demo.css?v=1.6.1.0" rel="stylesheet" />
 
     <link href="css/site.css" rel="stylesheet" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
-    <app>
-        <div class="sk-cube-grid">
-            <div class="sk-cube sk-cube1"></div>
-            <div class="sk-cube sk-cube2"></div>
-            <div class="sk-cube sk-cube3"></div>
-            <div class="sk-cube sk-cube4"></div>
-            <div class="sk-cube sk-cube5"></div>
-            <div class="sk-cube sk-cube6"></div>
-            <div class="sk-cube sk-cube7"></div>
-            <div class="sk-cube sk-cube8"></div>
-            <div class="sk-cube sk-cube9"></div>
+    <app id="app">
+        <div style="position:fixed; height:100%; width:100%; margin:0;">
+            <div style="display: flex; justify-content: center; align-items:center; height:100%; width:100%;">
+                <img src="_content/Blazorise.Demo/img/logos/blazorise-small.svg" class="b-demo-loading" style="height: 250px;" />
+            </div>
         </div>
     </app>
 
     <!-- EXTENSIONS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@latest/dist/chartjs-plugin-streaming.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@1.28.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 
-    <script src="_content/Blazorise/blazorise.js"></script>
-    <script src="_content/Blazorise.Bulma/blazorise.bulma.js"></script>
-    <script src="_content/Blazorise.Charts/blazorise.charts.js"></script>
-    <script src="_content/Blazorise.Charts.Streaming/blazorise.charts.streaming.js"></script>
+    <script src="_content/Blazorise.Animate/blazorise.animate.js?v=1.6.1.0"></script>
+    <script src="_content/Blazorise.Demo/demo.js?v=1.6.1.0"></script>
 
     <script src="_framework/blazor.webassembly.js"></script>
 </body>

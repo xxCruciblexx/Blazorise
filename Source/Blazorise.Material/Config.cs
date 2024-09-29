@@ -1,51 +1,44 @@
 ﻿#region Using directives
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Blazorise.Bootstrap;
+using Blazorise.Material.Providers;
+using Blazorise.Modules;
 using Microsoft.Extensions.DependencyInjection;
 #endregion
 
-namespace Blazorise.Material
+namespace Blazorise.Material;
+
+public static class Config
 {
-    public static class Config
+    public static IServiceCollection AddMaterialProviders( this IServiceCollection serviceCollection, Action<IClassProvider> configureClassProvider = null )
     {
-        public static IServiceCollection AddMaterialProviders( this IServiceCollection serviceCollection, Action<IClassProvider> configureClassProvider = null )
+        var classProvider = new MaterialClassProvider();
+
+        configureClassProvider?.Invoke( classProvider );
+
+        serviceCollection.AddSingleton<IClassProvider>( classProvider );
+        serviceCollection.AddSingleton<IStyleProvider, MaterialStyleProvider>();
+        serviceCollection.AddSingleton<IBehaviourProvider, MaterialBehaviourProvider>();
+        serviceCollection.AddScoped<IThemeGenerator, MaterialThemeGenerator>();
+
+        foreach ( var mapping in ComponentMap )
         {
-            var classProvider = new MaterialClassProvider();
-
-            configureClassProvider?.Invoke( classProvider );
-
-            serviceCollection.AddSingleton<IClassProvider>( classProvider );
-            serviceCollection.AddSingleton<IStyleProvider, MaterialStyleProvider>();
-            serviceCollection.AddScoped<IJSRunner, MaterialJSRunner>();
-            serviceCollection.AddSingleton<IComponentMapper, ComponentMapper>();
-            serviceCollection.AddScoped<IThemeGenerator, MaterialThemeGenerator>();
-
-            return serviceCollection;
+            serviceCollection.AddTransient( mapping.Key, mapping.Value );
         }
 
-        private static void RegisterComponents( IComponentMapper componentMapper )
-        {
-            componentMapper.Replace( typeof( Blazorise.Switch<> ), typeof( Material.Switch<> ) );
-        }
+        serviceCollection.AddScoped<IJSModalModule, Modules.MaterialJSModalModule>();
+        serviceCollection.AddScoped<IJSTooltipModule, Modules.MaterialJSTooltipModule>();
 
-        /// <summary>
-        /// Registers the custom rules for material components.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <returns></returns>
-        public static IServiceProvider UseMaterialProviders( this IServiceProvider serviceProvider )
-        {
-            // same components as in bootstrap provider
-            serviceProvider.UseBootstrapProviders();
-
-            var componentMapper = serviceProvider.GetRequiredService<IComponentMapper>();
-
-            RegisterComponents( componentMapper );
-
-            return serviceProvider;
-        }
+        return serviceCollection;
     }
+
+    public static IDictionary<Type, Type> ComponentMap => new Dictionary<Type, Type>( Bootstrap.Config.ComponentMap )
+    {
+        // material overrides
+        [typeof( Blazorise.CarouselSlide )] = typeof( Components.CarouselSlide ),
+        [typeof( Blazorise.NumericPicker<> )] = typeof( Components.NumericPicker<> ),
+        [typeof( Blazorise.Switch<> )] = typeof( Components.Switch<> ),
+        [typeof( Blazorise.Step )] = typeof( Components.Step ),
+        [typeof( Blazorise.Steps )] = typeof( Components.Steps )
+    };
 }

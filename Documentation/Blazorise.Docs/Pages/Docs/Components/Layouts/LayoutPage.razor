@@ -1,0 +1,115 @@
+﻿@page "/docs/components/layout"
+
+<Seo Canonical="/docs/components/layout" Title="Blazorise Layout system" Description="Learn to use and work with the Blazorise Layout component, which is used to handle the overall layout of a page." />
+
+<DocsPageTitle Path="Components/Layout">
+    Blazorise Layout system
+</DocsPageTitle>
+
+<DocsPageLead>
+    Handling the overall layout of a page.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    The <Code Tag>Layout</Code> is a component for building common application layouts.
+</DocsPageParagraph>
+
+<DocsPageParagraph>
+    The layout consists of four diferent sections: a horizontal navigation bar (LayoutHeader), a collapsible navigation sidebar (LayoutSider) and a content area (LayoutContent). An applicationss main navigation blocks should be positioned in the navbar and/or sidebar, whereas views are rendered in the content area.
+</DocsPageParagraph>
+
+<DocsPageParagraph>
+    Layout is responsive and adjusts automatically to fit desktop, tablet, and mobile screen sizes.
+</DocsPageParagraph>
+
+<UnorderedList>
+    <UnorderedListItem>
+        <Code Tag>Layout</Code> The main layout container
+        <UnorderedList>
+            <UnorderedListItem>
+                <Code Tag>LayoutHeader</Code> The top container for a Bar or navigation
+            </UnorderedListItem>
+            <UnorderedListItem>
+                <Code Tag>LayoutContent</Code> The main content container
+            </UnorderedListItem>
+            <UnorderedListItem>
+                <Code Tag>LayoutFooter</Code> The bottom layout
+            </UnorderedListItem>
+            <UnorderedListItem>
+                <Code Tag>LayoutSider</Code> The sidebar container
+                <UnorderedList>
+                    <UnorderedListItem>
+                        <Code Tag>LayoutSiderContent</Code> Main content for sider component
+                    </UnorderedListItem>
+                </UnorderedList>
+            </UnorderedListItem>
+        </UnorderedList>
+    </UnorderedListItem>
+</UnorderedList>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Basic">
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <BasicLayoutStyledExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="BasicLayoutExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Sider with Header on top">
+        <Paragraph>
+            The <Code>LayoutHeader</Code> can be located on top or to the side of the drawer.
+        </Paragraph>
+        <Paragraph>
+            When put on top, the <Code>LayoutHeader</Code> is typically used as an application header. Application headers contain, for example, the application's name and branding, as well as actions that apply to the entire application, such as notifications, settings, etc.
+        </Paragraph>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <LayoutWithSiderAndTopHeaderStyledExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="LayoutWithSiderAndTopHeaderExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="With Sider">
+        When placed to the side, the <Code>LayoutHeader</Code> is often seen as a view header, housing the view's title, and actions and secondary navigation that relate only to the current view.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <LayoutWithSiderStyledExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="LayoutWithSiderExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes Title="Layout">
+    <DocsAttributesItem Name="Sider" Type="bool" Default="false">
+        Indicates that layout will contain sider.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Loading" Type="bool" Default="false">
+        If true, an overlay will be created so the user cannot click anything until set to false.
+    </DocsAttributesItem>
+</DocsAttributes>
+
+<DocsAttributes Title="LayoutHeader">
+    <DocsAttributesItem Name="Fixed" Type="bool" Default="false">
+        If true header will be fixed to the top of the page.
+    </DocsAttributesItem>
+</DocsAttributes>
+
+<DocsAttributes Title="LayoutFooter">
+    <DocsAttributesItem Name="Fixed" Type="bool" Default="false">
+        If true footer will be fixed to the bottom of the page.
+    </DocsAttributesItem>
+</DocsAttributes>

@@ -1,11 +1,4 @@
 ﻿@inherits BaseComponent
-@if ( !HasCustomRegistration )
-{
-    <button class="@ClassNames" type="button" @onclick="@ClickHandler">
-        @ChildContent
-    </button>
-}
-else
-{
-    @RenderCustomComponent()
-}
+<button @ref="@ElementRef" id="@ElementId" class="@ClassNames" type="button" @onclick="@ClickHandler" @onclick:stopPropagation @attributes="@Attributes">
+    @ChildContent
+</button>

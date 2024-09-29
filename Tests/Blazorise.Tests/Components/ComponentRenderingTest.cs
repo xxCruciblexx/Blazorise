@@ -1,64 +1,66 @@
-﻿using BasicTestApp.Client;
-using Blazorise.Tests.Helpers;
-using Bunit;
+﻿using Bunit;
 using Xunit;
 
-namespace Blazorise.Tests.Components
+namespace Blazorise.Tests.Components;
+
+public class ComponentRenderingTest : TestContext
 {
-    public class ComponentRenderingTest : ComponentTestFixture
+    public ComponentRenderingTest()
     {
-        public ComponentRenderingTest()
-        {
-            BlazoriseConfig.AddBootstrapProviders( Services );
-        }
+        Services.AddBlazoriseTests().AddBootstrapProviders().AddEmptyIconProvider().AddTestData();
+        JSInterop
+            .AddBlazoriseTextEdit()
+            .AddBlazoriseButton();
+    }
 
-        [Fact]
-        public void CanRenderTextOnlyComponent()
-        {
-            // setup
+    [Fact]
+    public void CanRenderTextOnlyComponent()
+    {
+        // setup
 
-            // test
-            var appElement = RenderComponent<TextOnlyComponent>();
+        // test
+        var appElement = RenderComponent<TextOnlyComponent>();
 
-            // validate
-            Assert.Contains( "Hello from TextOnlyComponent", appElement.Markup );
-        }
+        // validate
+        Assert.Contains( "Hello from TextOnlyComponent", appElement.Markup );
+    }
 
-        [Fact]
-        public void CanRenderButtonComponent()
-        {
-            // setup
-            var buttonOpen = "<button";
-            var buttonClose = "</button>";
-            var buttonType = @"type=""button""";
-            var buttonContent = "hello primary";
+    [Fact]
+    public void CanRenderButtonComponent()
+    {
+        // setup
+        var buttonOpen = "<button";
+        var buttonClose = "</button>";
+        var buttonType = @"type=""button""";
+        var buttonContent = "hello primary";
 
-            // test
-            var comp = RenderComponent<ButtonOnlyComponent>();
+        // test
+        var comp = RenderComponent<ButtonOnlyComponent>();
 
-            // validate
-            Assert.Contains( buttonOpen, comp.Markup );
-            Assert.Contains( buttonClose, comp.Markup );
-            Assert.Contains( buttonType, comp.Markup );
-            Assert.Contains( buttonContent, comp.Markup );
-        }
+        // validate
+        this.JSInterop.VerifyNotInvoke( "initialize" );
+        Assert.Contains( buttonOpen, comp.Markup );
+        Assert.Contains( buttonClose, comp.Markup );
+        Assert.Contains( buttonType, comp.Markup );
+        Assert.Contains( buttonContent, comp.Markup );
+    }
 
-        [Fact]
-        public void CannotChangeElementId()
-        {
-            // setup
-            var comp = RenderComponent<ElementIdComponent>();
-            var date = comp.Find( "input" );
-            var button = comp.Find( "button" );
+    [Fact]
+    public void CannotChangeElementId()
+    {
+        // setup
+        var comp = RenderComponent<ElementIdComponent>();
+        var date = comp.Find( "input" );
+        var button = comp.Find( "button" );
 
-            Assert.NotEqual( string.Empty, date.GetAttribute( "id" ) );
+        Assert.NotEqual( string.Empty, date.GetAttribute( "id" ) );
 
-            // test
-            var before = date.GetAttribute( "id" );
-            button.Click();
+        // test
+        var before = date.GetAttribute( "id" );
+        button.Click();
 
-            // validate
-            Assert.Equal( before, date.GetAttribute( "id" ) );
-        }
+        // validate
+        this.JSInterop.VerifyNotInvoke( "initialize" );
+        Assert.Equal( before, date.GetAttribute( "id" ) );
     }
 }

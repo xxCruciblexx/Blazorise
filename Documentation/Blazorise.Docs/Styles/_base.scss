@@ -1,0 +1,72 @@
+﻿body {
+    color: #3f4d62;
+    font-family: 'Inter', 'Open Sans', 'Helvetica','Arial','sans-serif';
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    color: #1a81fa;
+}
+
+.b-top-bar {
+    .navbar-nav {
+        .nav-link {
+            font-size: 1.1rem;
+            font-weight: 400;
+            padding-top: 2.4px;
+            padding-bottom: 2.4px;
+        }
+
+        .nav-link:hover {
+            background-color: hsla(201°, 50%, 98%, .5);
+            border-radius: 7px;
+        }
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    z-index: 1;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+    border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+html, body * {
+    scrollbar-color: #bfbfbf transparent;
+    scrollbar-width: thin;
+}
+
+.img-circle {
+    border-radius: 4.25rem !important;
+}
+
+.gradient-commercial {
+    background: -webkit-linear-gradient(0deg,#287395,#b93895);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.badge-primary-gradient {
+    background-image: linear-gradient(to bottom right, #9d54df, #9333EA);
+}
+
+.btn-primary-gradient {
+    background-image: linear-gradient(to bottom, #9d54df, #9333EA);
+}

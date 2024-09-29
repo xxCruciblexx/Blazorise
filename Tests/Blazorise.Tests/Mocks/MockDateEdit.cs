@@ -2,53 +2,48 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Moq;
 
-namespace Blazorise.Tests.Mocks
+namespace Blazorise.Tests.Mocks;
+
+internal class MockDateEdit<T> : DateEdit<T>
 {
-    internal class MockDateEdit<T> : DateEdit<T>
+    public MockDateEdit( Validation validation = null, Expression<Func<T>> dateExpression = null )
     {
-        public MockDateEdit(Validation validation = null, Expression<Func<T>> dateExpression = null)
-        {
-            var mockRunner = new Mock<IJSRunner>();
-            mockRunner.Setup( r => r.ActivateDatePicker( It.IsAny<string>(), It.IsAny<string>() ) )
-                      .Callback( ( string id, string f ) => this.OnActivateDatePicker( id, f ) );
-            base.JSRunner = mockRunner.Object;
+        var mockIdGenerator = new Mock<IIdGenerator>();
 
-            base.ParentValidation = validation;
-            base.DateExpression = dateExpression;
+        mockIdGenerator
+            .Setup( r => r.Generate )
+            .Returns( Guid.NewGuid().ToString() );
 
-            this.OnInitialized();
-        }
+        base.IdGenerator = mockIdGenerator.Object;
 
-        public string TextValue
-        {
-            get { return base.CurrentValueAsString; }
-        }
+        base.ParentValidation = validation;
+        base.DateExpression = dateExpression;
 
-        public string ClickedId { get; private set; }
+        this.OnInitialized();
+    }
 
-        public async Task<ParseValue<T>> ParseValueAsync( string value )
-        {
-            return await base.ParseValueFromStringAsync( value );
-        }
+    public string TextValue
+    {
+        get { return base.CurrentValueAsString; }
+    }
 
-        public void Click()
-        {
-            base.OnClickHandler( new MouseEventArgs() );
-        }
+    public string ClickedId { get; private set; }
 
-        public void OnChange( ChangeEventArgs e)
-        {
-            base.OnChangeHandler( e );
-        }
+    public async Task<ParseValue<T>> ParseValueAsync( string value )
+    {
+        return await base.ParseValueFromStringAsync( value );
+    }
 
-        private bool OnActivateDatePicker( string elementId, string formatString )
-        {
-            this.ClickedId = elementId;
-            return true;
-        }
+    public void OnChange( ChangeEventArgs e )
+    {
+        base.OnChangeHandler( e );
+    }
 
+    private bool OnActivateDatePicker( ElementReference elementRef, string elementId, object options )
+    {
+        this.ClickedId = elementId;
+        return true;
     }
 }

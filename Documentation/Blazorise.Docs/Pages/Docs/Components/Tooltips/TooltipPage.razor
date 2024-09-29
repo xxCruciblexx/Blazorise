@@ -1,0 +1,144 @@
+﻿@page "/docs/components/tooltip"
+
+<Seo Canonical="/docs/components/tooltip" Title="Blazorise Tooltip Component" Description="Learn to use and work with the Blazorise Tooltip component, which is useful for conveying information when a user hovers over an element." />
+
+<DocsPageTitle Path="Components/Tooltip">
+    Blazorise Tooltip component
+</DocsPageTitle>
+
+<DocsPageLead>
+    Tooltips display additional information based on a specific action.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    The <Code Tag>Tooltip</Code> component is useful for conveying information when a user hovers over an element. When activated,
+    tooltips display a text label identifying an element, such as a description of its function.
+</DocsPageParagraph>
+
+<DocsPageParagraph>
+    <Alert Color="Color.Info" Visible>
+        <AlertDescription>
+            Starting with <Strong>v0.9.4</Strong>, Tooltip component is powered by <Blazorise.Link To="https://atomiks.github.io/tippyjs/" Target="Target.Blank">Tippy.js.</Blazorise.Link>
+        </AlertDescription>
+    </Alert>
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Basic">
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <BasicTooltipExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="BasicTooltipExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Positions">
+        You can use one of the following modifiers to change positions of the tooltip:
+        <UnorderedList>
+            <UnorderedListItem>
+                Top
+            </UnorderedListItem>
+            <UnorderedListItem>
+                Bottom
+            </UnorderedListItem>
+            <UnorderedListItem>
+                Left
+            </UnorderedListItem>
+            <UnorderedListItem>
+                Right
+            </UnorderedListItem>
+        </UnorderedList>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TooltipPositionsExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TooltipPositionsExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Different trigger target">
+        You may want the tooltip to appear at a different location from its trigger (event listeners) target.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TooltipTriggerTargetExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TooltipTriggerTargetExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="HTML Content">
+        Your tooltip can also contain HTML.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TooltipWithHtmlExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TooltipWithHtmlExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Delay">
+        Your Tooltip can delay hiding or showing after a trigger.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TooltipDelayExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TooltipDelayExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes>
+    <DocsAttributesItem Name="Text" Type="string" Default="null">
+        Content displayed in the tooltip.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Placement" Type="TooltipPlacement" Default="Top">
+        Position of the tooltip relative to it’s component.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Multiline" Type="bool" Default="false">
+        Force the multiline display.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="AlwaysActive" Type="bool" Default="false">
+        Always show tooltip, instead of just when hovering over the element.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Inline" Type="bool" Default="false">
+        Force inline block instead of trying to detect the element block.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Fade" Type="bool" Default="false">
+        Controls the fade effect.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="FadeDuration" Type="int" Default="300">
+        Duration in ms of the fade transition animation.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Trigger" Type="TooltipTrigger" Default="MouseEnterFocus">
+        Determines the events that cause the tooltip to show.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="TriggerTargetId" Type="string" Default="null">
+        Which element the trigger event listeners are applied to (instead of the reference element).
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ZIndex" Type="int?" Default="9999">
+        Specifies the z-index CSS on the root popper node.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Interactive" Type="bool" Default="false">
+        Determines if the tooltip has interactive content inside of it, so that it can be hovered over and clicked inside without hiding.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="AppendTo" Type="string" Default="body">
+        The element to append the tooltip to. If <Code>Interactive = true</Code>, the default behavior is appendTo: "parent".
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ShowDelay" Type="int?" Default="null">
+        Specifies the delay in ms once a trigger event is fired before a Tooltip shows.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="HideDelay" Type="int?" Default="null">
+        Specifies the delay in ms once a trigger event is fired before a Tooltip hides.
+    </DocsAttributesItem>
+</DocsAttributes>

@@ -68,7 +68,24 @@
     </Column>
 </Row>
 <Row>
-    <Column ColumnSize="ColumnSize.IsHalf">
+    <Column ColumnSize="ColumnSize.IsFull">
+        <Card Margin="Margin.Is4.FromBottom">
+            <CardHeader>
+                <CardTitle>Leading paragraph</CardTitle>
+            </CardHeader>
+            <CardBody>
+                <Lead>
+                    Deliver great service experiences fast - without the complexity of traditional ITSM solutions.Accelerate critical development work and deploy.
+                </Lead>
+                <Paragraph>
+                    Track work across the enterprise through an open, collaborative platform. Link issues across Jira and ingest data from other software development tools, so your IT support and operations teams have richer contextual information to rapidly respond to requests, incidents, and changes.
+                </Paragraph>
+            </CardBody>
+        </Card>
+    </Column>
+</Row>
+<Row>
+    <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnTablet">
         <Card Margin="Margin.Is4.FromBottom">
             <CardHeader>
                 <CardTitle>Inline Text Elements</CardTitle>
@@ -116,7 +133,7 @@
             </CardBody>
         </Card>
     </Column>
-    <Column ColumnSize="ColumnSize.IsHalf">
+    <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsHalf.OnTablet">
         <Card Margin="Margin.Is4.FromBottom">
             <CardHeader>
                 <CardTitle>Contextual Text Colors</CardTitle>
@@ -125,26 +142,184 @@
                 <CardText>Your awesome text goes here.</CardText>
             </CardBody>
             <CardBody>
-                <Paragraph Color="TextColor.Muted">
+                <Paragraph TextColor="TextColor.Muted">
                     Fusce dapibus, tellus ac cursus commodo, tortor mauris nibh.
                 </Paragraph>
-                <Paragraph Color="TextColor.Primary">
+                <Paragraph TextColor="TextColor.Primary">
                     Nullam id dolor id nibh ultricies vehicula ut id elit.
                 </Paragraph>
-                <Paragraph Color="TextColor.Success">
+                <Paragraph TextColor="TextColor.Success">
                     Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
                 </Paragraph>
-                <Paragraph Color="TextColor.Info">
+                <Paragraph TextColor="TextColor.Info">
                     Maecenas sed diam eget risus varius blandit sit amet non magna.
                 </Paragraph>
-                <Paragraph Color="TextColor.Warning">
+                <Paragraph TextColor="TextColor.Warning">
                     Etiam porta sem malesuada magna mollis euismod.
                 </Paragraph>
-                <Paragraph Color="TextColor.Danger">
+                <Paragraph TextColor="TextColor.Danger">
                     Donec ullamcorper nulla non metus auctor fringilla.
                 </Paragraph>
-                <Paragraph Color="TextColor.Dark">
+                <Paragraph TextColor="TextColor.Dark">
                     Nullam id dolor id nibh ultricies vehicula ut id elit.
+                </Paragraph>
+                <Paragraph TextColor="TextColor.Body">
+                    Maecenas sed diam eget risus varius blandit sit amet non magna.
+                </Paragraph>
+            </CardBody>
+        </Card>
+    </Column>
+</Row>
+<Row>
+    <Column ColumnSize="ColumnSize.IsFull">
+        <Card Margin="Margin.Is4.FromBottom">
+            <CardHeader>
+                <CardTitle>Text wrapping and overflow</CardTitle>
+            </CardHeader>
+            <CardBody>
+                <CardText>Wrap text with a <code>TextOverflow.Wrap</code> utility.</CardText>
+            </CardBody>
+            <CardBody>
+                <Badge Color="Color.Primary" TextOverflow="TextOverflow.Wrap" Style="width: 6rem;">
+                    This text should wrap.
+                </Badge>
+            </CardBody>
+            <Divider />
+            <CardBody>
+                <CardText>Prevent text from wrapping with a <code>TextOverflow.NoWrap</code> utility.</CardText>
+            </CardBody>
+            <CardBody>
+                <Div Background="Background.Secondary" TextOverflow="TextOverflow.NoWrap" Style="width: 8rem;">
+                    This text should overflow the parent.
+                </Div>
+            </CardBody>
+            <Divider />
+            <CardBody>
+                <CardText>For longer content, you can add a <code>TextOverflow.Truncate</code> class to truncate the text with an ellipsis. Requires <code>Display.InlineBlock</code> or <code>Display.Block</code>.</CardText>
+            </CardBody>
+            <CardBody>
+                <Row>
+                    <Column ColumnSize="ColumnSize.Is2" TextOverflow="TextOverflow.Truncate">
+                        Praeterea iter est quasdam res quas ex communi.
+                    </Column>
+                </Row>
+                <Span Display="Display.InlineBlock" TextOverflow="TextOverflow.Truncate" Style="max-width: 150px;">
+                    Praeterea iter est quasdam res quas ex communi.
+                </Span>
+            </CardBody>
+            <Divider />
+            <CardBody>
+                <CardText>Transform text in components with text capitalization classes.</CardText>
+            </CardBody>
+            <CardBody>
+                <Paragraph TextTransform="TextTransform.Lowercase">Lowercased text.</Paragraph>
+                <Paragraph TextTransform="TextTransform.Uppercase">Uppercased text.</Paragraph>
+                <Paragraph TextTransform="TextTransform.Capitalize">CapiTaliZed text.</Paragraph>
+            </CardBody>
+            <Divider />
+            <CardBody>
+                <CardText>Quickly change the <code>TextWeight</code> of text with these utilities.</CardText>
+            </CardBody>
+            <CardBody>
+                <Paragraph TextWeight="TextWeight.Bold">Bold text.</Paragraph>
+                <Paragraph TextWeight="TextWeight.SemiBold">SemiBold text.</Paragraph>
+                <Paragraph TextWeight="TextWeight.Normal">Normal weight text.</Paragraph>
+                <Paragraph TextWeight="TextWeight.Light">Light weight text.</Paragraph>
+                <Paragraph Italic>Italic text.</Paragraph>
+            </CardBody>
+        </Card>
+    </Column>
+</Row>
+<Row>
+    <Column>
+        <Card Margin="Margin.Is4.OnY">
+            <CardHeader>
+                <CardTitle>Text Sizes</CardTitle>
+            </CardHeader>
+            <CardBody>
+                <CardText>Quickly change the <Code>font-size</Code> of text. </CardText>
+            </CardBody>
+            <CardBody>
+                <Paragraph TextSize="TextSize.ExtraSmall">
+                    TextSize.ExtraSmall
+                </Paragraph>
+                <Paragraph TextSize="TextSize.Small">
+                    TextSize.Small
+                </Paragraph>
+                <Paragraph TextSize="TextSize.Default">
+                    TextSize.Default
+                </Paragraph>
+                <Paragraph TextSize="TextSize.Medium">
+                    TextSize.Medium
+                </Paragraph>
+                <Paragraph TextSize="TextSize.Large">
+                    TextSize.Large
+                </Paragraph>
+                <Paragraph TextSize="TextSize.ExtraLarge">
+                    TextSize.ExtraLarge
+                </Paragraph>
+
+                <Paragraph TextSize="TextSize.Heading1">
+                    TextSize.Heading1
+                </Paragraph>
+                <Paragraph TextSize="TextSize.Heading2">
+                    TextSize.Heading2
+                </Paragraph>
+                <Paragraph TextSize="TextSize.Heading3">
+                    TextSize.Heading3
+                </Paragraph>
+                <Paragraph TextSize="TextSize.Heading4">
+                    TextSize.Heading4
+                </Paragraph>
+                <Paragraph TextSize="TextSize.Heading5">
+                    TextSize.Heading5
+                </Paragraph>
+                <Paragraph TextSize="TextSize.Heading6">
+                    TextSize.Heading6
+                </Paragraph>
+            </CardBody>
+        </Card>
+    </Column>
+</Row>
+<Row>
+    <Column>
+        <Card Margin="Margin.Is4.OnY">
+            <CardHeader>
+                <CardTitle>Text Decoration</CardTitle>
+            </CardHeader>
+            <CardBody>
+                <Paragraph TextDecoration="TextDecoration.Underline">
+                    The quick brown fox jumps over the lazy dog.
+                </Paragraph>
+                <Paragraph TextDecoration="TextDecoration.Overline">
+                    The quick brown fox jumps over the lazy dog.
+                </Paragraph>
+                <Paragraph TextDecoration="TextDecoration.LineThrough">
+                    The quick brown fox jumps over the lazy dog.
+                </Paragraph>
+                <Paragraph>
+                    <Anchor To="#" TextDecoration="TextDecoration.None">
+                        This link has its text decoration removed
+                    </Anchor>
+                </Paragraph>
+            </CardBody>
+        </Card>
+    </Column>
+</Row>
+<Row>
+    <Column>
+        <Card Margin="Margin.Is4.OnY">
+            <CardHeader>
+                <CardTitle>Links</CardTitle>
+            </CardHeader>
+            <CardBody>
+                <CardText>
+                    Links allow users to navigate between different locations. They can be used as standalone controls or inline with text.
+                </CardText>
+            </CardBody>
+            <CardBody>
+                <Paragraph>
+                    This is a <Anchor To="#">link</Anchor> used within other text, and this is a <Anchor To="#" Disabled>disabled link</Anchor>.
                 </Paragraph>
             </CardBody>
         </Card>

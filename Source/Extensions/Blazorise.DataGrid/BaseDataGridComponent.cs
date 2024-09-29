@@ -1,45 +1,77 @@
 ﻿#region Using directives
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Blazorise.Utils;
+using System.Threading.Tasks;
+using Blazorise.Extensions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 #endregion
 
-namespace Blazorise.DataGrid
+namespace Blazorise.DataGrid;
+
+/// <summary>
+/// Minimal base class for datagrid components.
+/// </summary>
+public class BaseDataGridComponent : BaseAfterRenderComponent, IAsyncDisposable
 {
-    /// <summary>
-    /// Minimal base class for datagrid components.
-    /// </summary>
-    public class BaseDataGridComponent : ComponentBase
+    #region Methods
+
+    protected override void OnInitialized()
     {
-        #region Members
+        base.OnInitialized();
 
-        private string elementId;
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the element id.
-        /// </summary>
-        public string ElementId
+        if ( JSModule is null )
         {
-            get
-            {
-                // generate ID only on first use
-                if ( elementId == null )
-                    elementId = IDGenerator.Instance.Generate;
-
-                return elementId;
-            }
-            private set
-            {
-                elementId = value;
-            }
+            JSModule = new JSDataGridModule( JSRuntime, VersionProvider, BlazoriseOptions );
         }
 
-        #endregion
+        ElementId ??= IdGenerator.Generate;
     }
+
+    protected override async ValueTask DisposeAsync( bool disposing )
+    {
+        if ( disposing && Rendered )
+        {
+            await JSModule.SafeDisposeAsync();
+        }
+
+        await base.DisposeAsync( disposing );
+    }
+
+    #endregion
+
+    #region Properties
+
+    protected JSDataGridModule JSModule { get; private set; }
+
+    /// <summary>
+    /// Gets or sets the JS runtime.
+    /// </summary>
+    [Inject] protected IJSRuntime JSRuntime { get; set; }
+
+    /// <summary>
+    /// Gets or sets the version provider.
+    /// </summary>
+    [Inject] protected IVersionProvider VersionProvider { get; set; }
+
+    /// <summary>
+    /// Gets or sets the blazorise options.
+    /// </summary>
+    [Inject] protected BlazoriseOptions BlazoriseOptions { get; set; }
+
+    /// <summary>
+    /// Gets or sets the classname provider.
+    /// </summary>
+    [Inject] protected IClassProvider ClassProvider { get; set; }
+
+    /// <summary>
+    /// Gets or set the IIdGenerator.
+    /// </summary>
+    [Inject] protected IIdGenerator IdGenerator { get; set; }
+
+    /// <summary>
+    /// Gets or sets the datagrid element id.
+    /// </summary>
+    [Parameter] public string ElementId { get; set; }
+
+    #endregion
 }

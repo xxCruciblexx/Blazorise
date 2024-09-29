@@ -1,0 +1,112 @@
+﻿@page "/docs/components/time"
+
+<Seo Canonical="/docs/components/time" Title="Blazorise TimeEdit Component" Description="Learn to use and work with the Blazorise TimeEdit component, which is a native time selection component that lets users select a time." />
+
+<DocsPageTitle Path="Components/Time Edit">
+    Blazorise TimeEdit component
+</DocsPageTitle>
+
+<DocsPageLead>
+    A native time input component build around the <Code Tag>input type="time"</Code>.
+</DocsPageLead>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Basic">
+        A native time field example with <Code>type="time"</Code>.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <BasicTimeEditExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="BasicTimeEditExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    Binding
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Two-way binding">
+        By using <Code>bind-*</Code> attribute the selected time will be automatically assigned to the member variable.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TimeEditWithBindExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TimeEditWithBindExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Manual event binding">
+        When using the event <Code>TimeChanged</Code>, you also must define the <Code>Time</Code> value attribute.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TimeEditWithEventExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TimeEditWithEventExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Show Picker">
+        <Paragraph>
+            If you want to show the <Anchor To="https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/showPicker">default picker</Anchor> that comes with the time input element you can make it by using the <Code>ShowPicker()</Code> function.
+        </Paragraph>
+        <Paragraph>
+            <Strong TextColor="TextColor.Info">Note:</Strong> Keep in mind that not all browser will support the <Code>ShowPicker()</Code> function.
+        </Paragraph>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TimeEditShowPickerExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TimeEditShowPickerExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    Functions
+</DocsPageSubtitle>
+
+<Table>
+    <TableHeader ThemeContrast="ThemeContrast.Light">
+        <TableRow>
+            <TableHeaderCell>Name</TableHeaderCell>
+            <TableHeaderCell>Description</TableHeaderCell>
+        </TableRow>
+    </TableHeader>
+    <TableBody>
+        <TableRow>
+            <TableRowCell><Code>ShowPicker()</Code></TableRowCell>
+            <TableRowCell>Show a browser picker for the time input.</TableRowCell>
+        </TableRow>
+    </TableBody>
+</Table>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes>
+    <DocsAttributesItem Name="Time" Type="TValue" Default="default">
+        Gets or sets the input time value.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="TimeChanged" Type="@("EventCallback<TValue>")">
+        Occurs when the time has changed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Pattern" Type="string" Default="null">
+        The pattern attribute specifies a regular expression that the input element’s value is checked against on form submission.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Placeholder" Type="string" Default="null">
+        Sets the placeholder for the empty time.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Autofocus" Type="bool" Default="false">
+        Set’s the focus to the component after the rendering is done.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Step" Type="int?" Default="null">
+        The step attribute specifies the legal number intervals for seconds or milliseconds in a time field (does not apply for hours or minutes).
+    </DocsAttributesItem>
+</DocsAttributes>

@@ -1,0 +1,84 @@
+﻿@page "/docs/components/slider"
+
+<Seo Canonical="/docs/components/slider" Title="Blazorise Slider component" Description="Learn to use and work with the Blazorise Slider component, a better visualization of the number input. It is used for gathering numerical user data." />
+
+<DocsPageTitle Path="Components/Slider">
+    Blazorise Slider component
+</DocsPageTitle>
+
+<DocsPageLead>
+    Sliders allow users to make selections from a range of values.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    Sliders reflect a range of values along a bar, from which users may select a single value. They are ideal for adjusting settings such as volume, brightness, or applying image filters.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Basic" />
+    <DocsPageSectionContent Outlined FullWidth>
+        <BasicSliderExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="BasicSliderExample" />
+</DocsPageSection>
+
+<Alert Color="Color.Info" Visible>
+    <AlertDescription>
+        <Strong>Note:</Strong> Since Slider is a generic component you will have to specify the exact data type for the value.
+        Most of the time it will be recognized automatically when you set the <Code>Value</Code> attribute, but if not
+        you will just use the <Code>TValue</Code> attribute and define the type manually.
+    </AlertDescription>
+</Alert>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Min and Max values">
+        With the <Code>Min</Code> and <Code>Max</Code> properties, you can set the minimum and maximum allowed value.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <SliderMinMaxExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="SliderMinMaxExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Steps">
+        You can change the default step increment.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <SliderStepExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="SliderStepExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes>
+    <DocsAttributesItem Name="TValue" Type="generic">
+        <Code>Value</Code> data type.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Value" Type="TValue" Default="default">
+        The value that the tick represents.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ValueChanged" Type="EventCallback<TValue>">
+        Occurs after the value has changed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Step" Type="TValue" Default="1">
+        Specifies the interval between valid values.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Min" Type="TValue" Default="default">
+        Minimum value.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Max" Type="TValue" Default="default">
+        Maximum value.
+    </DocsAttributesItem>
+</DocsAttributes>

@@ -3,17 +3,47 @@
   <Import Project="..\..\Build\Blazorise.props" />
 
   <PropertyGroup>
-    <PackageId>Blazorise</PackageId>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageIcon>Blazorise.png</PackageIcon>
-    <PackageProjectUrl>https://blazorise.com/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/stsrki/Blazorise</RepositoryUrl>
     <PackageTags>blazorise blazor components</PackageTags>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="Blazorise.Licensing.AssemblyBuildDateAttribute">
+      <_Parameter1>$([System.DateTime]::Now.ToString( "yyyyMMddHHmmss" ))</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\LICENSE.md" Pack="true" Visible="false" PackagePath="" />
     <None Include="..\..\NuGet\Blazorise.png" Pack="true" Visible="false" PackagePath="" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Localization\**\*.json" />
+    <EmbeddedResource Include="Resources\Localization\**\*.json" />
+    <None Remove="Resources\Localization\*.json" />
+    <EmbeddedResource Include="Resources\Localization\*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SourceGenerators\Blazorise.Generator.Features\Blazorise.Generator.Features.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\SourceGenerators\Blazorise.Generator\Blazorise.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+    <!-- Exclude the output of source generators from the compilation -->
+    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazorise.Licensing" Version="1.2.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>__SOURCEGENERATED__</CompilerGeneratedFilesOutputPath>
+    <SonarQubeExclude>True</SonarQubeExclude>
+  </PropertyGroup>
 
 </Project>

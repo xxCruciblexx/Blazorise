@@ -1,0 +1,29 @@
+﻿@typeparam TValue
+@inherits Blazorise.NumericPicker<TValue>
+@if ( IsShowStepButtons )
+{
+    <div class="@NumericWrapperClassNames">
+        @InputTemplate
+        <div class="b-numeric-handler-wrap">
+            <Blazorise.Button Clicked="@OnSpinUpClicked" Class="b-numeric-handler b-numeric-handler-up" TabIndex="-1">
+                <Icon Name="IconName.SortUp" />
+            </Blazorise.Button>
+            <Blazorise.Button Clicked="@OnSpinDownClicked" Class="b-numeric-handler b-numeric-handler-down" TabIndex="-1">
+                <Icon Name="IconName.SortDown" />
+            </Blazorise.Button>
+        </div>
+    </div>
+}
+else
+{
+    @InputTemplate
+}
+@ChildContent
+@Feedback
+@code
+{
+    protected RenderFragment InputTemplate => __builder =>
+    {
+        <input @ref="@ElementRef" id="@ElementId" name="@NameAttributeValue" inputmode="@InputMode" class="@ClassNames" style="@StyleNames" placeholder="@Placeholder" disabled="@IsDisabled" readonly="@ReadOnly" size="@VisibleCharacters" step="@StepString" pattern="@Pattern" tabindex="@TabIndex" @onkeydown="@OnKeyDownHandler" @onkeypress="@OnKeyPressHandler" @onkeyup="@OnKeyUpHandler" @onblur="@OnBlurHandler" @onfocus="@OnFocusHandler" @onfocusin="@OnFocusInHandler" @onfocusout="@OnFocusOutHandler" @attributes="@Attributes" />
+    };
+}

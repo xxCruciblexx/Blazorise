@@ -1,0 +1,358 @@
+﻿@page "/docs/extensions/autocomplete"
+
+<Seo Canonical="/docs/extensions/autocomplete" Title="Blazorise Autocomplete component" Description="Learn to use and work with the Blazorise Autocomplete component, which provides suggestions while you type into the field." />
+
+<DocsPageTitle Path="Extensions/Autocomplete">
+    Blazorise Autocomplete component
+</DocsPageTitle>
+
+<DocsPageLead>
+    The <Code>Autocomplete</Code> component offers simple and flexible type-ahead functionality.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    The <Code>Autocomplete</Code> component provides suggestions while you type into the field. The component is in essence
+    a text box which, at runtime, filters data in a drop-down by a <Code>Filter</Code> operator when a user captures a value.
+    You may also enable <Code>FreeTyping</Code> and <Code>Autocomplete</Code> can be used to just provide suggestions based on user input.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    Quick Installation
+</DocsPageSubtitle>
+
+<Alert Color="Color.Info" Visible>
+    <AlertDescription>
+        The Autocomplete extension is part of the <Code>Blazorise.Components</Code> NuGet package.
+    </AlertDescription>
+</Alert>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Step 1: Download from NuGet">
+        Install extension from NuGet:
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="ComponentsNugetInstallExample"></DocsPageSectionSource>
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Step 2. Define Usings">
+        In your main <Code>_Imports.razor</Code> add:
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="ComponentsImportExample"></DocsPageSectionSource>
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Searching single value">
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <AutocompleteExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="AutocompleteExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Searching multiple values">
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <AutocompleteMultipleExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="AutocompleteMultipleExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Searching with data on demand (ReadData)">
+        Frequently, you'll want to read data on demand rather than loading everything into memory at startup. You can do it with the <Code>ReadData</Code> API.
+        It will provide you with enough information for you to call an external data-source, which will return new data, which you can then reassign to the <Code>Data</Code> parameter.
+        <Alert Color="Color.Info" Visible>
+            <AlertDescription>
+                <Strong>Note:</Strong> Make sure to check the <Code>CancellationToken</Code> before commiting your values to <Code>Data</Code>. This will make sure to avoid race conditions and keep your <Code>Data</Code> updated according to the user's last key stroke.
+            </AlertDescription>
+        </Alert>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <AutocompleteReadDataExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="AutocompleteReadDataExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Extending with custom item content">
+        Customize the way you display the Autocomplete items by providing <Code>ItemContent</Code>.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <AutocompleteItemContentExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="AutocompleteItemContentExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Suggesting already selected items && Checkbox support">
+        You can use <Code>SuggestSelectedItems</Code> to suggest already selected items, and optionally use <Code>SuggestMultipleCheckbox</Code> to additionally add checkbox selection.
+        <Strong>Note: </Strong> Make sure to set <Code>CloseOnSelection</Code> to false if you want to keep the dropdown open whenever an item is selected.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <AutocompleteSuggestMultipleCheckboxExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="AutocompleteSuggestMultipleCheckboxExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Highlight search text">
+        Autocomplete <Code>HighlightSearch</Code> is a feature that allows you to highlight the search text that you have entered in a dropdown list of items. When you start typing in the search field, the dropdown list of items will automatically be filtered to show only the items that match the search text. The search text will also be highlighted in the dropdown list of items, so that you can easily see which items match your search. This can be a useful feature when you are trying to find a specific item in a long list of items, as it allows you to quickly locate the item you are looking for.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <AutocompleteHighlightExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="AutocompleteHighlightExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Virtualize">
+        <Paragraph>
+            Blazorise Autocomplete's Virtualize feature allows for loading data on demand while scrolling, which improves the performance of the component when working with large datasets. With Virtualize, the Autocomplete component only loads the items that are currently visible in the list, and as the user scrolls, more items are loaded in the background. This allows for a much faster and smoother user experience, especially when working with large lists of items.
+        </Paragraph>
+        <Paragraph>
+            This feature can be easily enabled by setting the <Code>Virtualize</Code> property to <Code>"true"</Code> on the Autocomplete component.
+        </Paragraph>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <AutocompleteVirtualizeExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="AutocompleteVirtualizeExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes>
+    <DocsAttributesItem Name="TItem" Type="generic">
+        Model data type.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Data" Type="IEnumerable<TItem>">
+        Data used for the search.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="TextField" Type="Func">
+        Selector for the display name field.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ValueField" Type="Func">
+        Selector for the value field.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedValue" Type="	object">
+        Currently selected value.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedValueChanged" Type="EventCallback<string>">
+        Raises an event after the selected value has changed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedText" Type="string">
+        Currently selected text.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedTextChanged" Type="EventCallback<string>">
+        Raises an event after the selected text has changed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="CurrentSearch" Type="string">
+        Gets or sets the currently selected item text. CurrentSearch is deprecated and will be removed in a future version, please use Search instead.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="CurrentSearchChanged" Type="EventCallback<string>">
+        Occurs on every search text change. CurrentSearchChanged is deprecated and will be removed in a future version, please use SearchChanged instead.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Search" Type="string">
+        Gets or sets the currently selected item text.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SearchChanged" Type="EventCallback<string>">
+        Occurs on every search text change.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Placeholder" Type="string">
+        Placeholder for the empty search field.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="MinLength" Type="int" Default="1">
+        Minimum number of character needed to start search. Set this to 0 to make the Autocomplete function like a dropdown.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="MaxMenuHeight" Type="string" Default="200px">
+        Sets the maximum height of the dropdown menu.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Filter" Type="enum" Default="StartsWith">
+        Filter method used to search the data.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Disabled" Type="bool" Default="false">
+        Disable the input field.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Immediate" Type="bool?" Default="null">
+        If true the text in will be changed after each key press (overrides global settings).
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Debounce" Type="bool?" Default="null">
+        If true the entered text will be slightly delayed before submitting it to the internal value.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="DebounceInterval" Type="int?" Default="null">
+        Interval in milliseconds that entered text will be delayed from submitting to the internal value.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Validator" Type="Action<ValidatorEventArgs>" Default="null">
+        Validation handler used to validate selected value.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="AsyncValidator" Type="Func<ValidatorEventArgs, CancellationToken, Task>" Default="null">
+        Asynchronously validates the selected value.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="NotFoundContent" Type="RenderFragment<string>">
+        Render fragment when no value has been found on the data source.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="NotFound" Type="EventCallback<string>">
+        Raises an event when no value has been found on the data source.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="FreeTyping" Type="bool" Default="false">
+        Allows the value to not be on the data source.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="CustomFilter" Type="Func<TItem, string, bool>">
+        Handler for custom filtering on Autocomplete’s data source.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Multiple" Type="bool" Default="false">
+        Allows for multiple selection.
+        Multiple parameter will be removed in a future version, please replace with SelectionMode.Multiple Parameter instead.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="MultipleBadgeColor" Type="Color" Default="Color.Primary">
+        Sets the Badge color for the multiple selection values. Used when multiple selection is set.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="MultipleDisabledBadgeColor" Type="Color" Default="Color.Light">
+        Sets the disabled Badge color for the multiple selection values. Used when multiple selection is set.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedValues" Type="List<TValue>">
+        Currently selected items values.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedValuesChanged" Type="EventCallback<List<TValue>>">
+        Occurs after the selected values have changed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedTexts" Type="List<string>">
+        Currently selected items texts.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedTextsChanged" Type="EventCallback<List<string>>">
+        Occurs after the selected texts have changed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ItemContent" Type="RenderFragment<ItemContext<TItem,TValue>>">
+        Specifies the item content to be rendered inside each dropdown item.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="CloseOnSelection" Type="bool" Default="true">
+        Specifies whether Autocomplete's dropdown closes on selection. This is only evaluated when multiple selection is set.
+        Defauls to true.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ReadData" Type="EventCallback<AutoCompleteReadDataEventArgs>">
+        Event handler used to load data manually by based on the current search value.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SuggestSelectedItems" Type="bool" Default="false">
+        Suggests already selected option(s) when presenting the options.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ConfirmKey" Type="string[]" Default='new[] { "Enter", "NumpadEnter" }'>
+        Gets or sets an array of the keyboard pressed values for the ConfirmKey.
+        If this is null or empty, there will be no confirmation key.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="AutoPreSelect" Type="bool" Default="true">
+        Gets or sets whether Autocomplete auto preselects the first item when the drop down opens.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="AutoSelectFirstItem" Type="bool" Default="false">
+        Gets or sets whether Autocomplete auto preselects the first item from the data list on initialization. This overrides initial SelectedValue.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectionMode" Type="AutocompleteSelectionMode" Default="AutocompleteSelectionMode.Default">
+        Gets or sets the Autocomplete Selection Mode.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="HighlightSearch" Type="bool" Default="false">
+        If true, the searched text will be highlighted in the dropdown list items based on <Code>Search</Code> value.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SearchBackground" Type="Background" Default="null">
+        Defines the background color of the search field.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SearchTextColor" Type="TextColor" Default="null">
+        Defines the text color of the search field.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SearchClass" Type="string" Default="null">
+        Defines the class for the search field.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SearchStyle" Type="string" Default="null">
+        Defines the style for the search field.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Closed" Type="EventCallback<AutocompleteClosedEventArgs>">
+        Event handler used to detect when the autocomplete is closed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Opened" Type="EventCallback">
+        Event handler used to detect when the autocomplete is opened.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="FreeTypingNotFoundTemplate" Type="RenderFragment<string>">
+        Specifies the not found content to be rendered when no data is found and FreeTyping is enabled.
+    </DocsAttributesItem>
+</DocsAttributes>
+
+
+<Heading Size="HeadingSize.Is3">
+    Methods
+</Heading>
+
+<DocsAttributes>
+    <DocsAttributesItem Name="ScrollItemIntoView">
+        Scrolls an item into view.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Reload">
+        Triggers the reload of the Autocomplete data.
+        Makes sure not to reload if the Autocomplete is in a loading state.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="AddMultipleTextAndValue">
+        Adds a Multiple Selection.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="RemoveMultipleTextAndValue">
+        Removes a Multiple Selection.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Clear">
+        Clears the selected value and the search field.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ResetSelected">
+        Clears the current selection.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="OpenDropdown">
+        Opens the Autocomplete Dropdown.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Close">
+        Closes the Autocomplete Dropdown.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="IsSelectedvalue">
+        Gets whether the TValue is selected.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="IsSelectedItem">
+        Gets whether the TItem is selected.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="GetItemByValue">
+        Gets a TItem from <Code>Data</Code> by using the provided ValueField.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="GetItemByText">
+        Gets a TItem from <Code>Data</Code> by using the provided TextField.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="IsSafeToClose">
+        IsSafeToClose is deprecated. This API now always returns true.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="MaxEntryLength">
+        Specifies the maximum number of characters allowed in the input element.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Virtualize" Type="bool" Default="false">
+        Gets or sets whether the Autocomplete will use the <Code>Virtualize</Code> functionality.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="TagTemplate" Type="RenderFragment<AutocompleteTagContext<TItem, TValue>>">
+        Specifies the badge content to be rendered for each tag (multiple selected item).
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SearchTextChanged" Type="EventCallback<string>">
+        Occurs after the search box text has changed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SearchKeyDown" Type="EventCallback<KeyboardEventArgs>">
+        Occurs when a key is pressed down while the search box has focus.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SearchFocus" Type="EventCallback<FocusEventArgs>">
+        Occurs when the search box gains or loses focus.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SearchBlur" Type="EventCallback<FocusEventArgs>">
+        The blur event fires when the search box has lost focus.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="PositionStrategy" Type="DropdownPositionStrategy" Default="Fixed">
+        Defines the positioning strategy of the dropdown menu as a 'floating' element.
+    </DocsAttributesItem>
+</DocsAttributes>

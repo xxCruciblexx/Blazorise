@@ -1,0 +1,83 @@
+﻿@page "/docs/components/figure"
+
+<Seo Canonical="/docs/components/figure" Title="Blazorise Figure component" Description="Learn to use and work with the Blazorise Figure component, which is used as container for responsive images." />
+
+<DocsPageTitle Path="Components/Figure">
+    Blazorise Figure component
+</DocsPageTitle>
+
+<DocsPageLead>
+    Documentation and examples for displaying related images and text with the figure component in Blazorise.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    Anytime you need to display a piece of content—like an image with an optional caption, consider using a <Code>Figure</Code>.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    Structure
+</DocsPageSubtitle>
+
+<UnorderedList>
+    <UnorderedListItem>
+        <Code Tag>Figure</Code> the main container
+        <UnorderedList>
+            <UnorderedListItem>
+                <Code Tag>FigureImage</Code> source image that needs to be displayed
+            </UnorderedListItem>
+            <UnorderedListItem>
+                <Code Tag>FigureCaption</Code> a caption text bellow the image
+            </UnorderedListItem>
+        </UnorderedList>
+    </UnorderedListItem>
+</UnorderedList>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Basic Example">
+        Use the included <Code Tag>Figure</Code>, <Code Tag>FigureImage</Code> and <Code Tag>FigureCaption</Code> classes to provide some baseline styles for the HTML5 <Code>figure</Code> and <Code>figcaption</Code> elements.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined>
+        <FigureExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="FigureExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Rounded">
+        Making the figure rounded is easy with the <Code>Rounded</Code> attribute.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined>
+        <FigureRoundedExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="FigureRoundedExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes Title="Figure">
+    <DocsAttributesItem Name="Size" Type="FigureSize" Default="Default">
+        Figure size variations.
+    </DocsAttributesItem>
+</DocsAttributes>
+
+<DocsAttributes Title="FigureImage">
+    <DocsAttributesItem Name="Source" Type="string">
+        Image URL.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="AlternateText" Type="string">
+        Alternate text when image cannot be found.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Rounded" Type="bool" Default="false">
+        Makes the figure border rounded.
+    </DocsAttributesItem>
+</DocsAttributes>

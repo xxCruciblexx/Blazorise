@@ -1,29 +1,17 @@
 #region Using directives
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 #endregion
 
-namespace Blazorise.Icons.Material
+namespace Blazorise.Icons.Material;
+
+public static class Config
 {
-    public static class Config
+    public static IServiceCollection AddMaterialIcons( this IServiceCollection serviceCollection )
     {
-        public static IServiceCollection AddMaterialIcons( this IServiceCollection serviceCollection )
-        {
-            serviceCollection.AddSingleton<IIconProvider, MaterialIconProvider>();
+        serviceCollection.AddSingleton<IIconProvider, MaterialIconProvider>();
 
-            return serviceCollection;
-        }
+        serviceCollection.AddTransient<Blazorise.Icon, Material.Icon>();
 
-        public static IServiceProvider UseMaterialIcons( this IServiceProvider serviceProvider )
-        {
-            var componentMapper = serviceProvider.GetRequiredService<IComponentMapper>();
-
-            componentMapper.Register<Blazorise.Icon, Material.Icon>();
-
-            return serviceProvider;
-        }
+        return serviceCollection;
     }
 }

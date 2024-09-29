@@ -1,0 +1,8 @@
+﻿@namespace Blazorise
+@inherits BaseValidationResult
+@if ( ParentValidation?.Status == ValidationStatus.Success && ChildContent is not null )
+{
+    <div @ref="@ElementRef" id="@ElementId" class="@ClassNames" style="@StyleNames" @attributes="@Attributes">
+        @ChildContent
+    </div>
+}

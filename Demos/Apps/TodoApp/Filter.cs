@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿namespace TodoApp;
 
-namespace TodoApp
+public enum Filter
 {
-    public enum Filter
-    {
-        All,
-        Active,
-        Completed,
-    }
+    All,
+    Active,
+    Completed,
 }

@@ -1,0 +1,108 @@
+﻿@page "/docs/components/badge"
+
+<Seo Canonical="/docs/components/badge" Title="Blazorise Badge component" Description="Learn to use and work with the Blazorise Badge component, which conveys small pieces of information." />
+
+<DocsPageTitle Path="Components/Badge">
+    Blazorise Badge component
+</DocsPageTitle>
+
+<DocsPageLead>
+    Badges are used to draw attention and display statuses or counts.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    The <Code Tag>Badge</Code> component is used to convey small pieces of information. They are used for labeling content, displaying metadata and/or highlighting information. Using the <Code>CloseClicked</Code> property, the badge becomes interactive, allowing user interaction.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Basic">
+        Simply set the <Code>Color</Code> attribute and you’re good to go.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <BasicBadgeExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="BasicBadgeExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Colors">
+        Add any of the following variants via the <Code>Color</Code> parameter to change the appearance of a <Code>Badge</Code>.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <BadgeColorsExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="BadgeColorsExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Shape">
+        Applying the <Code>Pill</Code> parameter produces a badge with rounded corners. It can aid in making badges and buttons more distinct from one another.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <PillBadgeExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="PillBadgeExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Icon-only">
+        Badges can also be used with icons without a label. For accessibility, a <Anchor To="docs/components/tooltip">Tooltip</Anchor> and <Code>aria-label</Code> attribute is recommended to ensure that all users can identify their meaning.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <IconBadgeExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="IconBadgeExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="With close button">
+        To enable close button you only need to define the <Code>CloseClicked</Code> event. Blazorise will automatically pickup and show close button.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <CloseBadgeExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="CloseBadgeExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    Best Practices
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Badge vs Button
+</Heading>
+
+<DocsPageParagraph>
+    Badges and Buttons are similar in appearance. This might lead users to think that badges are interactive.
+</DocsPageParagraph>
+
+<DocsPageParagraph>
+    Placement, language, shape, and color can all help mitigate any confusion. First, badges should not be labeled with active verbs. This is because they are not actions but relatively static text/content. Second, avoid placing badges directly next to Buttons, in particular, if they are using similar themes. The pill theme variant may aid in making badges and Buttons more distinct from one another.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes>
+    <DocsAttributesItem Name="Pill" Type="bool" Default="false">
+        Makes badges more rounded.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Link" Type="bool" Default="null">
+        Create a badge link and provide actionable badges with hover and focus states.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Color" Type="Color" Default="Default">
+        Component visual or contextual style variants.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="CloseClicked" Type="EventCallback">
+        Occurs on close button click.
+    </DocsAttributesItem>
+</DocsAttributes>

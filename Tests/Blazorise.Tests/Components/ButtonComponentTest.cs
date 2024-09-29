@@ -1,60 +1,79 @@
 ﻿#region Using directives
-using BasicTestApp.Client;
-using Blazorise.Tests.Helpers;
 using Bunit;
 using Xunit;
 #endregion
 
-namespace Blazorise.Tests.Components
+namespace Blazorise.Tests.Components;
+
+public class ButtonComponentTest : TestContext
 {
-    public class ButtonComponentTest : ComponentTestFixture
+    public ButtonComponentTest()
     {
-        public ButtonComponentTest()
-        {
-            BlazoriseConfig.AddBootstrapProviders( Services );
-        }
+        Services.AddBlazoriseTests().AddBootstrapProviders().AddEmptyIconProvider().AddTestData();
+        JSInterop
+            .AddBlazoriseButton();
+    }
 
-        [Fact]
-        public void RenderTest()
-        {
-            // setup
-            var buttonOpen = "<button";
-            var buttonClose = "</button>";
-            var buttonContent = "Count";
-            var counterOutput = @"<span id=""basic-button-event-result"">0</span>";
+    [Fact]
+    public void Render_Should_Invoke_Initialize_When_PreventDefaultOnSubmit()
+    {
+        // setup
+        var buttonOpen = "<button";
+        var buttonClose = "</button>";
 
-            // test
-            var comp = RenderComponent<ButtonComponent>();
+        // test
+        var comp = RenderComponent<Button>(parameters => 
+        parameters.Add(x=> x.PreventDefaultOnSubmit, true));
 
-            // validate
-            Assert.Contains( buttonOpen, comp.Markup );
-            Assert.Contains( buttonClose, comp.Markup );
-            Assert.Contains( buttonContent, comp.Markup );
-            Assert.Contains( counterOutput, comp.Markup );
-            Assert.NotNull( comp.Find( "#basic-button-event" ) );
-            Assert.NotNull( comp.Find( "#basic-button" ) );
-            Assert.NotNull( comp.Find( "#basic-button-event-result" ) );
-        }
+        // validate
+        this.JSInterop.VerifyInvoke( "initialize" );
+        Assert.Contains( buttonOpen, comp.Markup );
+        Assert.Contains( buttonClose, comp.Markup );
+    }
+
+    [Fact]
+    public void RenderTest()
+    {
+        // setup
+        var buttonOpen = "<button";
+        var buttonClose = "</button>";
+        var buttonContent = "Count";
+        var counterOutput = @"<span id=""basic-button-event-result"">0</span>";
+
+        // test
+        var comp = RenderComponent<ButtonComponent>();
+
+        // validate
+        this.JSInterop.VerifyNotInvoke( "initialize" );
+        Assert.Contains( buttonOpen, comp.Markup );
+        Assert.Contains( buttonClose, comp.Markup );
+        Assert.Contains( buttonContent, comp.Markup );
+        Assert.Contains( counterOutput, comp.Markup );
+        Assert.NotNull( comp.Find( "#basic-button-event" ) );
+        Assert.NotNull( comp.Find( "#basic-button" ) );
+        Assert.NotNull( comp.Find( "#basic-button-event-result" ) );
+    }
 
 
-        [Fact]
-        public void CanRaiseCallback()
-        {
-            // setup
-            var comp = RenderComponent<ButtonComponent>();
-            var result = comp.Find( "#basic-button-event-result" );
-            var button = comp.Find( "#basic-button" );
+    [Fact]
+    public void CanRaiseCallback()
+    {
+        // setup
+        var comp = RenderComponent<ButtonComponent>();
 
-            // test
-            button.Click();
-            var result1 = result.InnerHtml;
+        var result = comp.Find( "#basic-button-event-result" );
+        var button = comp.Find( "#basic-button" );
 
-            button.Click();
-            var result2 = result.InnerHtml;
+        // test
+        button.Click();
+        var result1 = result.InnerHtml;
 
-            // validate
-            Assert.Equal( "1", result1 );
-            Assert.Equal( "2", result2 );
-        }
+        button.Click();
+        var result2 = result.InnerHtml;
+
+        // validate
+        this.JSInterop.VerifyNotInvoke( "initialize" );
+        Assert.Equal( "1", result1 );
+        Assert.Equal( "2", result2 );
     }
 }

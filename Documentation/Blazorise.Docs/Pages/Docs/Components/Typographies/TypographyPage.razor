@@ -1,0 +1,211 @@
+﻿@page "/docs/components/typography"
+
+<Seo Canonical="/docs/components/typography" Title="Blazorise Typography components" Description="Learn to use and work with the Blazorise typography components to change text size, alignment, wrapping, overflow, transforms and more." />
+
+<DocsPageTitle Path="Components/Typography">
+    Blazorise Typography components
+</DocsPageTitle>
+
+<DocsPageLead>
+    Control text size, alignment, wrapping, overflow, transforms and more.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    We create a font convention to ensure the best presentation across different platforms.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Text">
+        Displays a simple static text on a page.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TypographyTextExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TypographyTextExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Paragraph">
+        Block of text separated from adjacent blocks by blank lines and/or first-line indentation.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TypographyParagraphExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TypographyParagraphExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Lead">
+        The leading text can be used as the first paragraph inside an article content page.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TypographyLeadExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TypographyLeadExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Headings">
+        All HTML headings, <Code>h1</Code> through <Code>h6</Code>, are available.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TypographyAltHeadingExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TypographyHeadingExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Display Headings">
+        Traditional heading elements are designed to work best in the meat of your page content.
+        When you need a heading to stand out, consider using a display heading—a larger, slightly more opinionated heading style.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TypographyAltDisplayHeadingExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TypographyDisplayHeadingExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Unordered Lists">
+        Use the <Code>UnorderedList</Code> component to show an unordered or ordered list of items based on multiple styles, layouts, and variants.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TypographyUnorderedListExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TypographyUnorderedListExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Ordered Lists">
+        Use the <Code>OrderedList</Code> component to show an ordered list of items based on multiple styles, layouts, and variants.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TypographyOrderedListExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TypographyOrderedListExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="List Style Image">
+        <Paragraph>
+            Control the marker image for list items using the <Code>ListStyleImage</Code> parameter.
+        </Paragraph>
+        <Paragraph>
+            This parameter accepts either a <Strong>Base64</Strong> encoded string that represents an image, or a <Strong>URL</Strong> that points to an image resource.
+        </Paragraph>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TypographyListImageStyleExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TypographyListImageStyleExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Unstyled List">
+        Use the <Code>Unstyled</Code> parameter to disable the list style bullets or numbers.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TypographyUnstyledListExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TypographyUnstyledListExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Text Size">
+        <Paragraph>
+            The <Code>TextSize</Code> fluent utility in Blazorise provides an easy way to control the size of the text in your Blazor components. It comes with a range of predefined sizes and also supports heading sizes.
+        </Paragraph>
+        <Paragraph>
+            The usage of the <Code>TextSize</Code> fluent utility is quite straightforward. You just need to set the <Code>TextSize</Code> property of the Paragraph component (or any other component supporting this attribute) to one of the available enum values.
+        </Paragraph>
+        <Paragraph>
+            Also, as most of Blazorise fluent-based utilities, you can define different text sizes for different screens, eg. <Code>TextSize="TextSize.IsLarge.OnMobile.IsSmall.OnDesktop"</Code>.
+        </Paragraph>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TypographyTextSizeExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TypographyTextSizeExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Text Decoration">
+        Blazorise allows you to style text with various decorations. You can use underline to place a line beneath the text, line-through to strike through it, or overline to add a line above. To remove any decorations, use the none option. These styles help enhance and highlight text as needed.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <TypographyTextDecorationExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="TypographyTextDecorationExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes Title="All typography components">
+    <DocsAttributesItem Name="TextColor" Type="TextColor" Default="Default">
+        Sets the text color.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="TextAlignment" Type="TextAlignment" Default="Default">
+        Sets the text alignment.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="TextTransform" Type="TextTransform" Default="Default">
+        Sets the text transformation.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="TextDecoration" Type="TextDecoration" Default="Default">
+        Sets the text decoration.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="TextWeight" Type="TextWeight" Default="Default">
+        Sets the text weight.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="TextOverflow" Type="TextOverflow" Default="Default">
+        Determines how the text will behave when it is larger than a parent container.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="TextSize" Type="IFluentTextSize" Default="null">
+        Determines the font size of an element.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Italic" Type="bool" Default="false">
+        Italicize text if set to true.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="CopyToClipboard" Type="bool" Default="false">
+        If true, the content of the component will be copied to clipboard on click event.
+    </DocsAttributesItem>
+</DocsAttributes>
+
+<DocsAttributes Title="Heading">
+    <DocsAttributesItem Name="Size" Type="HeadingSize" Default="Is3">
+        Sets the heading size.
+    </DocsAttributesItem>
+</DocsAttributes>
+
+<DocsAttributes Title="DisplayHeading">
+    <DocsAttributesItem Name="Size" Type="DisplayHeadingSize" Default="Is2">
+        Sets the display heading size.
+    </DocsAttributesItem>
+</DocsAttributes>
+
+<DocsAttributes Title="UnorderedList">
+    <DocsAttributesItem Name="Unstyled" Type="bool" Default="false">
+        Remove the default <Code>list-style</Code> and left margin on list items (immediate children only).
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ListStyleImage" Type="string" Default="null">
+        Defines the marker images for list items.
+    </DocsAttributesItem>
+</DocsAttributes>
+
+<DocsAttributes Title="OrderedList">
+    <DocsAttributesItem Name="Unstyled" Type="bool" Default="false">
+        Remove the default <Code>list-style</Code> and left margin on list items (immediate children only).
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ListStyleImage" Type="string" Default="null">
+        Defines the marker images for list items.
+    </DocsAttributesItem>
+</DocsAttributes>

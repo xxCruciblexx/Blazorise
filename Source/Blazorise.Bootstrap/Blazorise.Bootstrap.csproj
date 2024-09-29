@@ -3,17 +3,8 @@
   <Import Project="..\..\Build\Blazorise.props" />
 
   <PropertyGroup>
-    <PackageId>Blazorise.Bootstrap</PackageId>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageIcon>Blazorise.png</PackageIcon>
-    <PackageProjectUrl>https://blazorise.com/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/stsrki/Blazorise</RepositoryUrl>
     <PackageTags>blazorise blazor components bootstrap</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="compilerconfig.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Blazorise\Blazorise.csproj" />

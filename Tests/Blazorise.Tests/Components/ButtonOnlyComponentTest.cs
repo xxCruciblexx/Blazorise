@@ -1,36 +1,36 @@
 ﻿#region Using directives
-using BasicTestApp.Client;
-using Blazorise.Tests.Helpers;
 using Bunit;
 using Xunit;
 #endregion
 
-namespace Blazorise.Tests.Components
+namespace Blazorise.Tests.Components;
+
+public class ButtonOnlyComponentTest : TestContext
 {
-    public class ButtonOnlyComponentTest : ComponentTestFixture
+    public ButtonOnlyComponentTest()
     {
-        public ButtonOnlyComponentTest()
-        {
-            BlazoriseConfig.AddBootstrapProviders( Services );
-        }
+        Services.AddBlazoriseTests().AddBootstrapProviders().AddEmptyIconProvider().AddTestData();
+        JSInterop
+            .AddBlazoriseButton();
+    }
 
-        [Fact]
-        public void RenderTest()
-        {
-            // setup
-            var buttonOpen = "<button";
-            var buttonClose = "</button>";
-            var buttonType = @"type=""button""";
-            var buttonContent = "hello primary";
+    [Fact]
+    public void RenderTest()
+    {
+        // setup
+        var buttonOpen = "<button";
+        var buttonClose = "</button>";
+        var buttonType = @"type=""button""";
+        var buttonContent = "hello primary";
 
-            // test
-            var comp = RenderComponent<ButtonOnlyComponent>();
+        // test
+        var comp = RenderComponent<ButtonOnlyComponent>();
 
-            // validate
-            Assert.Contains( buttonOpen, comp.Markup );
-            Assert.Contains( buttonClose, comp.Markup );
-            Assert.Contains( buttonType, comp.Markup );
-            Assert.Contains( buttonContent, comp.Markup );
-        }
+        // validate
+        this.JSInterop.VerifyNotInvoke( "initialize");
+        Assert.Contains( buttonOpen, comp.Markup );
+        Assert.Contains( buttonClose, comp.Markup );
+        Assert.Contains( buttonType, comp.Markup );
+        Assert.Contains( buttonContent, comp.Markup );
     }
 }

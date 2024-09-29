@@ -1,0 +1,146 @@
+﻿@page "/docs/extensions/qrcode"
+
+<Seo Canonical="/docs/extensions/qrcode" Title="Blazorise QRCode component" Description="Learn to use and work with the Blazorise QRCode component, which is used to generate QR codes for presenting short amounts of information to people who can scan them rapidly with their smartphones." />
+
+<DocsPageTitle Path="Extensions/QRCode">
+    Blazorise QR Code component
+</DocsPageTitle>
+
+<DocsPageLead>
+    A component used to generate QR codes.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    QR codes are great for presenting short amounts of information to people who can scan them rapidly with their smartphones. Because most smartphones come with built-in QR code scanners, simply pointing the camera at a QR code will decode it, allowing the user to browse a website, dial a phone number, read a message, and so on.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    Installation
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="NuGet">
+        Install extension from NuGet.
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="QRCodeNugetInstallExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Imports">
+        In your main <Badge Color="Color.Light">_Imports.razor</Badge> add:
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="ImportQRCodeExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Basic">
+        To generate a QR code you only need to define a <Code>Value</Code> parameter.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <BasicQRCodeExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="BasicQRCodeExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Color">
+        Use the <Code>DarkColor</Code> and <Code>LightColor</Code> attributes to modify the QR code's colors. You should always ensure good contrast for optimal compatibility with QR code scanners.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <QRCodeColorExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="QRCodeColorExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Error Correction">
+        QR codes can be rendered with various levels of <Anchor To="https://www.qrcode.com/en/about/error_correction.html" Title="Link to error correction">error correction</Anchor> that can be set using the <Code>EccLevel</Code> attribute. This example generates four codes with the same value using different error correction levels.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <QRCodeErrorCorrectionExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="QRCodeErrorCorrectionExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Custom Icon">
+        <Paragraph>
+            Placing an icon in the middle of <Code Tag>QRCode</Code> is very simple. You just need to set the <Code>Icon</Code> parameter. It can be in base64 format, or an absolute URL.
+        </Paragraph>
+        <Paragraph>
+            Please be aware that placing an icon in the middle will also cover part of the QR code and make it unreadable. So it would be best to increase the error level by setting the <Code>EccLevel</Code> parameter.
+        </Paragraph>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <QRCodeIconExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="QRCodeIconExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    Best Practices
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Set the Alt property
+</Heading>
+
+<DocsPageParagraph>
+    To optimize your web for SEO, define the <Code>Alt</Code> parameter to describe the QR image content, eg. <Code>Alt="QRCode image"</Code>.
+</DocsPageParagraph>
+
+<Heading Size="HeadingSize.Is3">
+    Increase Error Correction Level for Images
+</Heading>
+
+<DocsPageParagraph>
+    Placing an image within the QRCode can make it unreadable, so it is best to increase the error level(<Strong>EccLevel</Strong>) of the code so that the QR scanners can easily read it.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes>
+    <DocsAttributesItem Name="Value" Type="string">
+        Value used for QR code generation.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Payload" Type="PayloadGenerator.Payload" Default="null">
+        Custom payload used for QR code generation.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Alt" Type="string" Default="null">
+        Image alt text.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="EccLevel" Type="EccLevel" Default="L">
+        The level of error correction to use.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="DarkColor" Type="" Default="#000000">
+        Color used as dark color.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="LightColor" Type="" Default="#ffffff">
+        Color used as light color.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="PixelsPerModule" Type="int" Default="10">
+        Pixels per module.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="DrawQuietZones" Type="bool" Default="true">
+        Draw quiet zones (blank margins around QR Code image).
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Icon" Type="string" Default="null">
+        The icon that is places in the middle of the QRCode, can be in base64 format or an absolute url.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="IconSizePercentage" Type="int" Default="40">
+        Defines how much space the icon will occupy within the QRCode.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="IconBorderWidth" Type="int" Default="0">
+        Defines how large the borders will be for the icon that is placed within the QRCode.
+    </DocsAttributesItem>
+</DocsAttributes>

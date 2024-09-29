@@ -2,100 +2,175 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+using Blazorise.Licensing;
+using Blazorise.Localization;
+using Blazorise.Modules;
 using Blazorise.Providers;
+using Blazorise.Themes;
+using Blazorise.Utilities;
+using Blazorise.Utilities.Vendors;
+using Blazorise.Vendors;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 #endregion
 
-namespace Blazorise
+namespace Blazorise;
+
+/// <summary>
+/// Extension methods for building the blazorise options.
+/// </summary>
+public static class Config
 {
-    public static class Config
+    /// <summary>
+    /// Register blazorise and configures the default behaviour.
+    /// </summary>
+    /// <param name="serviceCollection"></param>
+    /// <param name="configureOptions"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddBlazorise( this IServiceCollection serviceCollection, Action<BlazoriseOptions> configureOptions = null )
     {
-        /// <summary>
-        /// Register blazorise and configures the default behaviour.
-        /// </summary>
-        /// <param name="serviceCollection"></param>
-        /// <param name="configureOptions"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddBlazorise( this IServiceCollection serviceCollection, Action<BlazoriseOptions> configureOptions = null )
+        serviceCollection.AddScoped<IComponentActivator, ComponentActivator>();
+        serviceCollection.AddScoped<IComponentDisposer, ComponentDisposer>();
+
+        // Shared component context. Must be defined as scoped as we want to make it available for the user session.
+        serviceCollection.AddScoped<IModalSharedContext, ModalSharedContext>();
+
+        // If options handler is not defined we will get an exception so
+        // we need to initialize an empty action.
+        configureOptions ??= _ => { };
+
+        serviceCollection.AddSingleton( configureOptions );
+        serviceCollection.AddSingleton<BlazoriseOptions>();
+        serviceCollection.AddSingleton<IVersionProvider, VersionProvider>();
+        serviceCollection.AddSingleton<IIdGenerator, IdGenerator>();
+        serviceCollection.AddSingleton<IThemeCache, ThemeCache>();
+        serviceCollection.AddSingleton<IValidationMessageLocalizerAttributeFinder, ValidationMessageLocalizerAttributeFinder>();
+        serviceCollection.AddSingleton<IFlatPickrDateTimeDisplayFormatConverter, FlatPickrDateTimeDisplayFormatConverter>();
+        serviceCollection.AddSingleton<IInputMaskDateTimeInputFormatConverter, InputMaskDateTimeInputFormatConverter>();
+
+        foreach ( var mapping in LocalizationMap
+                     .Concat( ValidationMap )
+                     .Concat( ServiceMap )
+                     .Concat( JSModuleMap ) )
         {
-            var options = new BlazoriseOptions();
-
-            configureOptions?.Invoke( options );
-
-            serviceCollection.AddSingleton( options );
-
-            return serviceCollection;
+            serviceCollection.AddScoped( mapping.Key, mapping.Value );
         }
 
-        /// <summary>
-        /// Registers an empty providers.
-        /// </summary>
-        /// <remarks>
-        /// Generaly this should not be used, except when the user wants to use extensions without any providers like Bootstrap or Bulma.
-        /// </remarks>
-        /// <param name="serviceCollection"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddEmptyProviders( this IServiceCollection serviceCollection )
-        {
-            serviceCollection.AddSingleton<IClassProvider, EmptyClassProvider>();
-            serviceCollection.AddSingleton<IStyleProvider, EmptyStyleProvider>();
-            serviceCollection.AddSingleton<IComponentMapper, ComponentMapper>();
+        serviceCollection.AddScoped<BlazoriseLicenseProvider>();
+        serviceCollection.AddScoped<BlazoriseLicenseChecker>();
 
-            serviceCollection.AddScoped<IJSRunner, EmptyJSRunner>();
+        return serviceCollection;
+    }
 
-            return serviceCollection;
-        }
+    /// <summary>
+    /// Gets the list of localization services that are ready for DI registration.
+    /// </summary>
+    public static IDictionary<Type, Type> LocalizationMap => new Dictionary<Type, Type>
+    {
+        { typeof( ITextLocalizerService ), typeof( TextLocalizerService ) },
+        { typeof( ITextLocalizer<> ), typeof( TextLocalizer<> ) },
+    };
 
-        /// <summary>
-        /// Registers a custom class provider.
-        /// </summary>
-        /// <param name="serviceCollection"></param>
-        /// <param name="classProviderFactory"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddClassProvider( this IServiceCollection serviceCollection, Func<IClassProvider> classProviderFactory )
-        {
-            serviceCollection.AddSingleton( ( p ) => classProviderFactory() );
+    /// <summary>
+    /// Gets the list of validation handlers and services that are ready for DI registration.
+    /// </summary>
+    public static IDictionary<Type, Type> ValidationMap => new Dictionary<Type, Type>
+    {
+        { typeof( IEditContextValidator ), typeof( EditContextValidator ) },
+        { typeof( IValidationHandlerFactory ), typeof( ValidationHandlerFactory ) },
+        { typeof( ValidatorValidationHandler ), typeof( ValidatorValidationHandler ) },
+        { typeof( PatternValidationHandler ), typeof( PatternValidationHandler ) },
+        { typeof( DataAnnotationValidationHandler ), typeof( DataAnnotationValidationHandler ) },
+    };
 
-            return serviceCollection;
-        }
+    /// <summary>
+    /// Gets the list of services that are ready for DI registration.
+    /// </summary>
+    public static IDictionary<Type, Type> ServiceMap => new Dictionary<Type, Type>
+    {
+        { typeof( IMessageService ), typeof( MessageService ) },
+        { typeof( INotificationService ), typeof( NotificationService ) },
+        { typeof( IPageProgressService ), typeof( PageProgressService ) },
+        { typeof( IModalService ), typeof( ModalService ) },
+        { typeof( IToastService ), typeof( ToastService ) },
+    };
 
-        /// <summary>
-        /// Registers a custom style provider.
-        /// </summary>
-        /// <param name="serviceCollection"></param>
-        /// <param name="styleProviderFactory"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddStyleProvider( this IServiceCollection serviceCollection, Func<IStyleProvider> styleProviderFactory )
-        {
-            serviceCollection.AddSingleton( ( p ) => styleProviderFactory() );
+    /// <summary>
+    /// Gets the list of JS modules that are ready for DI registration.
+    /// </summary>
+    public static IDictionary<Type, Type> JSModuleMap => new Dictionary<Type, Type>
+    {
+        { typeof( IJSUtilitiesModule ), typeof( JSUtilitiesModule ) },
+        { typeof( IJSButtonModule ), typeof( JSButtonModule ) },
+        { typeof( IJSClosableModule ), typeof( JSClosableModule ) },
+        { typeof( IJSBreakpointModule ), typeof( JSBreakpointModule ) },
+        { typeof( IJSTextEditModule ), typeof( JSTextEditModule ) },
+        { typeof( IJSMemoEditModule ), typeof( JSMemoEditModule ) },
+        { typeof( IJSNumericPickerModule ), typeof( JSNumericPickerModule ) },
+        { typeof( IJSDatePickerModule ), typeof( JSDatePickerModule ) },
+        { typeof( IJSTimePickerModule ), typeof( JSTimePickerModule ) },
+        { typeof( IJSColorPickerModule ), typeof( JSColorPickerModule ) },
+        { typeof( IJSFileEditModule ), typeof( JSFileEditModule ) },
+        { typeof( IJSFilePickerModule ), typeof( JSFilePickerModule ) },
+        { typeof( IJSFileModule ), typeof( JSFileModule ) },
+        { typeof( IJSTableModule ), typeof( JSTableModule ) },
+        { typeof( IJSInputMaskModule ), typeof( JSInputMaskModule ) },
+        { typeof( IJSDragDropModule ), typeof( JSDragDropModule ) },
+        { typeof( IJSDropdownModule ), typeof( JSDropdownModule ) },
+    };
 
-            return serviceCollection;
-        }
+    /// <summary>
+    /// Registers an empty providers.
+    /// </summary>
+    /// <remarks>
+    /// Generally this should not be used, except when the user wants to use extensions without any providers like Bootstrap or Bulma.
+    /// </remarks>
+    /// <param name="serviceCollection"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddEmptyProviders( this IServiceCollection serviceCollection )
+    {
+        serviceCollection.AddSingleton<IClassProvider, EmptyClassProvider>();
+        serviceCollection.AddSingleton<IStyleProvider, EmptyStyleProvider>();
+        serviceCollection.AddSingleton<IBehaviourProvider, EmptyBehaviourProvider>();
 
-        /// <summary>
-        /// Registers a custom js runner.
-        /// </summary>
-        /// <param name="serviceCollection"></param>
-        /// <param name="jsRunnerFactory"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddJSRunner( this IServiceCollection serviceCollection, Func<IJSRunner> jsRunnerFactory )
-        {
-            serviceCollection.AddScoped( ( p ) => jsRunnerFactory() );
+        return serviceCollection;
+    }
 
-            return serviceCollection;
-        }
+    /// <summary>
+    /// Registers a custom class provider.
+    /// </summary>
+    /// <param name="serviceCollection"></param>
+    /// <param name="classProviderFactory"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddClassProvider( this IServiceCollection serviceCollection, Func<IClassProvider> classProviderFactory )
+    {
+        serviceCollection.AddSingleton( ( p ) => classProviderFactory() );
 
-        /// <summary>
-        /// Registers a custom icon provider.
-        /// </summary>
-        /// <param name="serviceCollection"></param>
-        /// <param name="iconProviderFactory"></param>
-        public static IServiceCollection AddIconProvider( this IServiceCollection serviceCollection, Func<IIconProvider> iconProviderFactory )
-        {
-            serviceCollection.AddSingleton( ( p ) => iconProviderFactory() );
+        return serviceCollection;
+    }
 
-            return serviceCollection;
-        }
+    /// <summary>
+    /// Registers a custom style provider.
+    /// </summary>
+    /// <param name="serviceCollection"></param>
+    /// <param name="styleProviderFactory"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddStyleProvider( this IServiceCollection serviceCollection, Func<IStyleProvider> styleProviderFactory )
+    {
+        serviceCollection.AddSingleton( ( p ) => styleProviderFactory() );
+
+        return serviceCollection;
+    }
+
+    /// <summary>
+    /// Registers a custom icon provider.
+    /// </summary>
+    /// <param name="serviceCollection"></param>
+    /// <param name="iconProviderFactory"></param>
+    public static IServiceCollection AddIconProvider( this IServiceCollection serviceCollection, Func<IIconProvider> iconProviderFactory )
+    {
+        serviceCollection.AddSingleton( ( p ) => iconProviderFactory() );
+
+        return serviceCollection;
     }
 }

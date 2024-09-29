@@ -1,0 +1,101 @@
+﻿@page "/docs/extensions/dropdownlist"
+
+<Seo Canonical="/docs/extensions/dropdownlist" Title="Blazorise DropdownList component" Description="Learn to use and work with the Blazorise DropdownList component, which allows you to select a value from a list of predefined items." />
+
+<DocsPageTitle Path="Extensions/DropdownList">
+    Blazorise DropdownList component
+</DocsPageTitle>
+
+<DocsPageLead>
+    The <Code>DropdownList</Code> component allows you to select a value from a list of predefined items.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    To be able to use <Code>DropdownList</Code> component you first need to install it.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    Installation
+</DocsPageSubtitle>
+
+<Alert Color="Color.Info" Visible>
+    <AlertDescription>
+        The DropdownList extension is part of the <Code>Blazorise.Components</Code> NuGet package.
+    </AlertDescription>
+</Alert>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="NuGet">
+        Install extension from NuGet.
+    </DocsPageSectionHeader>
+    <DocsPageSectionSource Code="ComponentsNugetInstallExample"></DocsPageSectionSource>
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Example">
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <DropdownListExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="DropdownListExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Checkbox Selection">
+        The multiple selection feature in Blazorise's DropdownList component enables users to select multiple options from a dropdown menu via checkboxes. Each option in the menu comes with a checkbox for selection. Upon clicking the DropdownList, users can tick multiple checkboxes to select various options. This feature provides an efficient way of making multiple selections, enhancing user flexibility and interaction.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <DropdownListCheckboxExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="DropdownListCheckboxExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes>
+    <DocsAttributesItem Name="TItem" Type="generic">
+        Model data type.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Data" Type="IEnumerable<TItem>">
+        Data used for the search.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="TextField" Type="Func">
+        Selector for the display name field.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ValueField" Type="Func">
+        Selector for the value field.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedValue" Type="	object">
+        Currently selected value.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedValueChanged" Type="EventCallback<string>">
+        Raises an event after the selected value has changed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="MaxMenuHeight" Type="string">
+        Sets the maximum height of the dropdown menu.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Virtualize" Type="bool" Default="false">
+        Gets or sets whether the dropdown will use the <Code>Virtualize</Code> functionality.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectionMode" Type="DropdownListSelectionMode" Default="DropdownListSelectionMode.Default">
+        Gets or sets the <Code>DropdownList</Code> Selection Mode.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedValues" Type="IReadOnlyList<TValue>">
+        Currently selected item values.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="SelectedValuesChanged" Type="EventCallback<IReadOnlyList<TValue>>">
+        Occurs after the selected item values have changed.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="DropdownToggleSize " Type="Size" Default="Default">
+        Defines the size of toggle button.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="DisabledItem" Type="Func<TItem, bool>">
+        Method used to get the disabled items from the supplied data source.
+    </DocsAttributesItem>
+</DocsAttributes>

@@ -1,0 +1,187 @@
+﻿@page "/docs/components/field"
+
+<Seo Canonical="/docs/components/field" Title="Blazorise Field component" Description="Learn to use and work with the Blazorise Field component, which is a simple container or wrapper for input elements." />
+
+<DocsPageTitle Path="Components/Field">
+    Blazorise Field component
+</DocsPageTitle>
+
+<DocsPageLead>
+    A generic container used to properly layout input elements on a form.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    The <Code Tag>Field</Code> is a container for <Code>TextEdit</Code>, <Code>Select</Code>, <Code>DateEdit</Code>,
+    <Code>Check</Code>, <Code>MemoEdit</Code>, and optionally for <Code>Button</Code>. Structure is very simple:
+</DocsPageParagraph>
+
+<UnorderedList>
+    <UnorderedListItem>
+        <Code Tag>Field</Code> the main container
+        <UnorderedList>
+            <UnorderedListItem><Code Tag>FieldLabel</Code> a field label</UnorderedListItem>
+            <UnorderedListItem><Code Tag>FieldBody</Code> used only for horizontal fields</UnorderedListItem>
+            <UnorderedListItem><Code Tag>FieldHelp</Code> small text bellow the field</UnorderedListItem>
+        </UnorderedList>
+    </UnorderedListItem>
+    <UnorderedListItem>
+        <Code Tag>Fields</Code> container used to group several <Code>Field</Code> components
+    </UnorderedListItem>
+</UnorderedList>
+
+<DocsPageParagraph>
+    It is recommended to always place input components inside of a field. That way you will keep the right spacing
+    and arrangement between input controls.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Basic">
+        To properly structure your form you just need to place an input inside of a Field.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <BasicFieldExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="BasicFieldExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Label">
+        An input field should generally have a label for identifying it. Labels should be clear, concise, and written in sentence case. Avoid unclear and verbose language. Use <Code>FieldHelp</Code> to provide more guidance.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <FieldWithLabelExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="FieldWithLabelExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Helper">
+        Helpers provide information when needed so that end users can fill in a form or field without errors. They are helpful, for example, when the field requires a specific format. Helpers typically consist of plain text but HTML and other components are also supported.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <FieldWithHelpExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="FieldWithHelpExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Read-Only">
+        Set a field as read-only when the content needs to be accessible but not editable. Read-only elements cannot be edited, but they are in the tabbing order and can thus receive focus. The contents of a read-only input can be selected and copied.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <FieldWithReadOnlyExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="FieldWithReadOnlyExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Disabled">
+        <Paragraph>
+            Disable a field to mark it as unavailable. The disabled state is used for fields that are not editable and do not need to be readable. Disabled elements cannot be focused and may be inaccessible to assistive technologies like screen readers.
+        </Paragraph>
+        <Paragraph>
+            Disabling can be preferable to hiding an element to prevent changes in layout when the element’s visibility changes, and to make users aware of its existence even when currently unavailable.
+        </Paragraph>
+        <Paragraph>
+            If the user needs to be able to read (or copy) the value, use read-only instead.
+        </Paragraph>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <FieldWithDisabledExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="FieldWithDisabledExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Horizontal field">
+        <Paragraph>
+            When using horizontal field you must place input controls inside of the <Code>FieldBody</Code> tag and also set the <Code>ColumnSize</Code> to define the actual sizes of the body and a label.
+        </Paragraph>
+        <Paragraph>
+            When using a <Code>Check</Code> component as input control, it has to be horizontally aligned using with <Code>Margin="Margin.IsAuto"</Code>.
+        </Paragraph>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <HorizontalFieldExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="HorizontalFieldExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Visibility">
+        Use <Code>Visibility</Code> attribute to hide a field while still preserving it’s space.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <FieldHiddenExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="FieldHiddenExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Fields">
+        <Code>Fields</Code> component is used to group multiple <Code>Field</Code> components. For example if you need to group
+        fields into columns you must use fields component.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <BasicFieldsExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="BasicFieldsExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Validation Indicator">
+        In Blazorise, you can take advantage of the <Code>RequiredIndicator</Code> feature on a FieldLabel to automatically signal required input fields. By using this feature, an indicator is automatically displayed next to the label, thereby making it clear to the user that the corresponding input is required. It's a practical tool for enhancing user interface design and improving form usability. This feature enhances user understanding of the form requirements, helping to make form interactions more intuitive.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <RequiredIndicatorExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="RequiredIndicatorExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes Title="Field">
+    <DocsAttributesItem Name="Horizontal" Type="boolean" Default="false">
+        Aligns the controls for horizontal form.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ColumnSize" Type="ColumnSize" Default="null">
+        Determines how much space will be used by the field inside of the grid row.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="JustifyContent" Type="JustifyContent" Default="Default">
+        Aligns the flexible container’s items when the items do not use all available space on the main-axis (horizontally).
+    </DocsAttributesItem>
+</DocsAttributes>
+
+<DocsAttributes Title="FieldLabel">
+    <DocsAttributesItem Name="Screenreader" Type="Screenreader" Default="Always">
+        Defines the visibility for screen readers.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="RequiredIndicator" Type="bool" Default="false">
+        If defined, a required indicator will be shown next to the label.
+    </DocsAttributesItem>
+</DocsAttributes>
+
+<DocsAttributes Title="Fields">
+    <DocsAttributesItem Name="Label" Type="string" Default="null">
+        Aligns the controls for horizontal form.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Help" Type="string" Default="null">
+        Shows the help text bellow the fields.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ColumnSize" Type="ColumnSize" Default="null">
+        Determines how much space will be used by the field inside of the grid row.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="RequiredIndicator" Type="bool" Default="false">
+        Whether to provide a Required Indicator.
+    </DocsAttributesItem>
+</DocsAttributes>

@@ -1,0 +1,97 @@
+﻿@page "/docs/components/rating"
+
+<Seo Canonical="/docs/components/rating" Title="Blazorise Rating system" Description="Learn to use and work with the Blazorise Rating component, which provide insight regarding others opinions and experiences with a product. Users can also rate products they’ve purchased." />
+
+<DocsPageTitle Path="Components/Rating">
+    Blazorise Rating component
+</DocsPageTitle>
+
+<DocsPageLead>
+    Ratings provide insight regarding others opinions and experiences with a product.
+</DocsPageLead>
+
+<DocsPageParagraph>
+    Rating component can be used to allow the users to share their opinion about the product, documentation page, photo and more.
+</DocsPageParagraph>
+
+<DocsPageSubtitle>
+    Examples
+</DocsPageSubtitle>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Basic">
+        To start with a basic example just define the rating color.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <BasicRatingExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="BasicRatingExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Two-way binding">
+        Binding the selected value to a variable will make it more usable.
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <RatingWithBindExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="RatingWithBindExample" />
+</DocsPageSection>
+
+<DocsPageSection>
+    <DocsPageSectionHeader Title="Show Tooltips">
+        <Paragraph>
+            By defining the <Code>GetTooltip</Code> callback you can show the extra information to the user.
+        </Paragraph>
+        <Paragraph>
+            Along with the tooltip <Strong>Text</Strong>, it is also possible to control tooltip arrow visibility, multiline mode, and placement.
+        </Paragraph>
+    </DocsPageSectionHeader>
+    <DocsPageSectionContent Outlined FullWidth>
+        <RatingWithTooltipExample />
+    </DocsPageSectionContent>
+    <DocsPageSectionSource Code="RatingWithTooltipExample" />
+</DocsPageSection>
+
+<DocsPageSubtitle>
+    API
+</DocsPageSubtitle>
+
+<Heading Size="HeadingSize.Is3">
+    Attributes
+</Heading>
+
+<DocsAttributes>
+    <DocsAttributesItem Name="MaxValue" Type="int" Default="5">
+        Maximum rating value that is allowed to be selected.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="ReadOnly" Type="bool" Default="false">
+        Prevents modification of the input’s value.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Disabled" Type="bool" Default="false">
+        Prevent the user interactions and make it appear lighter.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="FullIcon" Type="object" Default="IconName.Star">
+        Defines the selected icon name.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="EmptyIcon" Type="object" Default="IconName.Star">
+        Defines the non-selected icon name.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="FullIconStyle" Type="IconStyle?" Default="Solid">
+        Defines the selected icon style.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="EmptyIconStyle" Type="IconStyle?" Default="Regular">
+        Defines the non-selected icon style.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="Color" Type="Color" Default="Warning">
+        Defines the color or icons.
+    </DocsAttributesItem>
+    <DocsAttributesItem Name="GetTooltip" Type="Func<int, RatingTooltip>" Default="null">
+        <Paragraph>
+            Expression that provides the tooltip for the rating item to have additional user-friendly information.
+        </Paragraph>
+        <Paragraph>
+            The expression receives the rating item <Code>Value</Code> to determine the result.
+        </Paragraph>
+    </DocsAttributesItem>
+</DocsAttributes>
